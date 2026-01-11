@@ -1,10 +1,634 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Demo Website</title>
-    </head>
-    <body>
-        <h1>Our Demonstration Website</h1>
-        <a href='our-team/index.html'>Learn more about our team</a>
-    </body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zero-Sum Thinking Explorer (Story 1–3)</title>
+    <link rel="stylesheet" href="./styles/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container header__inner">
+        <div class="brand">
+          <div class="brand__title">Zero-Sum Explorer</div>
+          <div class="brand__subtitle">Learn + Test (Stories 1–2 template)</div>
+        </div>
+
+        <nav class="nav">
+          <button class="nav__btn" data-route="learn" aria-current="page">Learn</button>
+          <button class="nav__btn" data-route="explore">Explore</button>
+          <button class="nav__btn" data-route="test">Test</button>
+          <button class="nav__btn" data-route="visualization">Visualization</button>
+          <button class="nav__btn" data-route="about">About</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container main">
+      <!-- LEARN (Story 1) -->
+      <section id="page-learn" class="page page--active" aria-labelledby="learn-title">
+        <!-- Hero Section with Background -->
+        <div class="learn-hero" style="
+          position: relative;
+          margin: -18px -16px 0 -16px;
+          padding: 120px 40px 100px;
+          background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+          overflow: hidden;
+        ">
+          <!-- Background pattern overlay -->
+          <div style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.08;
+            background-image: 
+              linear-gradient(45deg, transparent 48%, #fff 49%, #fff 51%, transparent 52%),
+              linear-gradient(-45deg, transparent 48%, #fff 49%, #fff 51%, transparent 52%);
+            background-size: 80px 80px;
+            background-position: 0 0;
+          "></div>
+          
+          <!-- Content -->
+          <div style="position: relative; z-index: 1; max-width: 1040px; margin: 0 auto;">
+            <div style="
+              font-size: 14px;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+              color: #60a5fa;
+              margin-bottom: 12px;
+            ">📚 Learn</div>
+            
+            <h1 id="learn-title" style="
+              margin: 0 0 40px 0;
+              font-size: 48px;
+              font-weight: 800;
+              color: #fff;
+              line-height: 1.2;
+              max-width: 800px;
+            ">What is Zero-Sum Thinking?</h1>
+            
+            <div style="
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+              gap: 32px;
+              max-width: 900px;
+            ">
+              <!-- Core Concept Card -->
+              <div style="
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 24px;
+                backdrop-filter: blur(10px);
+              ">
+                <div style="
+                  font-size: 12px;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.8px;
+                  color: #93c5fd;
+                  margin-bottom: 12px;
+                ">Core Definition</div>
+                <p style="
+                  margin: 0;
+                  font-size: 16px;
+                  line-height: 1.7;
+                  color: #e5e7eb;
+                ">
+                  The belief that gains for one group necessarily come at the expense of other groups—implying a fixed "pie" of resources.
+                </p>
+              </div>
+              
+              <!-- Why It Matters Card -->
+              <div style="
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 24px;
+                backdrop-filter: blur(10px);
+              ">
+                <div style="
+                  font-size: 12px;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.8px;
+                  color: #93c5fd;
+                  margin-bottom: 12px;
+                ">Why It Matters</div>
+                <p style="
+                  margin: 0;
+                  font-size: 16px;
+                  line-height: 1.7;
+                  color: #e5e7eb;
+                ">
+                  This mindset influences political attitudes and policy preferences on immigration, redistribution, education, and environment.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container main" style="padding-top: 40px;">
+          <h2 style="margin-top: 0; margin-bottom: 24px; font-size: 20px; color: var(--text); padding-bottom: 12px; border-bottom: 2px solid var(--border-light);">How to Use This Platform</h2>
+
+          <div class="card" style="background: linear-gradient(135deg, #f0f4ff 0%, #f9fafb 100%); border: 2px solid var(--primary-light); box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);">
+            <p class="muted" style="margin-bottom: 15px;">
+              Navigate through the platform to explore different dimensions of zero-sum thinking:
+            </p>
+            <ul class="list">
+              <li><strong>Learn:</strong> Understand the core concepts and how zero-sum thinking is measured.</li>
+              <li><strong>Explore:</strong> Play an interactive mini-game and watch animated explanations to build intuition.</li>
+              <li><strong>Test:</strong> Answer questions about your own beliefs and see how you compare to the benchmark.</li>
+              <li><strong>Visualization:</strong> Explore demographic patterns, policy correlations, and geographic distributions.</li>
+            </ul>
+          </div>
+
+        </div>
+        </div>
+      </section>
+
+      <!-- EXPLORE (Interactive) -->
+      <section id="page-explore" class="page" aria-labelledby="explore-title">
+        <h1 id="explore-title">Explore: Interactive Demonstrations</h1>
+
+        <div class="card">
+          <h2>Mini game (2-minute intuition demo)</h2>
+          <p class="muted">
+            This is a simple placeholder. Later you can replace it with a GitHub open-source mini-game.
+          </p>
+
+          <div class="row">
+            <button class="btn" id="mode-zero" type="button">Zero-sum mode</button>
+            <button class="btn btn--ghost" id="mode-positive" type="button">Positive-sum mode</button>
+          </div>
+
+          <div class="result" id="game-result" role="status" aria-live="polite">
+            <div class="result__title">Outcome: fixed pie</div>
+            <div class="result__body">
+              Total resources are fixed. One player’s gain implies another player’s loss.
+            </div>
+            <div class="result__summary"><strong>Summary:</strong> Net total stays constant.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Animated explanation (video embed placeholder)</h2>
+          <p class="muted">
+            Add a ~3-minute YouTube explainer here (optional, non-blocking).
+          </p>
+
+          <!-- Replace src with an actual YouTube embed when ready:
+          <iframe
+            class="video"
+            src="https://www.youtube.com/embed/VIDEO_ID"
+            title="Zero-sum thinking explainer"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+          -->
+
+          <div class="video video--placeholder">
+            <div>
+              <div class="video__title">Video Placeholder</div>
+              <div class="muted">Paste a YouTube embed iframe here later.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TEST (Story 2) -->
+      <section id="page-test" class="page" aria-labelledby="test-title">
+        <h1 id="test-title">Test: Your Zero-Sum Thinking Score</h1>
+
+        <div class="card">
+          <h2>Instructions</h2>
+          <p>
+            Please indicate how much you agree with each statement on a 5-point scale:
+            <strong>1 = Strongly disagree</strong>, <strong>5 = Strongly agree</strong>.
+          </p>
+          <p class="muted">
+            This template uses a transparent placeholder scoring rule (normalized average). You can later
+            replace it with PCA-based scoring from the paper’s replication code.
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>Four questions (interactive)</h2>
+
+          <div class="scale-hint">
+            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+            <span class="muted">Strongly disagree → Strongly agree</span>
+          </div>
+
+          <form id="survey-form" class="survey" autocomplete="off">
+            <fieldset class="q">
+              <legend>(Q1) When one group gets ahead, it is usually because another group falls behind.</legend>
+              <div class="choices" data-q="q1"></div>
+            </fieldset>
+
+            <fieldset class="q">
+              <legend>(Q2) The wealth of some groups comes at the expense of other groups.</legend>
+              <div class="choices" data-q="q2"></div>
+            </fieldset>
+
+            <fieldset class="q">
+              <legend>(Q3) Economic progress for one group generally means less opportunity for other groups.</legend>
+              <div class="choices" data-q="q3"></div>
+            </fieldset>
+
+            <fieldset class="q">
+              <legend>(Q4) If some groups gain influence, other groups inevitably lose influence.</legend>
+              <div class="choices" data-q="q4"></div>
+            </fieldset>
+
+            <div class="row">
+              <button class="btn" type="button" id="compute-btn">Compute score</button>
+              <button class="btn btn--ghost" type="button" id="reset-btn">Reset</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>Your score vs. benchmark sample</h2>
+
+          <div id="test-warning" class="muted">
+            Answer all four questions, then click “Compute score”.
+          </div>
+
+          <div id="test-output" class="hidden">
+            <div class="stats">
+              <div class="stat">
+                <div class="stat__label">Benchmark N</div>
+                <div class="stat__value" id="bench-n">—</div>
+              </div>
+              <div class="stat">
+                <div class="stat__label">Mean</div>
+                <div class="stat__value" id="bench-mean">—</div>
+              </div>
+              <div class="stat">
+                <div class="stat__label">Median</div>
+                <div class="stat__value" id="bench-median">—</div>
+              </div>
+              <div class="stat">
+                <div class="stat__label">Min</div>
+                <div class="stat__value" id="bench-min">—</div>
+              </div>
+              <div class="stat">
+                <div class="stat__label">Max</div>
+                <div class="stat__value" id="bench-max">—</div>
+              </div>
+            </div>
+
+            <div class="result">
+              <div class="result__title">Your score (0–1)</div>
+              <div class="result__body">
+                <span class="score" id="user-score">—</span>
+                <span class="muted"> (normalized)</span>
+              </div>
+              <div class="result__summary" id="one-line-report">—</div>
+            </div>
+
+            <div class="note muted">
+              Note: This interpretation is descriptive and benchmarked against a research survey sample.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VISUALIZATION (Story 3) -->
+      <section id="page-visualization" class="page" aria-labelledby="viz-title">
+        <h1 id="viz-title">Visualization: Explore Zero-Sum Thinking Patterns</h1>
+
+        <!-- Tab navigation -->
+        <div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+          <button class="tab-btn tab-btn--active" data-tab="demographic-patterns">Demographic Patterns</button>
+          <button class="tab-btn" data-tab="policy-indices">Policy Indices</button>
+          <button class="tab-btn" data-tab="geographic-map">Geographic Map</button>
+        </div>
+
+        <!-- TAB 1: Demographic Patterns -->
+        <div id="tab-demographic-patterns" class="tab-content tab-content--active">
+          <div class="card">
+            <h2>Select demographic variable (X-axis)</h2>
+            <select id="demo-select" class="select">
+              <option value="age">Age Group</option>
+              <option value="gender">Gender</option>
+              <option value="education">Education Level</option>
+              <option value="income">Income Bracket</option>
+              <option value="party">Party Affiliation</option>
+              <option value="urbanicity">Urbanicity</option>
+            </select>
+          </div>
+
+          <div class="card">
+            <h2>Zero-Sum Index by Group</h2>
+            <div style="display: flex; gap: 20px;">
+              <div style="flex: 1;">
+                <canvas id="chart-container"></canvas>
+                <div id="chart-info" class="muted" style="margin-top: 1rem;"></div>
+              </div>
+              <div style="flex: 0 0 250px; border-left: 1px solid var(--border); padding-left: 16px;">
+                <h3 style="margin-top: 0; font-size: 14px;">Filters</h3>
+                <div id="filters-panel"></div>
+                <button id="reset-filters-btn" class="btn btn--ghost" style="margin-top: 1rem; width: 100%; font-size: 12px;">Reset Filters</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: Policy Indices -->
+        <div id="tab-policy-indices" class="tab-content">
+          <div class="card">
+            <h2>Policy Index Viewer</h2>
+            <p class="muted">
+              Four policy indices are constructed from survey responses to capture beliefs about resource competition in different policy domains.
+              All indices are normalized (0–1), where higher scores indicate stronger zero-sum thinking in that domain.
+            </p>
+          </div>
+
+          <!-- Sub-tabs for policy indices -->
+          <div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; padding-left: 8px;">
+            <button class="sub-tab-btn sub-tab-btn--active" data-sub-tab="distribution">Distribution</button>
+            <button class="sub-tab-btn" data-sub-tab="correlation">Correlation Plot</button>
+          </div>
+
+          <!-- Distribution tab -->
+          <div id="sub-tab-distribution" class="sub-tab-content sub-tab-content--active">
+            <div class="card">
+              <h2>Select a policy index</h2>
+              <select id="policy-select" class="select">
+                <option value="epi">Economic Policy Index (EPI)</option>
+                <option value="swi">Social Welfare Index (SWI)</option>
+                <option value="ipi">Immigration Policy Index (IPI)</option>
+                <option value="eoi">Education Opportunity Index (EOI)</option>
+              </select>
+            </div>
+
+            <div class="card">
+              <h2 id="policy-title">Economic Policy Index (EPI)</h2>
+              <p id="policy-description" class="muted"></p>
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 16px;">
+                <div>
+                  <canvas id="policy-chart-container"></canvas>
+                </div>
+                <div>
+                  <h3 style="margin-top: 0; font-size: 14px;">Summary Statistics</h3>
+                  <div id="policy-stats" style="font-size: 14px; line-height: 1.8;">
+                    <div><strong>Mean:</strong> <span id="policy-mean">—</span></div>
+                    <div><strong>Median:</strong> <span id="policy-median">—</span></div>
+                    <div><strong>Std Dev:</strong> <span id="policy-stddev">—</span></div>
+                    <div><strong>Range:</strong> <span id="policy-range">—</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Correlation tab -->
+          <div id="sub-tab-correlation" class="sub-tab-content">
+            <div class="card">
+              <h2>Select a policy index</h2>
+              <select id="policy-select-scatter" class="select">
+                <option value="epi">Economic Policy Index (EPI)</option>
+                <option value="swi">Social Welfare Index (SWI)</option>
+                <option value="ipi">Immigration Policy Index (IPI)</option>
+                <option value="eoi">Education Opportunity Index (EOI)</option>
+              </select>
+            </div>
+
+            <div class="card">
+              <h2 id="scatter-title">Zero-Sum Index vs Economic Policy Index (EPI)</h2>
+              <p id="scatter-description" class="muted"></p>
+              <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; margin-top: 16px;">
+                <div>
+                  <canvas id="scatter-chart-container"></canvas>
+                </div>
+                <div>
+                  <h3 style="margin-top: 0; font-size: 14px;">Relationship Stats</h3>
+                  <div id="scatter-stats" style="font-size: 14px; line-height: 1.8;">
+                    <div><strong>Correlation (r):</strong> <span id="correlation-r">—</span></div>
+                    <div><strong>R²:</strong> <span id="correlation-r2">—</span></div>
+                    <div><strong>Sample Size (N):</strong> <span id="scatter-n">—</span></div>
+                  </div>
+                  <div style="margin-top: 16px; padding: 10px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border-left: 3px solid rgba(255, 193, 7, 0.5);">
+                    <p style="margin: 0; font-size: 12px; color: var(--muted);"><strong>Note:</strong> This visualization is <strong>descriptive</strong> and shows associations, not causal relationships.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%); border: 1px solid var(--border);">
+              <h2 style="margin-top: 0;">Filter by demographic subgroups</h2>
+              <p class="muted">Restrict the sample to examine how the relationship varies across subpopulations.</p>
+              
+              <!-- Filter columns container -->
+              <div id="scatter-filters-columns" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin: 16px 0;">
+                <div id="scatter-filters-panel" style="display: contents;"></div>
+              </div>
+              
+              <!-- Action button -->
+              <div style="display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <button id="reset-scatter-filters-btn" class="btn btn--ghost" style="font-size: 12px;">Reset Filters</button>
+              </div>
+              
+              <!-- Filter summary -->
+              <div id="scatter-filter-summary" style="margin-top: 12px; padding: 10px; background: rgba(37, 99, 235, 0.05); border-left: 4px solid var(--primary); border-radius: 8px; font-size: 12px; line-height: 1.5; display: none;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: Geographic Map -->
+      <div id="tab-geographic-map" class="tab-content">
+        <h2 style="margin-top: 0;">County-Level Zero-Sum Thinking Index Map</h2>
+        <div class="card">
+          <p class="muted">
+            This map displays the average Zero-Sum Thinking Index aggregated at the county level across the United States.
+            Counties are colored on a gradient from blue (lower zero-sum thinking) through yellow (medium) to orange (higher zero-sum thinking).
+          </p>
+          <div style="margin-top: 12px; padding: 10px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border-left: 3px solid rgba(255, 193, 7, 0.5);">
+            <p style="margin: 0; font-size: 11px; color: var(--muted);"><strong>Story 3.3.2–3.3.3:</strong> Filter the map by parental/grandparental immigration status and demographic variables to explore how ancestry and demographics shape geographic patterns of zero-sum thinking.</p>
+          </div>
+        </div>
+
+        <div class="card" style="background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%); border: 1px solid var(--border);">
+          <h3 style="margin-top: 0; margin-bottom: 16px; font-size: 14px; color: var(--text);">Primary Filter: Immigration Status</h3>
+          
+          <!-- Immigration Status Filter (Primary) -->
+          <div id="map-filters-columns" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 16px;">
+            <!-- Immigration Status Column -->
+            <div class="filter-column">
+              <div class="filter-column__header">Immigration Status</div>
+              <div id="map-immigration-filters" class="filter-column__options"></div>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <div style="display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border);">
+            <button id="reset-map-filters-btn" class="btn btn--ghost" style="font-size: 12px;">Reset All</button>
+            <button id="toggle-demographic-filters-btn" class="btn btn--ghost" style="font-size: 12px;">⚙ Additional Filters</button>
+          </div>
+          
+          <!-- Filter summary and warnings -->
+          <div id="map-filter-summary" style="display: none; margin-top: 12px; padding: 10px; background: rgba(37, 99, 235, 0.05); border-left: 4px solid var(--primary); border-radius: 8px; font-size: 12px; line-height: 1.5;"></div>
+          <div id="map-sample-size-warning" style="display: none; margin-top: 12px; padding: 10px; background: rgba(255, 152, 0, 0.08); border-left: 4px solid #FF9800; border-radius: 8px;">
+            <p style="margin: 0; font-size: 11px; color: var(--text);"><strong>⚠️ Sample Size Warning:</strong> <span id="map-warning-text"></span></p>
+          </div>
+        </div>
+
+        <div class="card" style="position: relative;">
+          <div id="map-container" style="height: 600px; position: relative;"></div>
+          
+          <!-- Floating Demographic Filters Panel -->
+          <div id="map-demographic-filters-panel" style="display: none; position: absolute; top: 16px; right: 16px; width: 320px; max-height: 550px; background: #fff; border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow-lg); padding: 12px; overflow-y: auto; z-index: 1000;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+              <h4 style="margin: 0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text);">Demographic Filters</h4>
+              <button id="close-demographic-filters-btn" style="background: none; border: none; font-size: 18px; cursor: pointer; color: var(--muted); padding: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: all 0.2s ease;" title="Close">×</button>
+            </div>
+            <div id="map-demographic-filters" style="display: flex; flex-direction: column; gap: 12px;"></div>
+            <div style="display: flex; gap: 8px; padding-top: 12px; margin-top: 12px; border-top: 1px solid var(--border);">
+              <button id="clear-map-demographics-btn" class="btn btn--ghost" style="font-size: 11px; padding: 6px 8px; flex: 1;">Clear Demographics</button>
+            </div>
+          </div>
+        </div>
+          <div style="margin-top: 16px; display: flex; gap: 16px;">
+            <div style="flex: 1;">
+              <h3 style="margin-top: 0; font-size: 14px;">Legend</h3>
+              <div style="margin-bottom: 12px;">
+                <div class="legend-gradient-bar" style="height: 24px; margin-bottom: 8px;"></div>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); font-weight: 500;">
+                  <span>0.0 (Low)</span>
+                  <span>0.5 (Medium)</span>
+                  <span>1.0 (High)</span>
+                </div>
+              </div>
+              <div style="margin-top: 12px; padding: 10px; background: rgba(30, 100, 255, 0.1); border-radius: 6px; border-left: 3px solid #1e64ff;">
+                <p style="margin: 0; font-size: 11px; color: var(--muted);"><strong>Blue:</strong> Lower zero-sum thinking beliefs</p>
+              </div>
+              <div style="margin-top: 8px; padding: 10px; background: rgba(255, 204, 0, 0.1); border-radius: 6px; border-left: 3px solid #ffcc00;">
+                <p style="margin: 0; font-size: 11px; color: var(--muted);"><strong>Yellow:</strong> Medium zero-sum thinking beliefs</p>
+              </div>
+              <div style="margin-top: 8px; padding: 10px; background: rgba(255, 150, 0, 0.1); border-radius: 6px; border-left: 3px solid #ff9600;">
+                <p style="margin: 0; font-size: 11px; color: var(--muted);"><strong>Orange:</strong> Higher zero-sum thinking beliefs</p>
+              </div>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="margin-top: 0; font-size: 14px;">County Statistics</h3>
+              <div id="map-stats" style="font-size: 12px; line-height: 1.8;">
+                <div><strong>Total Counties:</strong> <span id="map-county-count">—</span></div>
+                <div><strong>Mean Index:</strong> <span id="map-mean">—</span></div>
+                <div><strong>Median Index:</strong> <span id="map-median">—</span></div>
+                <div><strong>Range:</strong> <span id="map-range">—</span></div>
+              </div>
+              <div style="margin-top: 12px; padding: 10px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border-left: 3px solid rgba(255, 193, 7, 0.5);">
+                <p style="margin: 0; font-size: 11px; color: var(--muted);"><strong>Note:</strong> Data shown at county level. Hover over counties to see details.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABOUT -->
+      <section id="page-about" class="page" aria-labelledby="about-title">
+        <h1 id="about-title">About This Project</h1>
+        
+        <div class="card">
+          <h2>Featured Research</h2>
+          <p class="muted" style="margin-bottom: 15px;">
+            Our work is based on groundbreaking research from the Social Economics Lab exploring how zero-sum beliefs 
+            shape political attitudes and policy preferences:
+          </p>
+          <ul class="list">
+            <li>
+              <strong>Zero-Sum Thinking and the Roots of U.S. Political Divides</strong> —
+              <a href="https://socialeconomicslab.org/research/publications/zero-sum-thinking-and-the-roots-of-u-s-political-divides/" target="_blank">
+                Read the full publication →
+              </a>
+            </li>
+            <li>
+              <strong>More Research</strong> — 
+              <a href="https://socialeconomicslab.org/research/" target="_blank">
+                Browse all Social Economics Lab research →
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>How to Use This Platform</h2>
+          <p class="muted" style="margin-bottom: 15px;">
+            Navigate through the platform to explore different dimensions of zero-sum thinking:
+          </p>
+          <ul class="list">
+            <li><strong>Learn:</strong> Understand the concepts and how beliefs are measured.</li>
+            <li><strong>Test:</strong> Answer questions about your own beliefs and see how you compare.</li>
+            <li><strong>Visualization:</strong> Explore demographic patterns, policy correlations, and geographic distributions.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>The Project Team</h2>
+          <p class="muted" style="margin-bottom: 24px;">
+            Built by a dedicated team at Harvard Kennedy School's Social Economics Lab, this platform brings research to life through interactive exploration.
+          </p>
+          
+          <!-- Team members grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px;">
+            <!-- Team member card -->
+            <div class="team-member-card">
+              <div class="team-member-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 48px;">LC</div>
+              <h3 class="team-member-name">Liyang Chen</h3>
+              <div class="team-member-role">Project Lead</div>
+              <p class="team-member-bio">
+                MPA Student at Harvard Kennedy School. Passionate about understanding political beliefs and building tools for evidence-based policy dialogue.
+              </p>
+              <div class="team-member-contact">
+                <a href="mailto:liyangchen@hks.harvard.edu" title="Email Liyang">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Team member card -->
+            <div class="team-member-card">
+              <div class="team-member-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 48px;">SE</div>
+              <h3 class="team-member-name">Social Economics Lab</h3>
+              <div class="team-member-role">Research Partner</div>
+              <p class="team-member-bio">
+                Harvard Kennedy School's lab dedicated to understanding how social preferences shape economic behavior and political attitudes.
+              </p>
+              <div class="team-member-contact">
+                <a href="https://socialeconomicslab.org/" target="_blank" title="Visit SEL Website">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 16v-4m0-4h.01"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container muted">
+        Prototype template for Stories 1–2. Replace placeholders with paper-aligned wording and PCA scoring.
+      </div>
+    </footer>
+
+    <script src="./lib/data/mockDataViz.js"></script>
+    <script src="./app.js"></script>
+  </body>
 </html>
