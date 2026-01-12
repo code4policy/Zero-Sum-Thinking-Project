@@ -181,22 +181,278 @@
         <div class="card">
           <h2>Mini game (2-minute intuition demo)</h2>
           <p class="muted">
-            This is a simple placeholder. Later you can replace it with a GitHub open-source mini-game.
+            You and a competitor are fighting for market share. Choose to compete fiercely or collaborate. See how your mindset affects the outcome over 3 rounds.
           </p>
 
-          <div class="row">
-            <button class="btn" id="mode-zero" type="button">Zero-sum mode</button>
-            <button class="btn btn--ghost" id="mode-positive" type="button">Positive-sum mode</button>
-          </div>
-
-          <div class="result" id="game-result" role="status" aria-live="polite">
-            <div class="result__title">Outcome: fixed pie</div>
-            <div class="result__body">
-              Total resources are fixed. One player’s gain implies another player’s loss.
+          <div id="game-container" style="margin-top: 24px;">
+            <!-- Game State: Not Started -->
+            <div id="game-start" style="text-align: center; padding: 24px; background: linear-gradient(135deg, #f0f4ff 0%, #f9fafb 100%); border-radius: 8px;">
+              <div style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text);">Choose Your Strategy</div>
+              <p style="color: var(--text-muted); margin-bottom: 24px;">What's your approach to competition?</p>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <button class="btn" id="start-zero-sum" type="button" style="padding: 16px;">
+                  <div style="font-weight: 700;">⚔️ Compete Hard</div>
+                  <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">I win, you lose</div>
+                </button>
+                <button class="btn" id="start-positive-sum" type="button" style="padding: 16px;">
+                  <div style="font-weight: 700;">🤝 Collaborate</div>
+                  <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">We both gain</div>
+                </button>
+              </div>
             </div>
-            <div class="result__summary"><strong>Summary:</strong> Net total stays constant.</div>
+
+            <!-- Game State: Playing -->
+            <div id="game-playing" style="display: none;">
+              <!-- Round Info -->
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--border-light);">
+                <div>
+                  <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Round</div>
+                  <div style="font-size: 24px; font-weight: 800;" id="round-number">1</div>
+                </div>
+                <div style="text-align: center;">
+                  <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Score</div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px;">
+                    <div>
+                      <div style="font-size: 18px; font-weight: 800; color: #3b82f6;">YOU <span id="your-score">0</span></div>
+                    </div>
+                    <div>
+                      <div style="font-size: 18px; font-weight: 800; color: #a855f7;">THEM <span id="their-score">0</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Choice Phase -->
+              <div id="choice-phase">
+                <div style="margin-bottom: 16px;">
+                  <div style="font-weight: 700; margin-bottom: 12px; color: var(--text);">What's your move?</div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <button class="btn" id="choice-compete" type="button" style="padding: 16px; text-align: left;">
+                      <div style="font-weight: 700;">⚔️ Compete</div>
+                      <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">Aggressive pricing, big ad spend</div>
+                    </button>
+                    <button class="btn btn--ghost" id="choice-collab" type="button" style="padding: 16px; text-align: left;">
+                      <div style="font-weight: 700;">🤝 Collaborate</div>
+                      <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">Share market, grow together</div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Result Phase -->
+              <div id="result-phase" style="display: none;">
+                <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%); border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                    <!-- Your Move -->
+                    <div style="text-align: center;">
+                      <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 8px;">YOU CHOSE</div>
+                      <div id="your-move-display" style="font-size: 24px; font-weight: 800;">⚔️</div>
+                    </div>
+                    <!-- Their Move -->
+                    <div style="text-align: center;">
+                      <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 8px;">THEY CHOSE</div>
+                      <div id="their-move-display" style="font-size: 24px; font-weight: 800;">⚔️</div>
+                    </div>
+                  </div>
+
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div style="background: rgba(59, 130, 246, 0.2); border-radius: 6px; padding: 12px; text-align: center;">
+                      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">YOU GET</div>
+                      <div style="font-size: 28px; font-weight: 800; color: #3b82f6;" id="round-your-gain">+5</div>
+                    </div>
+                    <div style="background: rgba(168, 85, 247, 0.2); border-radius: 6px; padding: 12px; text-align: center;">
+                      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">THEY GET</div>
+                      <div style="font-size: 28px; font-weight: 800; color: #a855f7;" id="round-their-gain">+5</div>
+                    </div>
+                  </div>
+
+                  <div style="margin-top: 16px; padding: 12px; background: rgba(249, 115, 22, 0.1); border-left: 4px solid #f97316; border-radius: 4px;">
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;" id="round-insight">
+                      <strong style="color: #f97316;">💡</strong> Both cooperated! Market grows for everyone.
+                    </div>
+                  </div>
+                </div>
+
+                <button class="btn" id="next-round-btn" type="button" style="width: 100%;">Next Round →</button>
+              </div>
+            </div>
+
+            <!-- Game State: Results -->
+            <div id="game-results" style="display: none;">
+              <div style="text-align: center; padding: 24px; background: linear-gradient(135deg, #f0f4ff 0%, #f9fafb 100%); border-radius: 8px;">
+                <div style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 16px;">Game Over!</div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                  <div style="background: rgba(59, 130, 246, 0.15); border-radius: 8px; padding: 16px;">
+                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">YOUR TOTAL</div>
+                    <div style="font-size: 36px; font-weight: 800; color: #3b82f6;" id="final-your-score">0</div>
+                  </div>
+                  <div style="background: rgba(168, 85, 247, 0.15); border-radius: 8px; padding: 16px;">
+                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">THEIR TOTAL</div>
+                    <div style="font-size: 36px; font-weight: 800; color: #a855f7;" id="final-their-score">0</div>
+                  </div>
+                </div>
+
+                <div id="game-conclusion" style="margin-bottom: 24px; padding: 16px; background: white; border-radius: 8px; border-left: 4px solid #10b981;">
+                  <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">🎯 Key Takeaway</div>
+                  <div id="conclusion-text" style="font-size: 14px; color: var(--text); line-height: 1.6;"></div>
+                </div>
+
+                <button class="btn" id="play-again-btn" type="button" style="width: 100%; padding: 16px;">Play Again</button>
+              </div>
+            </div>
           </div>
         </div>
+
+        <script>
+          const gameContainer = {
+            start: document.getElementById('game-start'),
+            playing: document.getElementById('game-playing'),
+            results: document.getElementById('game-results'),
+            choicePhase: document.getElementById('choice-phase'),
+            resultPhase: document.getElementById('result-phase')
+          };
+
+          let gameState = {
+            mode: null,
+            round: 1,
+            yourScore: 0,
+            theirScore: 0,
+            yourMove: null,
+            theirMove: null,
+            history: []
+          };
+
+          const gamePayoff = {
+            zeroSum: {
+              cc: { you: 3, them: 3 },
+              cd: { you: 6, them: 0 },
+              dc: { you: 0, them: 6 },
+              dd: { you: 1, them: 1 }
+            },
+            positiveSum: {
+              cc: { you: 6, them: 6 },
+              cd: { you: 4, them: 8 },
+              dc: { you: 8, them: 4 },
+              dd: { you: 2, them: 2 }
+            }
+          };
+
+          function showScreen(screen) {
+            gameContainer.start.style.display = 'none';
+            gameContainer.playing.style.display = 'none';
+            gameContainer.results.style.display = 'none';
+            screen.style.display = 'block';
+          }
+
+          function startGame(mode) {
+            gameState = {
+              mode: mode,
+              round: 1,
+              yourScore: 0,
+              theirScore: 0,
+              yourMove: null,
+              theirMove: null,
+              history: []
+            };
+            showScreen(gameContainer.playing);
+            gameContainer.resultPhase.style.display = 'none';
+            gameContainer.choicePhase.style.display = 'block';
+            updateScoreDisplay();
+          }
+
+          function updateScoreDisplay() {
+            document.getElementById('round-number').textContent = gameState.round;
+            document.getElementById('your-score').textContent = gameState.yourScore;
+            document.getElementById('their-score').textContent = gameState.theirScore;
+          }
+
+          function getOpponentMove(yourMove) {
+            if (gameState.mode === 'zero-sum') {
+              return Math.random() > 0.3 ? 'compete' : 'collab';
+            } else {
+              return Math.random() > 0.2 ? 'collab' : 'compete';
+            }
+          }
+
+          function processRound(yourMove) {
+            gameState.yourMove = yourMove;
+            gameState.theirMove = getOpponentMove(yourMove);
+
+            const payoffSet = gameState.mode === 'zero-sum' ? gamePayoff.zeroSum : gamePayoff.positiveSum;
+            const key = (yourMove === 'compete' ? 'c' : 'd') + (gameState.theirMove === 'compete' ? 'c' : 'd');
+            const payoff = payoffSet[key];
+
+            gameState.yourScore += payoff.you;
+            gameState.theirScore += payoff.them;
+            gameState.history.push({ your: yourMove, their: gameState.theirMove, payoff });
+
+            // Display results
+            document.getElementById('your-move-display').textContent = yourMove === 'compete' ? '⚔️ Compete' : '🤝 Collaborate';
+            document.getElementById('their-move-display').textContent = gameState.theirMove === 'compete' ? '⚔️ Compete' : '🤝 Collaborate';
+            document.getElementById('round-your-gain').textContent = '+' + payoff.you;
+            document.getElementById('round-their-gain').textContent = '+' + payoff.them;
+
+            let insight = '';
+            if (yourMove === 'compete' && gameState.theirMove === 'compete') {
+              insight = '⚔️ Both competed! The market shrinks. Low gains for both.';
+            } else if (yourMove === 'collab' && gameState.theirMove === 'collab') {
+              insight = '🤝 Both collaborated! The market grows. High gains for everyone.';
+            } else if (yourMove === 'compete' && gameState.theirMove === 'collab') {
+              insight = '😱 You exploited their trust. You won this round, but trust is broken.';
+            } else {
+              insight = '😢 They exploited your trust. Your collaborative approach backfired.';
+            }
+            document.getElementById('round-insight').innerHTML = '<strong style="color: #f97316;">💡</strong> ' + insight;
+
+            updateScoreDisplay();
+            gameContainer.choicePhase.style.display = 'none';
+            gameContainer.resultPhase.style.display = 'block';
+          }
+
+          function endGame() {
+            document.getElementById('final-your-score').textContent = gameState.yourScore;
+            document.getElementById('final-their-score').textContent = gameState.theirScore;
+
+            let conclusion = '';
+            if (gameState.yourScore > gameState.theirScore + 5) {
+              conclusion = '🏆 <strong>You won through competition!</strong> But this mindset often leads to mutual destruction in real situations. In zero-sum thinking, everyone loses in the long run.';
+            } else if (gameState.yourScore < gameState.theirScore - 5) {
+              conclusion = '😔 <strong>You lost because you trusted too much.</strong> But collaboration works best when both parties are committed to mutual benefit.';
+            } else if (gameState.yourScore > gameState.theirScore) {
+              conclusion = '⚡ <strong>You slightly won!</strong> Your strategy had moments of success, but the key insight: if both had collaborated, you\'d both have higher scores.';
+            } else if (gameState.yourScore < gameState.theirScore) {
+              conclusion = '🤔 <strong>They slightly won.</strong> This shows the reality of the prisoner\'s dilemma: individual incentives vs. collective benefit.';
+            } else {
+              conclusion = '🤝 <strong>It\'s a tie!</strong> Balanced strategies can lead to equal outcomes, but maximum mutual benefit comes from cooperation.';
+            }
+
+            document.getElementById('conclusion-text').innerHTML = conclusion;
+            showScreen(gameContainer.results);
+          }
+
+          // Event Listeners
+          document.getElementById('start-zero-sum').addEventListener('click', () => startGame('zero-sum'));
+          document.getElementById('start-positive-sum').addEventListener('click', () => startGame('positive-sum'));
+
+          document.getElementById('choice-compete').addEventListener('click', () => processRound('compete'));
+          document.getElementById('choice-collab').addEventListener('click', () => processRound('collab'));
+
+          document.getElementById('next-round-btn').addEventListener('click', () => {
+            if (gameState.round < 3) {
+              gameState.round++;
+              updateScoreDisplay();
+              gameContainer.choicePhase.style.display = 'block';
+              gameContainer.resultPhase.style.display = 'none';
+            } else {
+              endGame();
+            }
+          });
+
+          document.getElementById('play-again-btn').addEventListener('click', () => {
+            showScreen(gameContainer.start);
+          });
+        </script>
 
         <div class="card video-card">
           <div class="video-header">
@@ -612,6 +868,24 @@
               </p>
               <div class="team-member-contact">
                 <a href="mailto:liyangchen@hks.harvard.edu" title="Email Liyang">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Team member card -->
+            <div class="team-member-card">
+              <div class="team-member-avatar" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 48px;">JW</div>
+              <h3 class="team-member-name">Junyu Wang</h3>
+              <div class="team-member-role">Developer</div>
+              <p class="team-member-bio">
+                Graduate student at Harvard Kennedy School. Interested in technology, public policy, and finance development. Leading website development and technical implementation.
+              </p>
+              <div class="team-member-contact">
+                <a href="mailto:jwang@hks.harvard.edu" title="Email Junyu">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="2" y="4" width="20" height="16" rx="2"></rect>
                     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
