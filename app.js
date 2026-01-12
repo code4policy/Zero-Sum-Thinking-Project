@@ -9,7 +9,9 @@ const pages = {
   about: document.getElementById("page-about"),
 };
 
-const navButtons = document.querySelectorAll(".nav__btn");
+const navButtons = document.querySelectorAll(".nav__link");
+const mobileToggle = document.querySelector(".nav__mobile-toggle");
+const navMenu = document.querySelector(".nav");
 
 function setRoute(route) {
   Object.entries(pages).forEach(([k, el]) => {
@@ -18,11 +20,20 @@ function setRoute(route) {
   navButtons.forEach((b) => {
     b.setAttribute("aria-current", b.dataset.route === route ? "page" : "false");
   });
+  // Close mobile menu after navigation
+  if (navMenu) navMenu.classList.remove("nav--open");
 }
 
 navButtons.forEach((btn) => {
   btn.addEventListener("click", () => setRoute(btn.dataset.route));
 });
+
+// Mobile menu toggle
+if (mobileToggle && navMenu) {
+  mobileToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("nav--open");
+  });
+}
 
 // ---------------------------
 // Story 1.2 mini-game placeholder
