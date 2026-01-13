@@ -1,0 +1,83 @@
+      <!-- TEST (Story 2) -->
+      <section id="page-test" class="page" aria-labelledby="test-title">
+        <div class="test-header" style="margin-bottom: 32px;">
+          <h1 id="test-title" style="margin-bottom: 8px;">Measure Your Zero-Sum Thinking</h1>
+          <p class="muted" style="max-width: 700px;">Answer 4 questions to calculate your zero-sum thinking score and compare with ~20,000 U.S. respondents from the American Economic Review study.</p>
+        </div>
+
+        <div class="card" style="padding: 16px 24px; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <span style="font-weight: 600; font-size: 14px;">Language:</span>
+            <button class="lang-btn lang-btn--active" data-lang="en" type="button">English</button>
+            <button class="lang-btn" data-lang="zh" type="button">中文</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 style="margin-bottom: 8px;">Survey Questions</h2>
+          <p class="muted" style="margin-bottom: 24px;"><span data-lang-en>Please indicate how much you agree with each statement.</span><span data-lang-zh style="display: none;">请指出你对每个陈述的同意程度。</span></p>
+
+          <div class="scale-legend" style="display: flex; justify-content: space-between; padding: 12px 20px; background: #f9fafb; border-radius: 8px; margin-bottom: 24px; font-size: 13px; flex-wrap: wrap; gap: 8px;">
+            <span><strong>1</strong> = <span data-lang-en>Strongly Disagree</span><span data-lang-zh style="display: none;">强烈不同意</span></span>
+            <span><strong>2</strong> = <span data-lang-en>Disagree</span><span data-lang-zh style="display: none;">不同意</span></span>
+            <span><strong>3</strong> = <span data-lang-en>Neutral</span><span data-lang-zh style="display: none;">中立</span></span>
+            <span><strong>4</strong> = <span data-lang-en>Agree</span><span data-lang-zh style="display: none;">同意</span></span>
+            <span><strong>5</strong> = <span data-lang-en>Strongly Agree</span><span data-lang-zh style="display: none;">强烈同意</span></span>
+          </div>
+
+          <form id="survey-form" class="survey" autocomplete="off">
+            <fieldset class="q" style="margin-bottom: 24px; padding: 20px; background: #fff; border: 1px solid var(--border); border-radius: 10px;">
+              <legend style="font-weight: 600; margin-bottom: 12px; line-height: 1.5;"><span class="q-num" style="color: #a51c30; margin-right: 8px;">Q1</span><span data-lang-en>If an ethnic group becomes richer, this comes at the expense of other groups.</span><span data-lang-zh style="display: none;">如果一个族群变得更富裕，这是以牺牲其他群体为代价的。</span></legend>
+              <div class="choices" data-q="ethnic" style="display: flex; gap: 12px; justify-content: center;"></div>
+            </fieldset>
+
+            <fieldset class="q" style="margin-bottom: 24px; padding: 20px; background: #fff; border: 1px solid var(--border); border-radius: 10px;">
+              <legend style="font-weight: 600; margin-bottom: 12px; line-height: 1.5;"><span class="q-num" style="color: #a51c30; margin-right: 8px;">Q2</span><span data-lang-en>In international trade, if one country makes more money, then the other makes less.</span><span data-lang-zh style="display: none;">在国际贸易中，如果一个国家赚更多的钱，另一个国家就会赚更少。</span></legend>
+              <div class="choices" data-q="trade" style="display: flex; gap: 12px; justify-content: center;"></div>
+            </fieldset>
+
+            <fieldset class="q" style="margin-bottom: 24px; padding: 20px; background: #fff; border: 1px solid var(--border); border-radius: 10px;">
+              <legend style="font-weight: 600; margin-bottom: 12px; line-height: 1.5;"><span class="q-num" style="color: #a51c30; margin-right: 8px;">Q3</span><span data-lang-en>If non-U.S. citizens do better economically, this is at the expense of citizens.</span><span data-lang-zh style="display: none;">如果非美国公民经济上过得更好，这是以牺牲公民为代价的。</span></legend>
+              <div class="choices" data-q="citizen" style="display: flex; gap: 12px; justify-content: center;"></div>
+            </fieldset>
+
+            <fieldset class="q" style="margin-bottom: 24px; padding: 20px; background: #fff; border: 1px solid var(--border); border-radius: 10px;">
+              <legend style="font-weight: 600; margin-bottom: 12px; line-height: 1.5;"><span class="q-num" style="color: #a51c30; margin-right: 8px;">Q4</span><span data-lang-en>If one income class becomes wealthier, it is at the expense of others.</span><span data-lang-zh style="display: none;">如果一个收入阶层变得更富裕，这是以牺牲其他阶层为代价的。</span></legend>
+              <div class="choices" data-q="income" style="display: flex; gap: 12px; justify-content: center;"></div>
+            </fieldset>
+
+            <div class="row" style="display: flex; gap: 12px; justify-content: center; margin-top: 32px;">
+              <button class="btn" type="button" id="compute-btn" style="padding: 14px 32px; font-size: 16px; background: #a51c30; border-color: #a51c30;"><span data-lang-en>Calculate My Score</span><span data-lang-zh style="display: none;">计算我的得分</span></button>
+              <button class="btn btn--ghost" type="button" id="reset-btn" style="padding: 14px 24px;"><span data-lang-en>Reset</span><span data-lang-zh style="display: none;">重置</span></button>
+            </div>
+          </form>
+        </div>
+
+        <div id="test-results" class="card" style="display: none;">
+          <h2 style="margin-bottom: 24px;"><span data-lang-en>Your Results</span><span data-lang-zh style="display: none;">你的结果</span></h2>
+          <div style="text-align: center; padding: 32px; background: linear-gradient(135deg, #fef7f7 0%, #fff 100%); border-radius: 12px; margin-bottom: 24px;">
+            <div style="font-size: 14px; color: var(--muted); margin-bottom: 8px;"><span data-lang-en>Your Zero-Sum Thinking Score</span><span data-lang-zh style="display: none;">你的零和思维得分</span></div>
+            <div id="score-display" style="font-size: 64px; font-weight: 800; color: #a51c30; line-height: 1;">--</div>
+            <div style="font-size: 14px; color: var(--muted); margin-top: 8px;"><span data-lang-en>out of 100</span><span data-lang-zh style="display: none;">满分 100</span></div>
+          </div>
+          <div id="percentile-box" style="text-align: center; padding: 20px; background: #f9fafb; border-radius: 10px; margin-bottom: 24px;">
+            <p id="percentile-text" style="font-size: 16px; margin: 0;"></p>
+          </div>
+          <div id="interpretation-box" style="padding: 24px; border-left: 4px solid #a51c30; background: #fff; border-radius: 0 10px 10px 0; margin-bottom: 24px;">
+            <div id="interpretation-level" style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #a51c30; margin-bottom: 8px;"></div>
+            <div id="interpretation-title" style="font-size: 20px; font-weight: 700; margin-bottom: 12px;"></div>
+            <p id="interpretation-desc" style="margin: 0; color: var(--text-light); line-height: 1.7;"></p>
+          </div>
+          <div style="margin-bottom: 24px;">
+            <h3 style="font-size: 16px; margin-bottom: 16px;"><span data-lang-en>Your Position in the U.S. Sample</span><span data-lang-zh style="display: none;">你在美国样本中的位置</span></h3>
+            <div style="position: relative; height: 250px;"><canvas id="distribution-chart"></canvas></div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; padding: 20px; background: #f9fafb; border-radius: 10px;">
+            <div style="text-align: center;"><div style="font-size: 12px; color: var(--muted); margin-bottom: 4px;">Sample Size</div><div style="font-size: 20px; font-weight: 700;">20,400</div></div>
+            <div style="text-align: center;"><div style="font-size: 12px; color: var(--muted); margin-bottom: 4px;">Mean</div><div style="font-size: 20px; font-weight: 700;">50%</div></div>
+            <div style="text-align: center;"><div style="font-size: 12px; color: var(--muted); margin-bottom: 4px;">25th Percentile</div><div style="font-size: 20px; font-weight: 700;">38%</div></div>
+            <div style="text-align: center;"><div style="font-size: 12px; color: var(--muted); margin-bottom: 4px;">75th Percentile</div><div style="font-size: 20px; font-weight: 700;">65%</div></div>
+          </div>
+          <div style="margin-top: 24px; padding: 16px; background: #f9fafb; border-radius: 8px; font-size: 12px; color: var(--muted);"><strong>Source:</strong> Chinoy, Nunn, Sequeira, and Stantcheva (2024). "Zero-Sum Thinking and the Roots of U.S. Political Divides." <em>American Economic Review</em>.</div>
+        </div>
+      </section>
