@@ -13,24 +13,28 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
   </head>
   <body>
+    <!-- Top Bar with HKS Logo - Harvard Crimson Style -->
+    <div class="top-bar">
+      <div class="top-bar__inner">
+        <a href="https://www.hks.harvard.edu/" class="top-bar__brand" target="_blank">
+          <img src="https://www.hks.harvard.edu/sites/default/files/logos/logo_2.svg" alt="Harvard Kennedy School" class="top-bar__logo top-bar__logo--shield" />
+          <span class="top-bar__text">Harvard Kennedy School</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Header with Title and Navigation -->
     <header class="header">
       <div class="container header__inner">
         <a href="#" class="brand" onclick="event.preventDefault();">
-          <div class="brand__logo">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="18" cy="18" r="17" stroke="currentColor" stroke-width="2"/>
-              <path d="M10 18h16M18 10v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <circle cx="18" cy="18" r="6" fill="currentColor" opacity="0.15"/>
-            </svg>
-          </div>
           <div class="brand__text">
-            <div class="brand__title">Zero-Sum Explorer</div>
+            <div class="brand__title">Zero-Sum Thinking</div>
             <div class="brand__subtitle">Understanding Economic Mindsets</div>
           </div>
         </a>
 
         <nav class="nav">
-          <button class="nav__link" data-route="learn" aria-current="page">Learn</button>
+          <button class="nav__link" data-route="learn" aria-current="page">Home</button>
           <button class="nav__link" data-route="explore">Explore</button>
           <button class="nav__link" data-route="test">Test</button>
           <button class="nav__link" data-route="visualization">Visualization</button>
@@ -55,24 +59,13 @@
           position: relative;
           margin: -18px -16px 0 -16px;
           padding: 120px 40px 100px;
-          background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+          background: 
+            linear-gradient(135deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.65) 100%),
+            url('https://www.philenews.com/wp-content/uploads/webp/2025/04/zero-sum-thinking.webp');
+          background-size: cover;
+          background-position: center;
           overflow: hidden;
         ">
-          <!-- Background pattern overlay -->
-          <div style="
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            opacity: 0.08;
-            background-image: 
-              linear-gradient(45deg, transparent 48%, #fff 49%, #fff 51%, transparent 52%),
-              linear-gradient(-45deg, transparent 48%, #fff 49%, #fff 51%, transparent 52%);
-            background-size: 80px 80px;
-            background-position: 0 0;
-          "></div>
-          
           <!-- Content -->
           <div style="position: relative; z-index: 1; max-width: 1040px; margin: 0 auto;">
             <div style="
@@ -84,14 +77,19 @@
               margin-bottom: 12px;
             ">📚 Learn</div>
             
-            <h1 id="learn-title" style="
-              margin: 0 0 40px 0;
-              font-size: 48px;
-              font-weight: 800;
-              color: #fff;
-              line-height: 1.2;
-              max-width: 800px;
-            ">What is Zero-Sum Thinking?</h1>
+            <div style="
+              margin-bottom: 40px;
+            ">
+              <h1 id="learn-title" style="
+                margin: 0;
+                font-size: 56px;
+                font-weight: 800;
+                color: #fff;
+                line-height: 1.2;
+                max-width: 700px;
+                text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+              ">What is Zero-Sum Thinking?</h1>
+            </div>
             
             <div style="
               display: grid;
@@ -121,7 +119,7 @@
                   line-height: 1.7;
                   color: #e5e7eb;
                 ">
-                  The belief that gains for one group necessarily come at the expense of other groups—implying a fixed "pie" of resources.
+                  The belief that gains for one individual or group tend to come at the cost of others.
                 </p>
               </div>
               
