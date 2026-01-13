@@ -11,27 +11,32 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+    <script src="./lib/zeroSumTest.js"></script>
   </head>
   <body>
+    <!-- HKS Top Bar -->
+    <div class="hks-bar">
+      <div class="hks-bar__inner">
+        <a href="https://www.hks.harvard.edu" class="hks-logo" target="_blank" rel="noopener noreferrer">
+          <!-- Harvard Kennedy School Shield -->
+          <img src="https://upload.wikimedia.org/wikipedia/en/c/c1/John_F._Kennedy_School_of_Government_Shield.svg" alt="Harvard Kennedy School Shield" class="hks-shield-img" />
+          <span class="hks-text">Harvard Kennedy School</span>
+        </a>
+      </div>
+    </div>
+
     <header class="header">
       <div class="container header__inner">
-        <a href="#" class="brand" onclick="event.preventDefault();">
-          <div class="brand__logo">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="18" cy="18" r="17" stroke="currentColor" stroke-width="2"/>
-              <path d="M10 18h16M18 10v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <circle cx="18" cy="18" r="6" fill="currentColor" opacity="0.15"/>
-            </svg>
-          </div>
+        <div class="brand">
           <div class="brand__text">
-            <div class="brand__title">Zero-Sum Explorer</div>
+            <div class="brand__title">Zero-Sum Thinking</div>
             <div class="brand__subtitle">Understanding Economic Mindsets</div>
           </div>
-        </a>
+        </div>
 
         <nav class="nav">
-          <button class="nav__link" data-route="learn" aria-current="page">Learn</button>
-          <button class="nav__link" data-route="explore">Explore</button>
+          <button class="nav__link" data-route="learn" aria-current="page">Home</button>
+          <button class="nav__link" data-route="explore">Learn</button>
           <button class="nav__link" data-route="test">Test</button>
           <button class="nav__link" data-route="visualization">Visualization</button>
           <button class="nav__link" data-route="about">About</button>
@@ -50,39 +55,29 @@
     <main class="container main">
       <!-- LEARN (Story 1) -->
       <section id="page-learn" class="page page--active" aria-labelledby="learn-title">
-        <!-- Hero Section with Background -->
+        <!-- Hero Section with Background Image -->
         <div class="learn-hero" style="
           position: relative;
           margin: -18px -16px 0 -16px;
           padding: 120px 40px 100px;
-          background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+          background-image: url('https://www.philenews.com/wp-content/uploads/webp/2025/04/zero-sum-thinking.webp');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
           overflow: hidden;
         ">
-          <!-- Background pattern overlay -->
+          <!-- Dark overlay for text readability -->
           <div style="
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            opacity: 0.08;
-            background-image: 
-              linear-gradient(45deg, transparent 48%, #fff 49%, #fff 51%, transparent 52%),
-              linear-gradient(-45deg, transparent 48%, #fff 49%, #fff 51%, transparent 52%);
-            background-size: 80px 80px;
-            background-position: 0 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.35) 100%);
           "></div>
           
           <!-- Content -->
           <div style="position: relative; z-index: 1; max-width: 1040px; margin: 0 auto;">
-            <div style="
-              font-size: 14px;
-              font-weight: 700;
-              text-transform: uppercase;
-              letter-spacing: 1.5px;
-              color: #60a5fa;
-              margin-bottom: 12px;
-            ">📚 Learn</div>
             
             <h1 id="learn-title" style="
               margin: 0 0 40px 0;
@@ -91,6 +86,7 @@
               color: #fff;
               line-height: 1.2;
               max-width: 800px;
+              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             ">What is Zero-Sum Thinking?</h1>
             
             <div style="
@@ -101,53 +97,59 @@
             ">
               <!-- Core Concept Card -->
               <div style="
-                background: rgba(255, 255, 255, 0.08);
-                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: rgba(30, 30, 30, 0.65);
+                border: 1px solid rgba(255, 255, 255, 0.15);
                 border-radius: 12px;
                 padding: 24px;
-                backdrop-filter: blur(10px);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
               ">
                 <div style="
-                  font-size: 12px;
-                  font-weight: 700;
+                  font-size: 13px;
+                  font-weight: 800;
                   text-transform: uppercase;
-                  letter-spacing: 0.8px;
-                  color: #93c5fd;
+                  letter-spacing: 1px;
+                  color: #a51c30;
                   margin-bottom: 12px;
                 ">Core Definition</div>
                 <p style="
                   margin: 0;
                   font-size: 16px;
                   line-height: 1.7;
-                  color: #e5e7eb;
+                  color: #f3f4f6;
+                  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
                 ">
-                  The belief that gains for one group necessarily come at the expense of other groups—implying a fixed "pie" of resources.
+                  The belief that gains for one individual or group tend to come at the cost of others.
                 </p>
               </div>
               
               <!-- Why It Matters Card -->
               <div style="
-                background: rgba(255, 255, 255, 0.08);
-                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: rgba(30, 30, 30, 0.65);
+                border: 1px solid rgba(255, 255, 255, 0.15);
                 border-radius: 12px;
                 padding: 24px;
-                backdrop-filter: blur(10px);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
               ">
                 <div style="
-                  font-size: 12px;
-                  font-weight: 700;
+                  font-size: 13px;
+                  font-weight: 800;
                   text-transform: uppercase;
-                  letter-spacing: 0.8px;
-                  color: #93c5fd;
+                  letter-spacing: 1px;
+                  color: #a51c30;
                   margin-bottom: 12px;
                 ">Why It Matters</div>
                 <p style="
                   margin: 0;
                   font-size: 16px;
                   line-height: 1.7;
-                  color: #e5e7eb;
+                  color: #f3f4f6;
+                  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
                 ">
-                  This mindset influences political attitudes and policy preferences on immigration, redistribution, education, and environment.
+                  This mindset shapes policy views on redistribution, affirmative action, and immigration—rooted in both personal and ancestral experiences.
                 </p>
               </div>
             </div>
@@ -156,15 +158,39 @@
 
         <!-- Main Content -->
         <div class="container main" style="padding-top: 40px;">
-          <h2 style="margin-top: 0; margin-bottom: 24px; font-size: 20px; color: var(--text); padding-bottom: 12px; border-bottom: 2px solid var(--border-light);">How to Use This Platform</h2>
+          <h2 style="
+            margin-top: 0; 
+            margin-bottom: 24px; 
+            font-size: 20px; 
+            color: var(--text);
+            display: inline-block;
+            position: relative;
+          ">How to Use This Platform
+            <span style="
+              position: absolute;
+              bottom: -6px;
+              left: 0;
+              width: 60px;
+              height: 3px;
+              background: linear-gradient(90deg, #a51c30 0%, rgba(165, 28, 48, 0.3) 100%);
+              border-radius: 2px;
+            "></span>
+          </h2>
 
-          <div class="card" style="background: linear-gradient(135deg, #f0f4ff 0%, #f9fafb 100%); border: 2px solid var(--primary-light); box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);">
+          <div class="card" style="
+            background: #ffffff; 
+            border: none;
+            border-left: 4px solid #a51c30;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            border-radius: 8px;
+            padding: 24px 28px;
+          ">
             <p class="muted" style="margin-bottom: 15px;">
               Navigate through the platform to explore different dimensions of zero-sum thinking:
             </p>
             <ul class="list">
-              <li><strong>Learn:</strong> Understand the core concepts and how zero-sum thinking is measured.</li>
-              <li><strong>Explore:</strong> Play an interactive mini-game and watch animated explanations to build intuition.</li>
+              <li><strong>Home:</strong> Understand the core concepts and how zero-sum thinking is measured.</li>
+              <li><strong>Learn:</strong> Play an interactive mini-game and watch animated explanations to build intuition.</li>
               <li><strong>Test:</strong> Answer questions about your own beliefs and see how you compare to the benchmark.</li>
               <li><strong>Visualization:</strong> Explore demographic patterns, policy correlations, and geographic distributions.</li>
             </ul>
@@ -280,15 +306,15 @@
             <!-- Game State: Results -->
             <div id="game-results" style="display: none;">
               <div style="text-align: center; padding: 24px; background: linear-gradient(135deg, #f0f4ff 0%, #f9fafb 100%); border-radius: 8px;">
-                <div style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 16px;">Game Over!</div>
+                <div style="font-size: 14px; color: var(--muted); text-transform: uppercase; font-weight: 700; margin-bottom: 16px;">Game Over!</div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
                   <div style="background: rgba(59, 130, 246, 0.15); border-radius: 8px; padding: 16px;">
-                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">YOUR TOTAL</div>
+                    <div style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">YOUR TOTAL</div>
                     <div style="font-size: 36px; font-weight: 800; color: #3b82f6;" id="final-your-score">0</div>
                   </div>
                   <div style="background: rgba(168, 85, 247, 0.15); border-radius: 8px; padding: 16px;">
-                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">THEIR TOTAL</div>
+                    <div style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">THEIR TOTAL</div>
                     <div style="font-size: 36px; font-weight: 800; color: #a855f7;" id="final-their-score">0</div>
                   </div>
                 </div>
@@ -332,102 +358,77 @@
 
       <!-- TEST (Story 2) -->
       <section id="page-test" class="page" aria-labelledby="test-title">
-        <h1 id="test-title">Test: Your Zero-Sum Thinking Score</h1>
-
-        <div class="card">
-          <h2>Instructions</h2>
-          <p>
-            Please indicate how much you agree with each statement on a 5-point scale:
-            <strong>1 = Strongly disagree</strong>, <strong>5 = Strongly agree</strong>.
-          </p>
-          <p class="muted">
-            This template uses a transparent placeholder scoring rule (normalized average). You can later
-            replace it with PCA-based scoring from the paper’s replication code.
+        <div class="test-header" style="margin-bottom: 32px;">
+          <h1 id="test-title" style="margin-bottom: 8px;">Measure Your Zero-Sum Thinking</h1>
+          <p class="muted" style="max-width: 700px;">
+            Answer 4 questions to calculate your zero-sum thinking score and compare with ~20,000 U.S. respondents from the paper:
+            <span style="font-style: italic;">Zero-Sum Thinking and the Roots of U.S. Political Divides</span> <span style="font-size: 13px; color: var(--muted);">(Chinoy, Nunn, Sequeira, &amp; Stantcheva, <em>American Economic Review</em>, 2024)</span>.
           </p>
         </div>
 
         <div class="card">
-          <h2>Four questions (interactive)</h2>
-
-          <div class="scale-hint">
-            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
-            <span class="muted">Strongly disagree → Strongly agree</span>
-          </div>
+          <h2 style="margin-bottom: 8px;">Survey Questions</h2>
+          <p class="muted" style="margin-bottom: 24px;">Please indicate how much you agree with each statement.</p>
 
           <form id="survey-form" class="survey" autocomplete="off">
-            <fieldset class="q">
-              <legend>(Q1) When one group gets ahead, it is usually because another group falls behind.</legend>
-              <div class="choices" data-q="q1"></div>
+            <fieldset class="q" style="margin-bottom: 24px; padding: 24px; background: #fff; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+              <legend style="font-weight: 700; font-size: 16px; margin-bottom: 16px; line-height: 1.6; color: var(--text);"><span class="q-num" style="color: #fff; background: #a51c30; padding: 4px 12px; border-radius: 6px; margin-right: 12px; font-size: 14px;">Q1</span> If an ethnic group becomes richer, this comes at the expense of other groups.</legend>
+              <div class="choices" data-q="ethnic"></div>
             </fieldset>
 
-            <fieldset class="q">
-              <legend>(Q2) The wealth of some groups comes at the expense of other groups.</legend>
-              <div class="choices" data-q="q2"></div>
+            <fieldset class="q" style="margin-bottom: 24px; padding: 24px; background: #fff; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+              <legend style="font-weight: 700; font-size: 16px; margin-bottom: 16px; line-height: 1.6; color: var(--text);"><span class="q-num" style="color: #fff; background: #a51c30; padding: 4px 12px; border-radius: 6px; margin-right: 12px; font-size: 14px;">Q2</span> In international trade, if one country makes more money, then the other makes less.</legend>
+              <div class="choices" data-q="trade"></div>
             </fieldset>
 
-            <fieldset class="q">
-              <legend>(Q3) Economic progress for one group generally means less opportunity for other groups.</legend>
-              <div class="choices" data-q="q3"></div>
+            <fieldset class="q" style="margin-bottom: 24px; padding: 24px; background: #fff; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+              <legend style="font-weight: 700; font-size: 16px; margin-bottom: 16px; line-height: 1.6; color: var(--text);"><span class="q-num" style="color: #fff; background: #a51c30; padding: 4px 12px; border-radius: 6px; margin-right: 12px; font-size: 14px;">Q3</span> If non-U.S. citizens do better economically, this is at the expense of citizens.</legend>
+              <div class="choices" data-q="citizen"></div>
             </fieldset>
 
-            <fieldset class="q">
-              <legend>(Q4) If some groups gain influence, other groups inevitably lose influence.</legend>
-              <div class="choices" data-q="q4"></div>
+            <fieldset class="q" style="margin-bottom: 24px; padding: 24px; background: #fff; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+              <legend style="font-weight: 700; font-size: 16px; margin-bottom: 16px; line-height: 1.6; color: var(--text);"><span class="q-num" style="color: #fff; background: #a51c30; padding: 4px 12px; border-radius: 6px; margin-right: 12px; font-size: 14px;">Q4</span> If one income class becomes wealthier, it is at the expense of others.</legend>
+              <div class="choices" data-q="income"></div>
             </fieldset>
 
-            <div class="row">
-              <button class="btn" type="button" id="compute-btn">Compute score</button>
-              <button class="btn btn--ghost" type="button" id="reset-btn">Reset</button>
+            <div class="row" style="display: flex; gap: 10px; justify-content: center; margin-top: 28px;">
+              <button class="btn" type="button" id="compute-btn" style="padding: 10px 20px; font-size: 13px; font-weight: 500; background: #a51c30; border-color: #a51c30; color: #fff; border-radius: 6px;">Calculate My Score</button>
+              <button class="btn btn--ghost" type="button" id="reset-btn" style="padding: 10px 16px; font-size: 13px; font-weight: 500; border-radius: 6px;">Reset</button>
             </div>
           </form>
         </div>
 
-        <div class="card">
-          <h2>Your score vs. benchmark sample</h2>
-
-          <div id="test-warning" class="muted">
-            Answer all four questions, then click “Compute score”.
+        <div id="test-results" class="card" style="display: none;">
+          <h2 style="margin-bottom: 24px;">Your Results</h2>
+          <div style="text-align: center; padding: 32px; background: linear-gradient(135deg, #fef7f7 0%, #fff 100%); border-radius: 12px; margin-bottom: 24px;">
+            <div style="font-size: 14px; color: var(--muted); margin-bottom: 8px;">Your Zero-Sum Thinking Score</div>
+            <div id="score-display" style="font-size: 64px; font-weight: 800; color: #a51c30; line-height: 1;">--</div>
+            <div style="font-size: 14px; color: var(--muted); margin-top: 8px;">out of 100</div>
           </div>
-
-          <div id="test-output" class="hidden">
-            <div class="stats">
-              <div class="stat">
-                <div class="stat__label">Benchmark N</div>
-                <div class="stat__value" id="bench-n">—</div>
-              </div>
-              <div class="stat">
-                <div class="stat__label">Mean</div>
-                <div class="stat__value" id="bench-mean">—</div>
-              </div>
-              <div class="stat">
-                <div class="stat__label">Median</div>
-                <div class="stat__value" id="bench-median">—</div>
-              </div>
-              <div class="stat">
-                <div class="stat__label">Min</div>
-                <div class="stat__value" id="bench-min">—</div>
-              </div>
-              <div class="stat">
-                <div class="stat__label">Max</div>
-                <div class="stat__value" id="bench-max">—</div>
-              </div>
-            </div>
-
-            <div class="result">
-              <div class="result__title">Your score (0–1)</div>
-              <div class="result__body">
-                <span class="score" id="user-score">—</span>
-                <span class="muted"> (normalized)</span>
-              </div>
-              <div class="result__summary" id="one-line-report">—</div>
-            </div>
-
-            <div class="note muted">
-              Note: This interpretation is descriptive and benchmarked against a research survey sample.
-            </div>
+          <div id="percentile-box" style="text-align: center; padding: 20px; background: #f9fafb; border-radius: 10px; margin-bottom: 24px;">
+            <p id="percentile-text" style="font-size: 16px; margin: 0;"></p>
+          </div>
+          <div id="interpretation-box" style="padding: 24px; border-left: 4px solid #a51c30; background: #fff; border-radius: 0 10px 10px 0; margin-bottom: 24px;">
+            <div id="interpretation-level" style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #a51c30; margin-bottom: 8px;"></div>
+            <div id="interpretation-title" style="font-size: 20px; font-weight: 700; margin-bottom: 12px;"></div>
+            <p id="interpretation-desc" style="margin: 0; color: var(--text-light); line-height: 1.7;"></p>
+          </div>
+          <div style="margin-bottom: 24px;">
+            <h3 style="font-size: 16px; margin-bottom: 16px;">Your Position in the U.S. Sample</h3>
+            <div style="position: relative; height: 250px;"><canvas id="distribution-chart"></canvas></div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; padding: 20px; background: #f9fafb; border-radius: 10px;">
+            <div style="text-align: center;"><div style="font-size: 12px; color: var(--muted); margin-bottom: 4px;">Sample Size</div><div style="font-size: 20px; font-weight: 700;">20,352</div></div>
+            <div style="text-align: center;"><div style="font-size: 12px; color: var(--muted); margin-bottom: 4px;">Mean</div><div style="font-size: 20px; font-weight: 700;">50%</div></div>
+            <div style="text-align: center;"><div style="font-size: 12px; color: var(--muted); margin-bottom: 4px;">25th Percentile</div><div style="font-size: 20px; font-weight: 700;">38%</div></div>
+            <div style="text-align: center;"><div style="font-size: 12px; color: var(--muted); margin-bottom: 4px;">75th Percentile</div><div style="font-size: 20px; font-weight: 700;">65%</div></div>
+          </div>
+          <div style="margin-top: 12px; padding: 12px 16px; background: #f9fafb; border-radius: 8px; font-size: 12px; color: var(--muted); border-left: 3px solid #a51c30;">
+            <strong>Note:</strong> The sample size (20,352) is based on careful data cleaning: only respondents who completed the full survey, spent at least 10 minutes answering, and (for Wave 7) passed the attention check are included. This ensures the results reflect high-quality, reliable responses.
           </div>
         </div>
       </section>
+
 
       <!-- VISUALIZATION (Story 3) -->
       <section id="page-visualization" class="page" aria-labelledby="viz-title">

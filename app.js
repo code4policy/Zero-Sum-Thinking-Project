@@ -15,7 +15,7 @@ const navMenu = document.querySelector(".nav");
 
 function setRoute(route) {
   Object.entries(pages).forEach(([k, el]) => {
-    el.classList.toggle("page--active", k === route);
+    if (el) el.classList.toggle("page--active", k === route);
   });
   navButtons.forEach((b) => {
     b.setAttribute("aria-current", b.dataset.route === route ? "page" : "false");
@@ -39,52 +39,24 @@ if (mobileToggle && navMenu) {
 // Story 1.2 mini-game placeholder
 
 // ---------------------------
-// Story 2: survey (4 questions) + scoring + benchmark stats
+// Story 2: survey (4 questions) + PCA scoring
 // ---------------------------
-const benchmarkScores = [
-  0.12, 0.18, 0.22, 0.25, 0.27, 0.31, 0.33, 0.35, 0.36, 0.39,
-  0.41, 0.44, 0.46, 0.49, 0.52, 0.55, 0.58, 0.61, 0.66, 0.72,
-];
-
 const choicesContainers = document.querySelectorAll(".choices");
-const state = { q1: null, q2: null, q3: null, q4: null };
-
-function likertToUnit(x) {
-  // 1 -> 0, 5 -> 1
-  return (x - 1) / 4;
-}
-
-function computeScorePlaceholder() {
-  const xs = [state.q1, state.q2, state.q3, state.q4].map(likertToUnit);
-  const mean = xs.reduce((a, b) => a + b, 0) / xs.length;
-  return Math.max(0, Math.min(1, mean));
-}
-
-function stats(xs) {
-  const sorted = [...xs].sort((a, b) => a - b);
-  const n = sorted.length;
-  const mean = sorted.reduce((a, b) => a + b, 0) / n;
-  const median = n % 2 ? sorted[(n - 1) / 2] : (sorted[n / 2 - 1] + sorted[n / 2]) / 2;
-  return { n, mean, median, min: sorted[0], max: sorted[n - 1] };
-}
-
-function interpret(score01) {
-  if (score01 < 0.33) return "relatively low";
-  if (score01 < 0.67) return "moderate";
-  return "relatively high";
-}
+const testState = { ethnic: null, trade: null, citizen: null, income: null };
 
 function renderChoices(container, qKey) {
+  if (!container) return;
+  container.innerHTML = '';
+  const labels = ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"];
   for (let v = 1; v <= 5; v++) {
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = "choice";
-    btn.textContent = String(v);
+    btn.className = "choice choice--text";
+    btn.textContent = labels[v - 1];
     btn.setAttribute("aria-pressed", "false");
 
     btn.addEventListener("click", () => {
-      state[qKey] = v;
-      // update pressed state
+      testState[qKey] = v;
       [...container.children].forEach((c) => c.setAttribute("aria-pressed", "false"));
       btn.setAttribute("aria-pressed", "true");
     });
@@ -97,60 +69,133 @@ choicesContainers.forEach((c) => renderChoices(c, c.dataset.q));
 
 const computeBtn = document.getElementById("compute-btn");
 const resetBtn = document.getElementById("reset-btn");
-const warning = document.getElementById("test-warning");
-const output = document.getElementById("test-output");
+const testResults = document.getElementById("test-results");
+const scoreDisplay = document.getElementById("score-display");
+const percentileText = document.getElementById("percentile-text");
+const interpretationLevel = document.getElementById("interpretation-level");
+const interpretationTitle = document.getElementById("interpretation-title");
+const interpretationDesc = document.getElementById("interpretation-desc");
 
-const benchN = document.getElementById("bench-n");
-const benchMean = document.getElementById("bench-mean");
-const benchMedian = document.getElementById("bench-median");
-const benchMin = document.getElementById("bench-min");
-const benchMax = document.getElementById("bench-max");
+let distributionChart = null;
 
-const userScoreEl = document.getElementById("user-score");
-const oneLineReport = document.getElementById("one-line-report");
+// ZS4_unif 直方图数据（每0.02为一个bin）
+const zs4Breaks = [
+  0, 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24, 0.26, 0.28, 0.3, 0.32, 0.34, 0.36, 0.38, 0.4, 0.42, 0.44, 0.46, 0.48, 0.5, 0.52, 0.54, 0.56, 0.58, 0.6, 0.62, 0.64, 0.66, 0.68, 0.7, 0.72, 0.74, 0.76, 0.78, 0.8, 0.82, 0.84, 0.86, 0.88, 0.9, 0.92, 0.94, 0.96, 0.98
+];
+const zs4Counts = [
+  379, 0, 53, 121, 58, 43, 194, 133, 49, 326, 227, 86, 1031, 182, 342, 423, 545, 340, 747, 622, 465, 548, 688, 531, 2292, 549, 487, 654, 841, 611, 570, 951, 421, 434, 487, 485, 222, 963, 136, 280, 285, 135, 94, 323, 120, 27, 197, 74, 0, 507
+];
 
-const benchStats = stats(benchmarkScores);
-benchN.textContent = benchStats.n;
-benchMean.textContent = benchStats.mean.toFixed(2);
-benchMedian.textContent = benchStats.median.toFixed(2);
-benchMin.textContent = benchStats.min.toFixed(2);
-benchMax.textContent = benchStats.max.toFixed(2);
-
-function isComplete() {
-  return state.q1 && state.q2 && state.q3 && state.q4;
+function isTestComplete() {
+  return testState.ethnic && testState.trade && testState.citizen && testState.income;
 }
 
-computeBtn.addEventListener("click", () => {
-  if (!isComplete()) {
-    warning.classList.remove("hidden");
-    output.classList.add("hidden");
-    warning.textContent = "Please answer all four questions before computing your score.";
-    return;
+function createDistributionChart(userScore) {
+  const ctx = document.getElementById('distribution-chart');
+  if (!ctx) return;
+
+  // 构造labels为区间字符串，如0.00–0.02
+  const labels = zs4Breaks.map((b, i) =>
+    i < zs4Breaks.length - 1 ? `${zs4Breaks[i].toFixed(2)}–${zs4Breaks[i+1].toFixed(2)}` : `${zs4Breaks[i].toFixed(2)}–1.00`
+  ).slice(0, zs4Counts.length);
+  const counts = zs4Counts;
+
+  // 找到用户得分所在bin
+  let userBinIndex = zs4Breaks.findIndex((b, i) =>
+    i < zs4Breaks.length - 1 && userScore >= zs4Breaks[i] && userScore < zs4Breaks[i+1]
+  );
+  // 若正好等于1.0，归到最后一个bin
+  if (userScore === 1) userBinIndex = zs4Counts.length - 1;
+
+  const backgroundColors = counts.map((_, i) =>
+    i === userBinIndex ? '#a51c30' : '#e5e7eb'
+  );
+
+  if (distributionChart) {
+    distributionChart.destroy();
   }
 
-  const s = computeScorePlaceholder();
-  const level = interpret(s);
-
-  warning.classList.add("hidden");
-  output.classList.remove("hidden");
-
-  userScoreEl.textContent = s.toFixed(2);
-  oneLineReport.textContent =
-    `In this research survey benchmark, your zero-sum thinking score is ${s.toFixed(2)} (0–1), which is ${level}.`;
-});
-
-resetBtn.addEventListener("click", () => {
-  state.q1 = state.q2 = state.q3 = state.q4 = null;
-
-  // reset pressed UI
-  choicesContainers.forEach((c) => {
-    [...c.children].forEach((btn) => btn.setAttribute("aria-pressed", "false"));
+  distributionChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Number of Respondents',
+        data: counts,
+        backgroundColor: backgroundColors,
+        borderWidth: 0,
+        borderRadius: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: (items) => `Score: ${labels[items[0].dataIndex]}`,
+            label: (item) => `Count: ${counts[item.dataIndex]}`
+          }
+        }
+      },
+      scales: {
+        x: { title: { display: true, text: 'Zero-Sum Thinking Score (zs4_unif)' }, ticks: { maxRotation: 0, minRotation: 0, autoSkip: true, maxTicksLimit: 10 } },
+        y: { title: { display: true, text: 'Number of Respondents' }, beginAtZero: true }
+      }
+    }
   });
+}
 
-  output.classList.add("hidden");
-  warning.classList.remove("hidden");
-  warning.textContent = "Answer all four questions, then click “Compute score”.";
-});
+if (computeBtn) {
+  computeBtn.addEventListener("click", () => {
+    if (!isTestComplete()) {
+      alert("Please answer all four questions before calculating your score.");
+      return;
+    }
+
+    const score = ZeroSumTest.calculateScore(
+      testState.ethnic,
+      testState.trade,
+      testState.citizen,
+      testState.income
+    );
+    
+    const percentileInfo = ZeroSumTest.getPercentileRank(score);
+    const interpretation = ZeroSumTest.getInterpretation(score, 'en');
+    
+    const scorePercent = Math.round(score * 100);
+    if (scoreDisplay) scoreDisplay.textContent = scorePercent;
+    
+    if (percentileText) {
+      percentileText.innerHTML = `You score higher than <strong>${percentileInfo.percentile}%</strong> of the ~20,000 U.S. respondents in the study.`;
+    }
+    
+    if (interpretationLevel) interpretationLevel.textContent = interpretation.level;
+    if (interpretationTitle) interpretationTitle.textContent = interpretation.title;
+    if (interpretationDesc) interpretationDesc.textContent = interpretation.description;
+    
+    createDistributionChart(score);
+    
+    if (testResults) {
+      testResults.style.display = 'block';
+      testResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+}
+
+if (resetBtn) {
+  resetBtn.addEventListener("click", () => {
+    testState.ethnic = testState.trade = testState.citizen = testState.income = null;
+
+    choicesContainers.forEach((c) => {
+      [...c.children].forEach((btn) => btn.setAttribute("aria-pressed", "false"));
+    });
+
+    if (testResults) testResults.style.display = 'none';
+    if (scoreDisplay) scoreDisplay.textContent = '--';
+  });
+}
 
 // ---------------------------
 // Story 3: Visualization (Demographic patterns)
