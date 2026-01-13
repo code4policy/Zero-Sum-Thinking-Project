@@ -37,33 +37,6 @@ if (mobileToggle && navMenu) {
 
 // ---------------------------
 // Story 1.2 mini-game placeholder
-// ---------------------------
-const modeZero = document.getElementById("mode-zero");
-const modePositive = document.getElementById("mode-positive");
-const gameResult = document.getElementById("game-result");
-
-function renderGame(mode) {
-  if (mode === "zero") {
-    modeZero.classList.remove("btn--ghost");
-    modePositive.classList.add("btn--ghost");
-    gameResult.innerHTML = `
-      <div class="result__title">Outcome: fixed pie</div>
-      <div class="result__body">Total resources are fixed. One player’s gain implies another player’s loss.</div>
-      <div class="result__summary"><strong>Summary:</strong> Net total stays constant.</div>
-    `;
-  } else {
-    modePositive.classList.remove("btn--ghost");
-    modeZero.classList.add("btn--ghost");
-    gameResult.innerHTML = `
-      <div class="result__title">Outcome: growing pie</div>
-      <div class="result__body">Total resources can expand. Gains may occur without requiring others to lose.</div>
-      <div class="result__summary"><strong>Summary:</strong> Net total can increase.</div>
-    `;
-  }
-}
-
-modeZero.addEventListener("click", () => renderGame("zero"));
-modePositive.addEventListener("click", () => renderGame("positive"));
 
 // ---------------------------
 // Story 2: survey (4 questions) + scoring + benchmark stats
