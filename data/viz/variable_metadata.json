@@ -1,0 +1,62 @@
+{
+  "age": {
+    "label": "Age Group",
+    "note": {},
+    "available": 20278,
+    "missing": 0
+  },
+  "gender": {
+    "label": "Gender",
+    "note": {},
+    "available": 20278,
+    "missing": 0
+  },
+  "race": {
+    "label": "Race/Ethnicity",
+    "note": {},
+    "available": 20278,
+    "missing": 0
+  },
+  "education": {
+    "label": "Education Level",
+    "note": {},
+    "available": 20278,
+    "missing": 0
+  },
+  "party": {
+    "label": "Party Affiliation",
+    "note": {},
+    "available": 19623,
+    "missing": 655
+  },
+  "partyDetail": {
+    "label": "Party Affiliation (Detailed)",
+    "note": {},
+    "available": 19623,
+    "missing": 655
+  },
+  "income": {
+    "label": "Relative Income",
+    "note": {},
+    "available": 19769,
+    "missing": 509
+  },
+  "hhIncome": {
+    "label": "Household Income",
+    "note": {},
+    "available": 20276,
+    "missing": 2
+  },
+  "urbanicity": {
+    "label": "Urbanicity",
+    "note": "Data available for Waves 5-7 only",
+    "available": 8803,
+    "missing": 11475
+  },
+  "immigrationStatus": {
+    "label": "Immigration Status",
+    "note": {},
+    "available": 20278,
+    "missing": 0
+  }
+}
