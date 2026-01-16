@@ -565,10 +565,16 @@ h3 { font-size: 14px; font-weight: 600; margin: 12px 0 8px 0; }
   position: relative;
   min-height: 400px;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 #d3-chart-container svg {
   display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
 }
 
 #filters-panel label {
@@ -1063,4 +1069,95 @@ h3 { font-size: 14px; font-weight: 600; margin: 12px 0 8px 0; }
 .team-member-contact svg {
   width: 18px;
   height: 18px;
+}
+
+/* ============================================
+   Chart Container Centering & Responsiveness
+   ============================================ */
+
+/* Chart.js Canvas Containers */
+#distribution-chart,
+#policy-chart-container,
+#scatter-chart-container {
+  display: block;
+  max-width: 100%;
+  height: auto !important;
+}
+
+/* Policy Index Distribution Chart */
+.policy-chart-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Scatter/Binscatter Chart */
+.scatter-chart-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  min-height: 420px;
+}
+
+.scatter-chart-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Distribution chart in Test Results */
+.distribution-chart-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  height: 250px;
+}
+
+/* Grid containers for charts - center content */
+.chart-grid-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  #d3-chart-container {
+    min-height: 300px;
+  }
+  
+  .policy-chart-wrapper,
+  .scatter-chart-wrapper {
+    max-width: 100%;
+  }
+  
+  .distribution-chart-wrapper {
+    height: 200px;
+  }
+}
+
+/* Policy and Scatter chart grid layout responsive */
+@media (max-width: 900px) {
+  /* Stack grid items vertically on smaller screens */
+  .card > div[style*="grid-template-columns: 1fr 1fr"],
+  .card > div[style*="grid-template-columns: 1.3fr 1fr"] {
+    display: flex !important;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .policy-chart-wrapper,
+  .scatter-chart-wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
 }
