@@ -37,12 +37,12 @@
 
         <nav class="nav">
           <button class="nav__link" data-route="learn" aria-current="page">Home</button>
-          <button class="nav__link" data-route="concept">What is Zero‑Sum Thinking?</button>
-          <button class="nav__link" data-route="research">The Research</button>
-          <button class="nav__link" data-route="data">Explore the Data, Visualize</button>
-          <button class="nav__link" data-route="test">Take the Test</button>
-          <button class="nav__link" data-route="methods">Methods & Transparency</button>
-          <button class="nav__link" data-route="ethics">Ethics, Privacy & Disclaimer</button>
+          <button class="nav__link" data-route="concept">Concept</button>
+          <button class="nav__link" data-route="research">Research</button>
+          <button class="nav__link" data-route="data">Visualize</button>
+          <button class="nav__link" data-route="test">Test</button>
+          <button class="nav__link" data-route="methods">Methods</button>
+          <button class="nav__link" data-route="ethics">Ethics</button>
           <button class="nav__link" data-route="about">About</button>
         </nav>
 
@@ -157,27 +157,14 @@
                 </p>
               </div>
             </div>
-
-            <!-- Quick Navigation Buttons -->
-            <div style="display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; justify-content: center;">
-              <button onclick="setRoute('test')" style="padding: 14px 28px; background: linear-gradient(135deg, #a51c30 0%, #8b1626 100%); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(165, 28, 48, 0.4); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(165, 28, 48, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(165, 28, 48, 0.4)';">
-                Take the Test
-              </button>
-              <button onclick="setRoute('visualization')" style="padding: 14px 28px; background: rgba(255, 255, 255, 0.15); color: white; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.5)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.3)';">
-                Explore Data
-              </button>
-              <button onclick="setRoute('explore')" style="padding: 14px 28px; background: rgba(255, 255, 255, 0.15); color: white; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.5)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.3)';">
-                Learn More
-              </button>
-            </div>
           </div>
         </div>
 
         <!-- Divider -->
-        <div style="max-width: 1200px; margin: 48px auto; height: 1px; background: linear-gradient(90deg, transparent 0%, #e5e7eb 50%, transparent 100%);"></div>
+        <div style="max-width: 1200px; margin: 20px auto; height: 1px; background: linear-gradient(90deg, transparent 0%, #e5e7eb 50%, transparent 100%);"></div>
 
         <!-- Main Content -->
-        <div class="container main" style="padding-top: 40px;">
+        <div class="container main" style="padding-top: 16px;">
           <h2 style="margin-top: 0; margin-bottom: 16px; font-size: 20px; color: var(--text);">How to Use This Platform</h2>
 
           <div class="card" style="
@@ -199,9 +186,9 @@
             </p>
             <ul class="list">
               <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('learn')">Home:</span></strong> Understand the core concepts and how zero-sum thinking is measured.</li>
-              <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('explore')">Learn:</span></strong> Play an interactive mini-game and watch animated explanations to build intuition.</li>
+              <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('concept')">Learn:</span></strong> Play an interactive mini-game and watch animated explanations to build intuition.</li>
               <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('test')">Test:</span></strong> Answer questions about your own beliefs and see how you compare to the benchmark.</li>
-              <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('visualization')">Visualization:</span></strong> Explore demographic patterns, policy correlations, and geographic distributions.</li>
+              <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('data')">Visualization:</span></strong> Explore demographic patterns, policy correlations, and geographic distributions.</li>
             </ul>
           </div>
 
@@ -334,7 +321,7 @@
             <div style="flex: 0 0 auto; color: #d1d5db; font-size: 24px; margin: 0 8px;">→</div>
 
             <!-- Step 4: Visualize -->
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 140px; cursor: pointer; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7';" onclick="setRoute('visualization')">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 140px; cursor: pointer; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7';" onclick="setRoute('data')">
               <div style="width: 48px; height: 48px; background: #f3f4f6; border: 2px solid #d1d5db; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6b7280; font-weight: 600; font-size: 18px;">
                 4
               </div>
