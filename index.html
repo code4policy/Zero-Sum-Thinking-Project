@@ -37,9 +37,12 @@
 
         <nav class="nav">
           <button class="nav__link" data-route="learn" aria-current="page">Home</button>
-          <button class="nav__link" data-route="explore">Learn</button>
-          <button class="nav__link" data-route="test">Test</button>
-          <button class="nav__link" data-route="visualization">Visualization</button>
+          <button class="nav__link" data-route="concept">What is Zero‑Sum Thinking?</button>
+          <button class="nav__link" data-route="research">The Research</button>
+          <button class="nav__link" data-route="data">Explore the Data, Visualize</button>
+          <button class="nav__link" data-route="test">Take the Test</button>
+          <button class="nav__link" data-route="methods">Methods & Transparency</button>
+          <button class="nav__link" data-route="ethics">Ethics, Privacy & Disclaimer</button>
           <button class="nav__link" data-route="about">About</button>
         </nav>
 
@@ -154,47 +157,58 @@
                 </p>
               </div>
             </div>
+
+            <h1 style="
+              margin: 40px 0 0 0;
+              font-size: 32px;
+              font-weight: 700;
+              color: #fff;
+              line-height: 1.3;
+              max-width: 800px;
+              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+              text-align: center;
+            ">An Interactive Explainer, Data Dashboard, and Self-assessment</h1>
           </div>
         </div>
 
         <!-- Main Content -->
         <div class="container main" style="padding-top: 40px;">
-          <h2 style="
-            margin-top: 0; 
-            margin-bottom: 24px; 
-            font-size: 20px; 
-            color: var(--text);
-            display: inline-block;
-            position: relative;
-          ">How to Use This Platform
-            <span style="
-              position: absolute;
-              bottom: -6px;
-              left: 0;
-              width: 60px;
-              height: 3px;
-              background: linear-gradient(90deg, #a51c30 0%, rgba(165, 28, 48, 0.3) 100%);
-              border-radius: 2px;
-            "></span>
-          </h2>
+          <h3 style="margin-top: 0; margin-bottom: 16px; font-size: 24px; color: var(--text);">Purpose of the Website</h3>
+          <p>This website translates the empirical findings of the publication "Zero-Sum Thinking and the Roots of U.S. Political Differences" by Sahil Chinoy, Nathan Nunn, Sandra Sequeira, Stefanie Stantcheva into an interactive, public-facing educational platform. It combines conceptual explanation, empirical visualization, and self-assessment, while maintaining academic rigor, transparency, and ethical safeguards.</p>
 
-          <div class="card" style="
-            background: #ffffff; 
-            border: none;
-            border-left: 4px solid #a51c30;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-            border-radius: 8px;
-            padding: 24px 28px;
-          ">
-            <p class="muted" style="margin-bottom: 15px;">
-              Navigate through the platform to explore different dimensions of zero-sum thinking:
-            </p>
-            <ul class="list">
-              <li><strong>Home:</strong> Understand the core concepts and how zero-sum thinking is measured.</li>
-              <li><strong>Learn:</strong> Play an interactive mini-game and watch animated explanations to build intuition.</li>
-              <li><strong>Test:</strong> Answer questions about your own beliefs and see how you compare to the benchmark.</li>
-              <li><strong>Visualization:</strong> Explore demographic patterns, policy correlations, and geographic distributions.</li>
-            </ul>
+          <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 24px; color: var(--text);">Why Zero-Sum Thinking</h3>
+          <p>Beliefs about gains and losses unavoidably play a central role in social and political life. Zero-sum thinking shapes how people interpret conflict and cooperation, evaluate political leaders, respond to election outcomes, and assess policies related to redistribution, immigration, trade, and social inclusion. It helps explain why similar economic or social changes can generate cooperation and trust in some settings, but fear, polarization, or conflict in others.</p>
+
+          <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 24px; color: var(--text);">Why This Study</h3>
+          <p>The research used draws on a large-scale, carefully designed survey study by established scholars in political economy and public economics. By systematically measuring zero-sum thinking and linking it to political attitudes, the study provides one of the most comprehensive empirical frameworks to date for understanding how underlying beliefs about gains and losses contribute to political disagreement, policy resistance, and broader patterns of social cohesion and conflict.</p>
+
+          <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 24px; color: var(--text);">What You Find on This Site</h3>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 24px;">
+            <div class="card" style="cursor: pointer;" onclick="setRoute('concept')">
+              <h4 style="margin-top: 0; color: #a51c30;">What Is Zero-Sum Thinking?</h4>
+              <p>Learn what zero-sum thinking means and how it differs from "win-win" perspectives.</p>
+            </div>
+            <div class="card" style="cursor: pointer;" onclick="setRoute('data')">
+              <h4 style="margin-top: 0; color: #a51c30;">Explore the Data</h4>
+              <p>Examine aggregated charts and maps showing patterns reported in the study.</p>
+            </div>
+            <div class="card" style="cursor: pointer;" onclick="setRoute('test')">
+              <h4 style="margin-top: 0; color: #a51c30;">Take the Zero-Sum Thinking Test</h4>
+              <p>Answer a short questionnaire adapted from the research and see how your responses compare with the overall distribution.</p>
+            </div>
+            <div class="card" style="cursor: pointer;" onclick="setRoute('research')">
+              <h4 style="margin-top: 0; color: #a51c30;">The Research</h4>
+              <p>Brief description of the research the website relies on.</p>
+            </div>
+            <div class="card" style="cursor: pointer;" onclick="setRoute('methods')">
+              <h4 style="margin-top: 0; color: #a51c30;">Methods and Transparency</h4>
+              <p>Briefly explains for the professional user about methods employed in the original research.</p>
+            </div>
+            <div class="card" style="cursor: pointer;" onclick="setRoute('ethics')">
+              <h4 style="margin-top: 0; color: #a51c30;">Ethics, Privacy and Disclaimer</h4>
+              <p>Information on how the website handles data, privacy, and responsible use.</p>
+            </div>
           </div>
 
         </div>
@@ -202,7 +216,7 @@
       </section>
 
       <!-- EXPLORE (Interactive) -->
-      <section id="page-explore" class="page" aria-labelledby="explore-title">
+      <section id="page-concept" class="page" aria-labelledby="explore-title">
         <h1 id="explore-title">Explore: Interactive Demonstrations</h1>
 
         <div class="card">
@@ -357,6 +371,43 @@
         </div>
       </section>
 
+      <!-- THE RESEARCH -->
+      <section id="page-research" class="page" aria-labelledby="research-title">
+        <h1 id="research-title">The Research</h1>
+
+        <div class="card">
+          <h2>Purpose of the Study</h2>
+          <p>The study "Zero-Sum Thinking and the Roots of U.S. Political Differences" investigates how beliefs about gains and losses shape political attitudes in the United States. Rather than focusing only on material interests or partisan identities, the research examines a deeper cognitive framework: whether individuals tend to see social and economic outcomes as zero-sum or as allowing for shared gains.</p>
+          <p>The central claim is that zero-sum thinking is a measurable mindset that helps explain persistent political disagreement across a wide range of policy areas.</p>
+
+          <h2>How Zero-Sum Thinking Is Measured</h2>
+          <p>The study measures zero-sum thinking using survey questions designed to capture respondents' beliefs about whether gains for one group come at the expense of others.</p>
+          <p>Respondents are asked to indicate their level of agreement with statements expressing zero-sum views across different social and economic domains. Higher agreement with these statements indicates a stronger zero-sum orientation.</p>
+
+          <h2>Domains Covered</h2>
+          <p>Zero-sum thinking is measured across multiple domains, including:</p>
+          <ul>
+            <li>Ethnic and social groups: Beliefs about whether gains for one group imply losses for others.</li>
+            <li>International trade: Beliefs about whether economic gains from trade are necessarily offset by losses elsewhere.</li>
+            <li>Income and economic groups: Beliefs about whether increases in wealth for some groups require others to become worse off.</li>
+            <li>Citizens and non-citizens: Beliefs about competition over economic opportunities and resources.</li>
+          </ul>
+          <p>Measuring multiple domains allowed the researchers to assess whether zero-sum thinking reflects a general mindset rather than issue-specific opinions.</p>
+
+          <h2>From Survey Responses to an Index</h2>
+          <p>Individual responses are combined into a standardized zero-sum thinking index, typically scaled from low to high values. Higher scores indicate a stronger tendency to view social and economic outcomes as zero-sum.</p>
+          <p>The index construction follows standard practices in survey research, ensuring internal consistency and comparability across respondents.</p>
+          <p>Details on question wording, scaling, and validation are provided in the original paper and its supplementary materials.</p>
+
+          <h2>How to Interpret the Zero-Sum Thinking Index</h2>
+          <p>The zero-sum thinking index is scaled so that higher values indicate a stronger tendency to view social and economic outcomes as zero-sum, meaning that gains for one group are perceived as coming at the expense of others. Lower values indicate a weaker zero-sum orientation and a greater openness to the possibility of shared gains.</p>
+
+          <h2>Data Transparency</h2>
+          <p>This website presents aggregated results only, based on the published study and its associated materials. Individual-level data are not displayed or stored here.</p>
+          <p>For full methodological details, replication materials, and technical discussion, users are encouraged to consult the original publication and its appendices.</p>
+        </div>
+      </section>
+
       <!-- TEST (Story 2) -->
       <section id="page-test" class="page" aria-labelledby="test-title">
         <div class="test-header" style="margin-bottom: 32px;">
@@ -430,9 +481,58 @@
         </div>
       </section>
 
+      <!-- METHODS & TRANSPARENCY -->
+      <section id="page-methods" class="page" aria-labelledby="methods-title">
+        <h1 id="methods-title">Methods & Transparency</h1>
+
+        <div class="card">
+          <h2>Purpose of This Page</h2>
+          <p>This page explains how the research measures zero-sum thinking and how the results presented on this website are produced. It is intended to support transparency, informed interpretation, and responsible use of the findings.</p>
+
+          <h2>Research Design</h2>
+          <p>The study "Zero-Sum Thinking and the Roots of U.S. Political Differences" uses a large-scale survey-based research design to examine how beliefs about gains and losses shape political attitudes in the United States.</p>
+
+          <h2>Survey Data</h2>
+          <p>The analysis is based on a nationally large survey sample comprising more than 20,000 respondents. The survey was designed to capture beliefs, attitudes, and background characteristics across a wide range of social, economic, and political topics.</p>
+          <p>In the original study, standard survey weighting procedures are applied to improve representativeness relative to the U.S. adult population.</p>
+
+          <h2>Measurement of Zero-Sum Thinking</h2>
+          <p>Zero-sum thinking is measured using multiple survey questions that ask respondents to indicate their level of agreement with statements about gains and losses across different contexts. These questions are framed in general terms and do not require respondents to endorse specific political parties or policies.</p>
+          <p>The survey items cover several domains, including:</p>
+          <ul>
+            <li>relations between social or ethnic groups,</li>
+            <li>economic outcomes across income groups,</li>
+            <li>international trade,</li>
+            <li>competition between citizens and non-citizens.</li>
+          </ul>
+
+          <h2>Index Construction</h2>
+          <p>Responses to the zero-sum survey items are combined into a composite zero-sum thinking index. The index is constructed using standard survey research practices:</p>
+          <ul>
+            <li>responses are coded in a consistent direction,</li>
+            <li>multiple items are aggregated to capture overall orientation,</li>
+            <li>the resulting index is normalized for interpretability.</li>
+          </ul>
+          <p>Higher scores indicate a stronger tendency to view one group's gains as coming at the expense of others, while lower scores indicate greater openness to the possibility of shared gains.</p>
+
+          <h2>Analytical Methods</h2>
+          <p>The study relies on descriptive analysis and regression-based methods to examine:</p>
+          <ul>
+            <li>how zero-sum thinking varies across demographic, social, and political groups,</li>
+            <li>how it is associated with attitudes toward redistribution, immigration, trade, and other policy areas,</li>
+            <li>how it relates to political polarization beyond standard explanations based on partisanship or material interests.</li>
+          </ul>
+
+          <h2>Interpretation and Limits</h2>
+          <p>The findings are descriptive and associational, not causal. The study does not claim that zero-sum thinking directly causes specific political outcomes.</p>
+
+          <h2>Transparency and Replicability</h2>
+          <p>The original publication provides detailed documentation of survey questions, index construction, and analytical procedures in its appendices and supplementary materials. These materials allow other researchers to evaluate, replicate, or extend the analysis.</p>
+        </div>
+      </section>
 
       <!-- VISUALIZATION (Story 3) -->
-      <section id="page-visualization" class="page" aria-labelledby="viz-title">
+      <section id="page-data" class="page" aria-labelledby="viz-title">
         <h1 id="viz-title">Visualization: Explore Zero-Sum Thinking Patterns</h1>
 
         <!-- Tab navigation -->
@@ -671,161 +771,89 @@
         </div>
       </div>
 
+      <!-- ETHICS, PRIVACY & DISCLAIMER -->
+      <section id="page-ethics" class="page" aria-labelledby="ethics-title">
+        <h1 id="ethics-title">Ethics, Privacy & Disclaimer</h1>
+
+        <div class="card">
+          <h2>Ethical Use of Research</h2>
+          <p>This website presents academic research for educational and informational purposes. The goal is to improve public understanding of how beliefs about gains and losses relate to political attitudes, not to persuade users toward particular views or policies.</p>
+
+          <h2>Privacy Protection</h2>
+          <p>This website is designed to respect user privacy.</p>
+          <ul>
+            <li>No personal identifying information is collected.</li>
+            <li>Responses to the self-assessment test are not stored or transmitted.</li>
+            <li>Test results are calculated locally and displayed only to the user.</li>
+          </ul>
+
+          <h2>Responsible Interpretation</h2>
+          <p>The concepts and results presented on this website should be interpreted with care.</p>
+          <ul>
+            <li>The zero-sum thinking index reflects general tendencies, not fixed traits.</li>
+            <li>Higher or lower scores do not indicate that a view is right or wrong.</li>
+            <li>Group-level patterns do not imply that all individuals in a group think the same way.</li>
+            <li>Associations shown in charts do not demonstrate causal relationships.</li>
+          </ul>
+
+          <h2>Limitations</h2>
+          <p>This website summarizes findings from a specific study conducted in a particular context. As with all research, results are subject to limitations related to survey design, measurement, and interpretation.</p>
+
+          <h2>Disclaimer</h2>
+          <p>This website is an independent educational presentation of published academic research. It does not represent the views of the original authors, their institutions, or any funding bodies.</p>
+          <p>Nothing on this site should be interpreted as professional, legal, or policy advice.</p>
+
+          <h2>How to Cite This Website</h2>
+          <p>When citing this website, please reference:</p>
+          <p>When referencing material from this site, please cite:</p>
+          <ol>
+            <li>The original academic publication: Chinoy, S., Nunn, N., Sequeira, S., & Stantcheva, S. (2025). Zero-sum thinking and the roots of U.S. political differences (NBER Working Paper No. 31688). National Bureau of Economic Research. https://doi.org/10.3386/w31688</li>
+            <li>This website: Website Team. (2026). Zero-sum thinking and U.S. political differences: An interactive educational summary. Programming and Data for Policy Makers course project. https://your-site-url</li>
+          </ol>
+        </div>
+      </section>
+
       <!-- ABOUT -->
       <section id="page-about" class="page" aria-labelledby="about-title">
-        <div style="position: relative; margin: -18px -16px 60px -16px; padding: 80px 40px; background: linear-gradient(135deg, rgba(165, 28, 48, 0.05) 0%, rgba(165, 28, 48, 0.02) 100%); border-bottom: 1px solid rgba(165, 28, 48, 0.1);">
-          <div style="max-width: 1040px; margin: 0 auto;">
-            <h1 id="about-title" style="margin: 0 0 16px 0; font-size: 42px; font-weight: 800; color: var(--text); line-height: 1.2;">About This Project</h1>
-            <p style="margin: 0; font-size: 18px; color: var(--muted); max-width: 700px;">Understanding the roots of political division through research and interactive exploration</p>
-          </div>
-        </div>
-        
-        <div class="card" style="border-left: 5px solid #a51c30; background: linear-gradient(135deg, rgba(165, 28, 48, 0.02) 0%, rgba(255, 255, 255, 0) 100%);">
-          <div style="display: flex; gap: 16px; align-items: flex-start;">
-            <div style="flex-shrink: 0; width: 48px; height: 48px; background: rgba(165, 28, 48, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#a51c30" stroke-width="2">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-              </svg>
-            </div>
-            <div style="flex: 1;">
-              <h2 style="margin-top: 0; margin-bottom: 12px; color: var(--text);">Featured Research</h2>
-              <p class="muted" style="margin-bottom: 18px;">
-                Our work is based on groundbreaking research from the Social Economics Lab exploring how zero-sum beliefs 
-                shape political attitudes and policy preferences:
-              </p>
-              <ul class="list" style="margin: 0;">
-                <li style="margin-bottom: 12px;">
-                  <strong>Zero-Sum Thinking and the Roots of U.S. Political Divides</strong> —
-                  <a href="https://socialeconomicslab.org/research/publications/zero-sum-thinking-and-the-roots-of-u-s-political-divides/" target="_blank" style="color: #a51c30; text-decoration: none; font-weight: 500; transition: opacity 0.2s;">
-                    Read the full publication →
-                  </a>
-                </li>
-                <li>
-                  <strong>More Research</strong> — 
-                  <a href="https://socialeconomicslab.org/research/" target="_blank" style="color: #a51c30; text-decoration: none; font-weight: 500; transition: opacity 0.2s;">
-                    Browse all Social Economics Lab research →
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        <div class="card">
+          <h2>The Project</h2>
+          <p>This website was created as an educational project to make academic research on zero-sum thinking accessible to a broader audience. It presents a non-partisan, public-facing summary of published research, combining conceptual explanation, data visualization, and a self-assessment tool.</p>
+          <p>The site does not conduct original research or collect new data. Its purpose is to support learning, policy discussion, and informed reflection on how beliefs about gains and losses relate to political attitudes and social outcomes.</p>
 
-        <div class="card" style="border-left: 5px solid #06b6d4; background: linear-gradient(135deg, rgba(6, 182, 212, 0.02) 0%, rgba(255, 255, 255, 0) 100%);">
-          <div style="display: flex; gap: 16px; align-items: flex-start;">
-            <div style="flex-shrink: 0; width: 48px; height: 48px; background: rgba(6, 182, 212, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                <circle cx="12" cy="12" r="1"></circle>
-              </svg>
-            </div>
-            <div style="flex: 1;">
-              <h2 style="margin-top: 0; margin-bottom: 12px; color: var(--text);">Share Your Feedback</h2>
-              <p class="muted" style="margin-bottom: 12px;">
-                We'd love to hear from you! Your feedback helps us improve the platform and better serve researchers and policymakers.
-              </p>
-              <p class="muted" style="margin-bottom: 16px;">
-                If you have suggestions, questions, or encounter any issues, we encourage you to get in touch.
-              </p>
-              <a href="mailto:socialeconomicslab@hks.harvard.edu" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: #06b6d4; color: white; text-decoration: none; border-radius: 6px; font-weight: 500; transition: background 0.2s;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                </svg>
-                Send Feedback
-              </a>
-            </div>
-          </div>
-        </div>
+          <h2>The Research Authors</h2>
+          <p>The research summarized on this website was conducted by Sahil Chinoy, Nathan Nunn, Sandra Sequeira, and Stefanie Stantcheva.</p>
+          <ul>
+            <li>Sahil Chinoy: A Postdoctoral Associate and Lecturer at Yale University, he will join Stanford University as an Assistant Professor in 2026. Reference: https://politicalscience.yale.edu/people/sahil-chinoy.</li>
+            <li>Nathan Nunn: The Frederic E. Abbe Professor of Economics at Harvard (2016–2022) and currently a Professor at the Vancouver School of Economics (UBC). Reference: https://economics.ubc.ca/profile/nathan-nunn/.</li>
+            <li>Sandra Sequeira: A Professor of Development Economics at the London School of Economics (LSE) and a recipient of the 2022 Philip Leverhulme Prize. Reference: https://www.lse.ac.uk/school-of-public-policy/news/faculty/sandra-sequeira.</li>
+            <li>Stefanie Stantcheva: The Nathaniel Ropes Professor of Political Economy at Harvard University and founder of the Social Economics Lab. Reference: https://stantcheva.scholars.harvard.edu/biocv.</li>
+          </ul>
 
-        <div class="card" style="border-top: 5px solid #a51c30;">
-          <h2 style="margin-top: 0; margin-bottom: 12px;">The Project Team</h2>
-          <p class="muted" style="margin-bottom: 32px;">
-            Built by a dedicated team at Harvard Kennedy School's Social Economics Lab, this platform brings research to life through interactive exploration.
-          </p>
-          
-          <!-- Team members grid -->
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px;">
-            <!-- Team member card -->
-            <div class="team-member-card" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(102, 126, 234, 0) 100%); border: 1px solid rgba(102, 126, 234, 0.15); padding: 24px; border-radius: 12px; transition: all 0.3s ease;">
-              <div class="team-member-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 48px; margin-bottom: 16px; width: 80px; height: 80px; border-radius: 12px;">LC</div>
-              <h3 class="team-member-name" style="margin: 0 0 8px 0; font-size: 18px; font-weight: 600;">Liyang Chen</h3>
-              <div class="team-member-role" style="font-size: 13px; font-weight: 500; color: #667eea; margin-bottom: 12px;">Project Lead</div>
-              <p class="team-member-bio" style="margin: 0 0 16px 0; font-size: 14px; line-height: 1.5; color: var(--muted);">
-                MPA Student at Harvard Kennedy School. Passionate about understanding political beliefs and building tools for evidence-based policy dialogue.
-              </p>
-              <div class="team-member-contact" style="display: flex; gap: 8px;">
-                <a href="mailto:liyangchen@hks.harvard.edu" title="Email Liyang" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(102, 126, 234, 0.1); border-radius: 8px; color: #667eea; transition: all 0.2s; text-decoration: none;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
+          <h2>The Website Project</h2>
+          <p>This website was developed as part of the Programming and Data for Policy Makers course at the Harvard Kennedy School (https://www.hks.harvard.edu/courses/programming-and-data-policymakers).</p>
+          <p>The course introduces students to computational thinking, data analysis, and digital tools for policy analysis and public communication. This project applies those skills to the responsible translation of academic research into an interactive, public-facing format.</p>
 
-            <!-- Team member card -->
-            <div class="team-member-card" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(6, 182, 212, 0) 100%); border: 1px solid rgba(6, 182, 212, 0.15); padding: 24px; border-radius: 12px; transition: all 0.3s ease;">
-              <div class="team-member-avatar" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 48px; margin-bottom: 16px; width: 80px; height: 80px; border-radius: 12px;">JW</div>
-              <h3 class="team-member-name" style="margin: 0 0 8px 0; font-size: 18px; font-weight: 600;">Junyu Wang</h3>
-              <div class="team-member-role" style="font-size: 13px; font-weight: 500; color: #06b6d4; margin-bottom: 12px;">Developer</div>
-              <p class="team-member-bio" style="margin: 0 0 16px 0; font-size: 14px; line-height: 1.5; color: var(--muted);">
-                Graduate student at Harvard Kennedy School. Interested in technology, public policy, and finance development. Leading website development and technical implementation.
-              </p>
-              <div class="team-member-contact" style="display: flex; gap: 8px;">
-                <a href="mailto:jwang@hks.harvard.edu" title="Email Junyu" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(6, 182, 212, 0.1); border-radius: 8px; color: #06b6d4; transition: all 0.2s; text-decoration: none;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
+          <h2>Acknowledgment of Course Instructors</h2>
+          <p>The website team gratefully acknowledges the instructors of the Programming and Data for Policy Makers course Professors Dhrumil Mehta (Adjunct Professor of Public Policy) and Aarushi Sahejpal and the Course Assistant, Asa Royal for their guidance and instruction. Responsibility for the content, interpretation, and presentation of this website rests solely with the website team and does not imply endorsement by the course instructors or Harvard Kennedy School.</p>
 
-            <!-- Team member card -->
-            <div class="team-member-card" style="background: linear-gradient(135deg, rgba(245, 87, 108, 0.05) 0%, rgba(245, 87, 108, 0) 100%); border: 1px solid rgba(245, 87, 108, 0.15); padding: 24px; border-radius: 12px; transition: all 0.3s ease;">
-              <div class="team-member-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 48px; margin-bottom: 16px; width: 80px; height: 80px; border-radius: 12px;">SE</div>
-              <h3 class="team-member-name" style="margin: 0 0 8px 0; font-size: 18px; font-weight: 600;">Wondem Goshu, Mason Fellow, HKS</h3>
-              <div class="team-member-contact" style="display: flex; gap: 8px;">
-                <a href="https://socialeconomicslab.org/" target="_blank" title="Visit SEL Website" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(245, 87, 108, 0.1); border-radius: 8px; color: #f5576c; transition: all 0.2s; text-decoration: none;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 16v-4m0-4h.01"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+          <h2>The Website Team</h2>
+          <p>This website was developed independently by the course participant(s) as part of the above program. Any errors, omissions, or interpretations are the responsibility of the website team alone.</p>
 
-        <div class="card" style="background: linear-gradient(135deg, rgba(165, 28, 48, 0.03) 0%, rgba(100, 100, 100, 0.01) 100%); border-left: 5px solid #999; border-top: none;">
-          <div style="display: flex; gap: 16px; align-items: flex-start;">
-            <div style="flex-shrink: 0; width: 48px; height: 48px; background: rgba(100, 100, 100, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
-              </svg>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px;">
+            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; text-align: center;">
+              <h3 style="margin: 0 0 8px 0; font-size: 18px;">Liyang Chen</h3>
+              <p style="margin: 0; font-size: 14px; color: #6b7280;">Project Lead</p>
+              <p style="margin: 8px 0 0 0; font-size: 13px;">MPA Student at Harvard Kennedy School. Passionate about understanding political beliefs and building tools for evidence-based policy dialogue.</p>
             </div>
-            <div style="flex: 1;">
-              <h2 style="margin-top: 0; margin-bottom: 16px; color: var(--text);">Acknowledgments</h2>
-              <p class="muted" style="margin-bottom: 16px;">
-                This project was developed as part of the course:
-              </p>
-              <div style="background: white; border-radius: 8px; padding: 16px; margin-bottom: 16px; border: 1px solid rgba(165, 28, 48, 0.1);">
-                <p style="margin: 0 0 12px 0; font-weight: 600; color: var(--text); font-size: 15px;">
-                  DPI-691M: Programming and Data for Policymakers
-                </p>
-                <p style="margin: 0 0 4px 0; color: var(--muted); font-size: 14px;">
-                  January 2026
-                </p>
-              </div>
-              <p class="muted" style="margin-bottom: 8px; font-size: 14px;">
-                <strong>Instructors:</strong>
-              </p>
-              <ul style="margin: 0; padding-left: 0; list-style: none;">
-                <li style="margin-bottom: 8px;">Dhrumil Mehta</li>
-                <li style="margin-bottom: 8px;">Aarushi Sahejpal</li>
-                <li>Asa Royal</li>
-              </ul>
+            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; text-align: center;">
+              <h3 style="margin: 0 0 8px 0; font-size: 18px;">Junyu Wang</h3>
+              <p style="margin: 0; font-size: 14px; color: #6b7280;">Developer</p>
+              <p style="margin: 8px 0 0 0; font-size: 13px;">Graduate student at Harvard Kennedy School. Interested in technology, public policy, and finance development. Leading website development and technical implementation.</p>
+            </div>
+            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; text-align: center;">
+              <h3 style="margin: 0 0 8px 0; font-size: 18px;">Wondem Goshu</h3>
+              <p style="margin: 0; font-size: 14px; color: #6b7280;">Developer</p>
+              <p style="margin: 8px 0 0 0; font-size: 13px;">MC-MPA, Mason Fellow, HKS</p>
             </div>
           </div>
         </div>
