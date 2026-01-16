@@ -560,6 +560,17 @@ h3 { font-size: 14px; font-weight: 600; margin: 12px 0 8px 0; }
   max-height: 400px;
 }
 
+/* D3 Chart Container */
+#d3-chart-container {
+  position: relative;
+  min-height: 400px;
+  width: 100%;
+}
+
+#d3-chart-container svg {
+  display: block;
+}
+
 #filters-panel label {
   color: var(--text);
   font-size: 13px;
@@ -795,11 +806,10 @@ h3 { font-size: 14px; font-weight: 600; margin: 12px 0 8px 0; }
   height: 20px;
   border-radius: 4px;
   background: linear-gradient(to right, 
-    #1e64ff 0%,      /* Blue for low */
-    #4da6ff 25%,     /* Light blue */
-    #ffff9b 50%,     /* Yellow mid */
-    #ffcc00 75%,     /* Golden yellow */
-    #ff9600 100%);   /* Orange for high */
+    #2171b5 0%,      /* Blue for low */
+    #74c476 40%,     /* Green mid-low */
+    #fec44f 70%,     /* Yellow-gold mid-high */
+    #fe9929 100%);   /* Orange for high */
   border: 1px solid var(--border);
 }
 

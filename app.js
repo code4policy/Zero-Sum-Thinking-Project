@@ -200,101 +200,582 @@ if (resetBtn) {
 // ---------------------------
 // Story 3: Visualization (Demographic patterns)
 // ---------------------------
-let chartInstance = null;
+
+// Data storage - will be loaded from JSON files
+let aggregatedData = null;
+let variableOrder = null;
+let variableMetadata = null;
+let rawVizData = null;  // Individual-level data for filtering (Story 3.1.2)
+let vizDataLoaded = false;
+
+// All demographic variables available for filtering
+const demographicVariables = ['age', 'gender', 'race', 'education', 'income', 'hhIncome', 'party', 'partyDetail', 'urbanicity', 'immigrationStatus'];
+
+// Current filter state (Story 3.1.2)
+let currentFilters = {};  // { variableName: [selectedValues] }
 
 const demoSelect = document.getElementById("demo-select");
-const chartContainer = document.getElementById("chart-container");
+const d3ChartContainer = document.getElementById("d3-chart-container");
 const chartInfo = document.getElementById("chart-info");
+const chartTitle = document.getElementById("chart-title");
+const chartSubtitle = document.getElementById("chart-subtitle");
+const missingDataInfo = document.getElementById("missing-data-info");
+const variableNote = document.getElementById("variable-note");
 const filtersPanel = document.getElementById("filters-panel");
 const resetFiltersBtn = document.getElementById("reset-filters-btn");
 
-// Define display order for each demographic variable
-const variableOrder = {
-  age: ["18-25", "26-40", "41-55", "56-70", "70+"],
-  gender: ["Male", "Female"],
-  education: ["High School", "Bachelor", "Master+"],
-  income: ["< $30k", "$30-60k", "$60-100k", "$100k+"],
-  party: ["Democrat", "Republican", "Independent"],
-  urbanicity: ["Urban", "Suburban", "Rural"]
+// Variable labels and descriptions for dynamic titles
+const variableLabels = {
+  age: { 
+    label: "Age Group", 
+    description: "Average zero-sum thinking index across different age groups. Younger adults (18-40) tend to show higher zero-sum beliefs than older adults (56+)." 
+  },
+  gender: { 
+    label: "Gender", 
+    description: "Comparison of zero-sum thinking between male and female respondents. Men show slightly higher zero-sum thinking than women on average." 
+  },
+  race: { 
+    label: "Race/Ethnicity", 
+    description: "Average zero-sum thinking across racial and ethnic groups. Black respondents show the highest levels, while Asian respondents show the lowest." 
+  },
+  education: { 
+    label: "Education Level", 
+    description: "How zero-sum thinking varies by educational attainment. Those with a Bachelor's degree show the lowest zero-sum beliefs." 
+  },
+  income: { 
+    label: "Relative Income", 
+    description: "Zero-sum thinking by self-reported relative income. Those who perceive themselves as 'far above average' show the highest zero-sum beliefs." 
+  },
+  hhIncome: { 
+    label: "Household Income", 
+    description: "Zero-sum thinking by household income brackets. The lowest income group (<$15k) shows higher zero-sum thinking than middle-income groups." 
+  },
+  party: { 
+    label: "Party Affiliation", 
+    description: "Comparison of zero-sum thinking across political party affiliations. Democrats show higher zero-sum thinking than Republicans and Independents." 
+  },
+  partyDetail: { 
+    label: "Party Affiliation (Detailed)", 
+    description: "Zero-sum thinking by detailed partisan identity. Strong Democrats show the highest levels, while Moderate Republicans show the lowest." 
+  },
+  urbanicity: { 
+    label: "Urbanicity", 
+    description: "How zero-sum thinking varies by residential area. Urban residents show notably higher zero-sum beliefs than suburban or rural residents." 
+  },
+  immigrationStatus: { 
+    label: "Immigration Status", 
+    description: "Zero-sum thinking by generational immigration status. First-generation immigrants show the lowest zero-sum beliefs, while 4th+ generation Americans show the highest." 
+  }
 };
 
 // Current state
 let currentXAxis = "age";
-let currentFilters = {}; // { variable: [selected values] }
 
-// Get unique values for a variable
-function getUniqueValues(data, variable) {
-  const values = new Set(data.map(d => d[variable]));
-  const order = variableOrder[variable] || Array.from(values).sort();
-  return order.filter(v => values.has(v));
+// Load visualization data from JSON files
+async function loadVizData() {
+  try {
+    const [aggRes, orderRes, metaRes, rawRes] = await Promise.all([
+      fetch('./data/viz/aggregated_data.json'),
+      fetch('./data/viz/variable_order.json'),
+      fetch('./data/viz/variable_metadata.json'),
+      fetch('./data/viz/viz_data.json')  // Individual-level data for filtering
+    ]);
+    
+    aggregatedData = await aggRes.json();
+    variableOrder = await orderRes.json();
+    variableMetadata = await metaRes.json();
+    rawVizData = await rawRes.json();  // ~20k individual records
+    vizDataLoaded = true;
+    
+    console.log(`Visualization data loaded successfully. ${rawVizData.length} individual records available for filtering.`);
+    return true;
+  } catch (error) {
+    console.error('Failed to load visualization data:', error);
+    return false;
+  }
 }
 
-// Render filter panel based on current X-axis
+// Render D3.js bar chart
+function renderD3BarChart(variable) {
+  if (!vizDataLoaded) {
+    console.error('Data not loaded yet');
+    return;
+  }
+
+  // Clear previous chart
+  d3.select("#d3-chart-container").selectAll("*").remove();
+
+  // Check if any filters are active
+  const hasActiveFilters = Object.keys(currentFilters).length > 0;
+  
+  let data;
+  let filteredCount = 0;
+  let totalCount = rawVizData ? rawVizData.length : 0;
+  
+  if (hasActiveFilters && rawVizData) {
+    // Apply filters to raw data and aggregate
+    const filteredData = applyFiltersToData(rawVizData, currentFilters);
+    filteredCount = filteredData.length;
+    data = aggregateByVariable(filteredData, variable);
+  } else {
+    // Use pre-aggregated data for better performance
+    if (!aggregatedData[variable]) {
+      console.error('Data not available for variable:', variable);
+      return;
+    }
+    data = aggregatedData[variable].slice();
+    filteredCount = totalCount;
+  }
+  
+  // Sort by defined order
+  const order = variableOrder[variable] || [];
+  
+  data = data.slice().sort((a, b) => {
+    const indexA = order.indexOf(a.label);
+    const indexB = order.indexOf(b.label);
+    if (indexA === -1 && indexB === -1) return 0;
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
+
+  // Set up dimensions
+  const containerWidth = d3ChartContainer.clientWidth || 600;
+  const margin = { top: 30, right: 30, bottom: 80, left: 60 };
+  const width = containerWidth - margin.left - margin.right;
+  const height = 400 - margin.top - margin.bottom;
+
+  // Create SVG
+  const svg = d3.select("#d3-chart-container")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  // X scale
+  const x = d3.scaleBand()
+    .range([0, width])
+    .domain(data.map(d => d.label))
+    .padding(0.2);
+
+  // Y scale (0 to 1 for normalized zero-sum index)
+  const y = d3.scaleLinear()
+    .domain([0, 1])
+    .range([height, 0]);
+
+  // Color scale: blue (low) -> yellow (high) - avoiding red/blue partisan association
+  const colorScale = d3.scaleLinear()
+    .domain([0.35, 0.55, 0.65])
+    .range(["#2171b5", "#74c476", "#fec44f"])
+    .clamp(true);
+
+  // Add X axis
+  svg.append("g")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("transform", "rotate(-35)")
+    .style("text-anchor", "end")
+    .style("font-size", "12px");
+
+  // Add Y axis
+  svg.append("g")
+    .call(d3.axisLeft(y).ticks(5).tickFormat(d => d.toFixed(1)))
+    .selectAll("text")
+    .style("font-size", "12px");
+
+  // Y axis label
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -45)
+    .attr("x", -height / 2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "13px")
+    .style("fill", "#666")
+    .text("Zero-Sum Index (0–1)");
+
+  // Create tooltip
+  const tooltip = d3.select("#d3-chart-container")
+    .append("div")
+    .style("position", "absolute")
+    .style("visibility", "hidden")
+    .style("background-color", "rgba(0, 0, 0, 0.85)")
+    .style("color", "white")
+    .style("padding", "10px 14px")
+    .style("border-radius", "6px")
+    .style("font-size", "13px")
+    .style("pointer-events", "none")
+    .style("z-index", "1000")
+    .style("box-shadow", "0 2px 8px rgba(0,0,0,0.2)");
+
+  // Color: soft blue for all bars (comfortable, non-partisan)
+  const barColor = "#6baed6";  // Soft steel blue
+  const hoverColor = "#f5a623"; // Warm amber/orange on hover
+
+  // Add bars with animation
+  svg.selectAll("rect")
+    .data(data)
+    .join("rect")
+    .attr("x", d => x(d.label))
+    .attr("width", x.bandwidth())
+    .attr("y", height)
+    .attr("height", 0)
+    .attr("fill", barColor)
+    .attr("rx", 4)
+    .style("cursor", "pointer")
+    .on("mouseover", function(event, d) {
+      d3.select(this)
+        .transition()
+        .duration(150)
+        .attr("fill", hoverColor);
+      
+      const se = d.se || 0;
+      tooltip
+        .style("visibility", "visible")
+        .html(`<strong>${d.label}</strong><br/>Mean: ${d.mean.toFixed(3)}<br/>N: ${d.n.toLocaleString()}${se > 0 ? `<br/>SE: ±${se.toFixed(4)}` : ''}`);
+    })
+    .on("mousemove", function(event) {
+      tooltip
+        .style("top", (event.pageY - 10) + "px")
+        .style("left", (event.pageX + 15) + "px");
+    })
+    .on("mouseout", function(event, d) {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .attr("fill", barColor);
+      tooltip.style("visibility", "hidden");
+    })
+    .transition()
+    .duration(800)
+    .ease(d3.easeCubicOut)
+    .attr("y", d => y(d.mean))
+    .attr("height", d => height - y(d.mean));
+
+  // Add value labels on bars
+  svg.selectAll(".bar-label")
+    .data(data)
+    .join("text")
+    .attr("class", "bar-label")
+    .attr("x", d => x(d.label) + x.bandwidth() / 2)
+    .attr("y", d => y(d.mean) - 8)
+    .attr("text-anchor", "middle")
+    .style("font-size", "11px")
+    .style("font-weight", "600")
+    .style("fill", "#333")
+    .style("opacity", 0)
+    .text(d => d.mean.toFixed(2))
+    .transition()
+    .delay(600)
+    .duration(400)
+    .style("opacity", 1);
+
+  // Update dynamic title and subtitle
+  const varInfo = variableLabels[variable] || { label: variable, description: "" };
+  const metaInfo = variableMetadata[variable] || {};
+  // Note: hasActiveFilters is already declared above
+  
+  // Build filter description for title/subtitle
+  let filterDescription = '';
+  if (hasActiveFilters) {
+    const filterParts = [];
+    for (const [filterVar, values] of Object.entries(currentFilters)) {
+      const filterLabel = variableLabels[filterVar]?.label || filterVar;
+      if (values.length <= 2) {
+        filterParts.push(`${filterLabel}: ${values.join(', ')}`);
+      } else {
+        filterParts.push(`${filterLabel}: ${values.length} selected`);
+      }
+    }
+    filterDescription = filterParts.join(' | ');
+  }
+  
+  if (chartTitle) {
+    if (hasActiveFilters) {
+      chartTitle.textContent = `Zero-Sum Thinking by ${varInfo.label} (Filtered)`;
+    } else {
+      chartTitle.textContent = `Zero-Sum Thinking by ${varInfo.label}`;
+    }
+  }
+  if (chartSubtitle) {
+    if (hasActiveFilters) {
+      chartSubtitle.innerHTML = `<span style="color: #2563eb; font-weight: 500;">Active Filters: ${filterDescription}</span><br><span style="color: var(--muted); font-size: 13px;">${varInfo.description}</span>`;
+    } else {
+      chartSubtitle.textContent = varInfo.description;
+    }
+  }
+
+  // Calculate statistics
+  const scores = data.map(d => d.mean);
+  const minScore = Math.min(...scores);
+  const maxScore = Math.max(...scores);
+  const minGroup = data.find(d => d.mean === minScore);
+  const maxGroup = data.find(d => d.mean === maxScore);
+  const totalN = data.reduce((sum, d) => sum + d.n, 0);
+  const diff = ((maxScore - minScore) * 100).toFixed(1);
+
+  // Build filter info string
+  const activeFilterCount = Object.values(currentFilters).reduce((sum, arr) => sum + arr.length, 0);
+  let filterInfo = '';
+  if (activeFilterCount > 0) {
+    filterInfo = `<br><span style="font-size: 11px; color: #2563eb; font-weight: 500;">🔍 Filtered: ${filteredCount.toLocaleString()} of ${totalCount.toLocaleString()} records shown (${activeFilterCount} filter${activeFilterCount > 1 ? 's' : ''} applied)</span>`;
+  }
+
+  // Sample size warning thresholds
+  const SMALL_SAMPLE_THRESHOLD = 100;  // Warning for total sample
+  const VERY_SMALL_GROUP_THRESHOLD = 30;  // Warning for individual groups
+  
+  // Check for small samples
+  const smallGroups = data.filter(d => d.n < VERY_SMALL_GROUP_THRESHOLD);
+  let sampleWarning = '';
+  
+  if (totalN < SMALL_SAMPLE_THRESHOLD) {
+    sampleWarning = `<br><span style="font-size: 11px; color: #dc3545; font-weight: 600;">⚠️ Caution: Very small sample size (N = ${totalN}). Results may not be reliable.</span>`;
+  } else if (smallGroups.length > 0) {
+    const groupNames = smallGroups.map(g => `${g.label} (n=${g.n})`).join(', ');
+    sampleWarning = `<br><span style="font-size: 11px; color: #f59e0b; font-weight: 500;">⚠️ Small sample warning: ${smallGroups.length} group${smallGroups.length > 1 ? 's have' : ' has'} fewer than ${VERY_SMALL_GROUP_THRESHOLD} responses: ${groupNames}</span>`;
+  }
+
+  // Update summary info with comparison
+  chartInfo.innerHTML = `
+    <strong>Key Finding:</strong> 
+    <span style="color: #4a90a4; font-weight: 600;">${minGroup.label}</span> shows the lowest zero-sum thinking (${minScore.toFixed(2)}), 
+    while <span style="color: #e8a838; font-weight: 600;">${maxGroup.label}</span> shows the highest (${maxScore.toFixed(2)}) — 
+    a difference of <strong>${diff} percentage points</strong>.
+    <br><span style="font-size: 11px;">Total sample size: N = ${totalN.toLocaleString()}</span>${filterInfo}${sampleWarning}
+  `;
+
+  // Show data coverage info based on current filter state
+  if (missingDataInfo) {
+    const totalSample = 20278; // Total sample size
+    
+    if (hasActiveFilters) {
+      // When filtered, show coverage relative to filtered subsample
+      const coveragePercent = ((totalN / filteredCount) * 100).toFixed(1);
+      const subsamplePercent = ((filteredCount / totalSample) * 100).toFixed(1);
+      
+      missingDataInfo.innerHTML = `
+        <strong>📊 Data Coverage:</strong> 
+        ${totalN.toLocaleString()} valid responses included (${coveragePercent}% of filtered subsample).
+        <br><span style="font-size: 11px; color: var(--muted);">Filtered subsample: ${filteredCount.toLocaleString()} records (${subsamplePercent}% of full dataset of ${totalSample.toLocaleString()}).</span>
+      `;
+      missingDataInfo.style.display = 'block';
+    } else {
+      // Original logic for unfiltered view
+      const available = metaInfo.available || totalN;
+      const missing = metaInfo.missing || 0;
+      const missingPercent = ((missing / totalSample) * 100).toFixed(1);
+      
+      if (missing > 0) {
+        missingDataInfo.innerHTML = `
+          <strong>📊 Data Coverage:</strong> 
+          ${available.toLocaleString()} valid responses (${((available / totalSample) * 100).toFixed(1)}% of total sample). 
+          ${missing.toLocaleString()} responses (${missingPercent}%) have missing data for this variable.
+          ${metaInfo.note && typeof metaInfo.note === 'string' ? `<br><em>Note: ${metaInfo.note}</em>` : ''}
+        `;
+        missingDataInfo.style.display = 'block';
+      } else {
+        missingDataInfo.innerHTML = `<strong>📊 Data Coverage:</strong> Complete data — all ${available.toLocaleString()} responses included (100% coverage).`;
+        missingDataInfo.style.display = 'block';
+      }
+    }
+  }
+
+  // Show variable note if available (for special warnings)
+  if (variableNote) {
+    if (metaInfo.note && typeof metaInfo.note === 'string' && metaInfo.note.length > 0) {
+      variableNote.innerHTML = `<strong>⚠️ Important:</strong> ${metaInfo.note}`;
+      variableNote.style.display = 'block';
+      variableNote.style.background = 'rgba(255, 193, 7, 0.15)';
+      variableNote.style.padding = '8px 12px';
+      variableNote.style.borderRadius = '6px';
+      variableNote.style.borderLeft = '3px solid #ffc107';
+    } else {
+      variableNote.style.display = 'none';
+    }
+  }
+}
+
+// ========================================
+// Story 3.1.2: Filter Functions
+// ========================================
+
+// Apply filters to raw data
+function applyFiltersToData(data, filters) {
+  if (!data || Object.keys(filters).length === 0) return data;
+  
+  return data.filter(record => {
+    for (const [variable, selectedValues] of Object.entries(filters)) {
+      if (selectedValues.length === 0) continue;
+      const recordValue = record[variable];
+      // Skip records with null/undefined values for this variable
+      if (recordValue === null || recordValue === undefined) return false;
+      if (!selectedValues.includes(recordValue)) return false;
+    }
+    return true;
+  });
+}
+
+// Aggregate filtered data by variable
+function aggregateByVariable(data, variable) {
+  if (!data || data.length === 0) return [];
+  
+  const groups = {};
+  
+  data.forEach(record => {
+    const groupKey = record[variable];
+    if (groupKey === null || groupKey === undefined) return;
+    
+    if (!groups[groupKey]) {
+      groups[groupKey] = { sum: 0, count: 0, values: [] };
+    }
+    if (record.zeroSumScore !== null && record.zeroSumScore !== undefined) {
+      groups[groupKey].sum += record.zeroSumScore;
+      groups[groupKey].count += 1;
+      groups[groupKey].values.push(record.zeroSumScore);
+    }
+  });
+  
+  // Calculate mean and standard error for each group
+  const result = [];
+  Object.entries(groups).forEach(([label, stats]) => {
+    if (stats.count > 0) {
+      const mean = stats.sum / stats.count;
+      const variance = stats.values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / stats.count;
+      const se = Math.sqrt(variance / stats.count);
+      result.push({
+        label: label,
+        mean: Math.round(mean * 10000) / 10000,
+        n: stats.count,
+        se: Math.round(se * 10000) / 10000
+      });
+    }
+  });
+  
+  return result;
+}
+
+// Get unique values for a variable from raw data
+function getUniqueValuesFromData(variable) {
+  if (!rawVizData) return [];
+  
+  const values = new Set();
+  rawVizData.forEach(record => {
+    if (record[variable] !== null && record[variable] !== undefined) {
+      values.add(record[variable]);
+    }
+  });
+  
+  // Sort by predefined order if available
+  const order = variableOrder[variable] || [];
+  const sortedValues = Array.from(values).sort((a, b) => {
+    const indexA = order.indexOf(a);
+    const indexB = order.indexOf(b);
+    if (indexA === -1 && indexB === -1) return String(a).localeCompare(String(b));
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
+  
+  return sortedValues;
+}
+
+// Render the filters panel (Story 3.1.2)
 function renderFiltersPanel() {
-  filtersPanel.innerHTML = "";
+  if (!filtersPanel) return;
   
-  const allVariables = ["age", "gender", "education", "income", "party", "urbanicity"];
-  const availableVariables = allVariables.filter(v => v !== currentXAxis);
+  filtersPanel.innerHTML = '';
   
-  availableVariables.forEach(variable => {
-    const values = getUniqueValues(mockDataViz, variable);
+  // Get all demographic variables except the current X-axis
+  const availableFilters = demographicVariables.filter(v => v !== currentXAxis);
+  
+  availableFilters.forEach(variable => {
+    const varInfo = variableLabels[variable] || { label: variable };
+    const values = getUniqueValuesFromData(variable);
     
-    // Create filter group
-    const filterGroup = document.createElement("div");
-    filterGroup.style.marginBottom = "12px";
-    filterGroup.style.paddingBottom = "12px";
-    filterGroup.style.borderBottom = "1px solid var(--border)";
+    if (values.length === 0) return;
     
-    const label = document.createElement("label");
-    label.style.display = "block";
-    label.style.fontSize = "12px";
-    label.style.fontWeight = "600";
-    label.style.marginBottom = "6px";
-    label.style.color = "var(--text)";
-    label.textContent = variable.charAt(0).toUpperCase() + variable.slice(1);
+    // Create filter group container
+    const filterGroup = document.createElement('div');
+    filterGroup.className = 'filter-group';
+    filterGroup.style.cssText = 'margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);';
     
-    filterGroup.appendChild(label);
+    // Create collapsible header
+    const header = document.createElement('div');
+    header.style.cssText = 'display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 8px;';
+    header.innerHTML = `
+      <span style="font-size: 12px; font-weight: 600; color: var(--text);">${varInfo.label}</span>
+      <span class="filter-toggle" style="font-size: 10px; color: var(--muted);">▼</span>
+    `;
+    
+    // Create options container (collapsible)
+    const optionsContainer = document.createElement('div');
+    optionsContainer.className = 'filter-options';
+    optionsContainer.style.cssText = 'display: none; max-height: 150px; overflow-y: auto;';
+    
+    // Track selected count
+    const selectedCount = (currentFilters[variable] || []).length;
+    if (selectedCount > 0) {
+      header.querySelector('.filter-toggle').textContent = `${selectedCount} selected`;
+      header.querySelector('.filter-toggle').style.color = '#2563eb';
+      optionsContainer.style.display = 'block';
+    }
+    
+    // Toggle collapse
+    header.addEventListener('click', () => {
+      const isOpen = optionsContainer.style.display !== 'none';
+      optionsContainer.style.display = isOpen ? 'none' : 'block';
+      if (selectedCount === 0) {
+        header.querySelector('.filter-toggle').textContent = isOpen ? '▼' : '▲';
+      }
+    });
     
     // Create checkboxes for each value
     values.forEach(value => {
-      const checkboxContainer = document.createElement("div");
-      checkboxContainer.style.display = "flex";
-      checkboxContainer.style.alignItems = "center";
-      checkboxContainer.style.marginBottom = "6px";
+      const checkboxWrapper = document.createElement('label');
+      checkboxWrapper.style.cssText = 'display: flex; align-items: center; gap: 6px; padding: 4px 0; cursor: pointer; font-size: 11px; color: var(--text);';
       
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.id = `filter-${variable}-${value}`;
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
       checkbox.value = value;
-      checkbox.style.marginRight = "6px";
-      checkbox.style.cursor = "pointer";
+      checkbox.style.cssText = 'cursor: pointer; accent-color: #2563eb;';
       
-      // Check if currently selected
+      // Check if already selected
       if (currentFilters[variable] && currentFilters[variable].includes(value)) {
         checkbox.checked = true;
       }
       
-      checkbox.addEventListener("change", () => {
-        updateFilter(variable, value, checkbox.checked);
+      checkbox.addEventListener('change', () => {
+        handleFilterChange(variable, value, checkbox.checked);
       });
       
-      const checkboxLabel = document.createElement("label");
-      checkboxLabel.htmlFor = `filter-${variable}-${value}`;
-      checkboxLabel.style.fontSize = "12px";
-      checkboxLabel.style.cursor = "pointer";
-      checkboxLabel.textContent = value;
+      const labelText = document.createElement('span');
+      labelText.textContent = value;
+      labelText.style.cssText = 'flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;';
       
-      checkboxContainer.appendChild(checkbox);
-      checkboxContainer.appendChild(checkboxLabel);
-      filterGroup.appendChild(checkboxContainer);
+      checkboxWrapper.appendChild(checkbox);
+      checkboxWrapper.appendChild(labelText);
+      optionsContainer.appendChild(checkboxWrapper);
     });
     
+    filterGroup.appendChild(header);
+    filterGroup.appendChild(optionsContainer);
     filtersPanel.appendChild(filterGroup);
   });
+  
+  // Show active filters summary
+  const activeFilterCount = Object.values(currentFilters).reduce((sum, arr) => sum + arr.length, 0);
+  if (activeFilterCount > 0) {
+    const summary = document.createElement('div');
+    summary.style.cssText = 'margin-top: 12px; padding: 8px; background: rgba(37, 99, 235, 0.08); border-radius: 6px; font-size: 11px; color: var(--text);';
+    summary.innerHTML = `<strong>Active filters:</strong> ${activeFilterCount} selected across ${Object.keys(currentFilters).length} variable(s)`;
+    filtersPanel.appendChild(summary);
+  }
 }
 
-// Update filter state and re-render chart
-function updateFilter(variable, value, isChecked) {
+// Handle filter checkbox change
+function handleFilterChange(variable, value, isChecked) {
   if (!currentFilters[variable]) {
     currentFilters[variable] = [];
   }
@@ -310,133 +791,56 @@ function updateFilter(variable, value, isChecked) {
     }
   }
   
-  renderVisualization(currentXAxis);
+  // Re-render chart with filtered data
+  renderD3BarChart(currentXAxis);
+  // Update filter panel to show selected counts
+  renderFiltersPanel();
 }
 
 // Reset all filters
 function resetAllFilters() {
   currentFilters = {};
   renderFiltersPanel();
-  renderVisualization(currentXAxis);
-}
-
-// Apply filters to data
-function applyFilters(data) {
-  return data.filter(record => {
-    for (const [variable, selectedValues] of Object.entries(currentFilters)) {
-      if (!selectedValues.includes(record[variable])) {
-        return false;
-      }
-    }
-    return true;
-  });
-}
-
-function renderVisualization(variable) {
-  // Apply filters first
-  const filteredData = applyFilters(mockDataViz);
-  
-  // Aggregate data by the selected demographic variable
-  const aggregated = aggregateByDemographic(filteredData, variable);
-  
-  // Sort by the defined order
-  const order = variableOrder[variable] || [];
-  const sorted = aggregated.sort((a, b) => {
-    const indexA = order.indexOf(a.label);
-    const indexB = order.indexOf(b.label);
-    return indexA - indexB;
-  });
-
-  // Prepare chart data
-  const labels = sorted.map(d => d.label);
-  const scores = sorted.map(d => d.mean);
-  const sampleSizes = sorted.map(d => d.n);
-
-  // Destroy previous chart if exists
-  if (chartInstance) {
-    chartInstance.destroy();
-  }
-
-  // Create new bar chart
-  chartInstance = new Chart(chartContainer, {
-    type: "bar",
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: "Average Zero-Sum Index (0–1)",
-          data: scores,
-          backgroundColor: "rgba(100, 150, 255, 0.7)",
-          borderColor: "rgba(100, 150, 255, 1)",
-          borderWidth: 2
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      indexAxis: "x",
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: 1,
-          title: {
-            display: true,
-            text: "Zero-Sum Index (normalized)"
-          }
-        }
-      },
-      plugins: {
-        legend: {
-          display: true
-        },
-        tooltip: {
-          callbacks: {
-            afterLabel: function(context) {
-              return "N = " + sampleSizes[context.dataIndex];
-            }
-          }
-        }
-      }
-    }
-  });
-
-  // Display summary info
-  const minScore = Math.min(...scores).toFixed(2);
-  const maxScore = Math.max(...scores).toFixed(2);
-  const meanScore = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
-  const totalN = sampleSizes.reduce((a, b) => a + b, 0);
-  const filterSummary = Object.entries(currentFilters).length > 0 
-    ? ` | Filters applied: ${Object.keys(currentFilters).join(", ")}`
-    : "";
-
-  chartInfo.innerHTML = `
-    <strong>Summary for ${variable}:</strong>
-    Mean: ${meanScore} | Min: ${minScore} | Max: ${maxScore} | Total N: ${totalN}${filterSummary}
-  `;
+  renderD3BarChart(currentXAxis);
 }
 
 // Event listener for demographic variable selector
-demoSelect.addEventListener("change", (e) => {
-  currentXAxis = e.target.value;
-  renderFiltersPanel();
-  renderVisualization(currentXAxis);
-});
+if (demoSelect) {
+  demoSelect.addEventListener("change", (e) => {
+    const newXAxis = e.target.value;
+    // Remove the new X-axis variable from filters (can't filter on X-axis)
+    if (currentFilters[newXAxis]) {
+      delete currentFilters[newXAxis];
+    }
+    currentXAxis = newXAxis;
+    renderFiltersPanel();
+    renderD3BarChart(currentXAxis);
+  });
+}
 
 // Reset filters button
-resetFiltersBtn.addEventListener("change", () => {
-  resetAllFilters();
-});
-
-resetFiltersBtn.addEventListener("click", () => {
-  resetAllFilters();
-});
+if (resetFiltersBtn) {
+  resetFiltersBtn.addEventListener("click", () => {
+    resetAllFilters();
+  });
+}
 
 // Initialize visualization with default selection
-window.addEventListener("load", () => {
-  currentXAxis = "age";
-  renderFiltersPanel();
-  renderVisualization("age");
+window.addEventListener("load", async () => {
+  // Load visualization data first
+  const dataLoaded = await loadVizData();
+  
+  if (dataLoaded) {
+    currentXAxis = "age";
+    renderFiltersPanel();
+    renderD3BarChart("age");
+  } else {
+    if (chartInfo) {
+      chartInfo.innerHTML = '<span style="color: #dc3545;">⚠️ Failed to load visualization data. Please check that the data files exist in data/viz/ folder.</span>';
+    }
+  }
+  
+  // Initialize policy indices (still uses mock data for now)
   initializePolicyIndices();
 });
 
@@ -456,21 +860,33 @@ const policyStddev = document.getElementById("policy-stddev");
 const policyRange = document.getElementById("policy-range");
 
 const policyDescriptions = {
-  epi: {
-    title: "Economic Policy Index (EPI)",
-    description: "Reflects beliefs about resource redistribution and market-based gains. Higher scores indicate preference for zero-sum economic beliefs."
+  redistIndex: {
+    title: "Pro-Redistribution Index",
+    description: "Measures support for government redistribution policies. Constructed via PCA from 6 items: tax preferences, universal healthcare, wealth accumulation, income support, outcome equality, and opportunity equality. Higher scores indicate stronger support for redistribution.",
+    components: ["Tax rich vs poor", "Universal healthcare", "Wealth accumulation (rev)", "Gov income support", "Gov outcome equality", "Gov opportunity equality"],
+    itemCount: 6,
+    isDiscrete: false
   },
-  swi: {
-    title: "Social Welfare Index (SWI)",
-    description: "Reflects attitudes toward public benefit programs and social equity. Higher scores indicate belief that welfare expansion diminishes opportunities for others."
+  raceIndex: {
+    title: "Race Attitudes Index",
+    description: "Measures acknowledgment of systemic racism and its effects. Constructed via PCA from 2 items: perceived racism as a problem, and slavery's lasting impact on Black Americans. Higher scores indicate greater acknowledgment of racial inequities.",
+    components: ["Racism is a problem", "Slavery makes it hard for Blacks to escape poverty"],
+    itemCount: 2,
+    isDiscrete: true
   },
-  ipi: {
-    title: "Immigration Policy Index (IPI)",
-    description: "Reflects perceptions of immigration's impact on native-born citizens. Higher scores indicate belief that immigrant gains harm native employment/resources."
+  immigIndex: {
+    title: "Anti-Immigration Index",
+    description: "Measures restrictive attitudes toward immigration. Constructed via PCA from 2 items: opposition to increasing immigration, and importance of being born in U.S. for American identity. Higher scores indicate more anti-immigration views.",
+    components: ["Oppose increasing immigration", "Important to be born in U.S."],
+    itemCount: 2,
+    isDiscrete: true
   },
-  eoi: {
-    title: "Education Opportunity Index (EOI)",
-    description: "Reflects beliefs about educational advancement as competitive or collaborative. Higher scores indicate zero-sum views (higher ed for some means less for others)."
+  womenIndex: {
+    title: "Gender Attitudes Index",
+    description: "Measures recognition of gender discrimination and support for corrective policies. Constructed via PCA from 2 items: women face discrimination, and women should receive hiring preference. Higher scores indicate stronger pro-women attitudes.",
+    components: ["Women face discrimination", "Women should get hiring preference"],
+    itemCount: 2,
+    isDiscrete: true
   }
 };
 
@@ -488,19 +904,57 @@ function calculateStats(values) {
 }
 
 function renderPolicyIndices(indexKey) {
-  // Extract policy values from all records
-  const policyValues = mockDataViz.map(record => record[indexKey]);
+  // Check if data is loaded
+  if (!rawVizData || rawVizData.length === 0) {
+    console.error('Raw visualization data not loaded yet');
+    return;
+  }
+  
+  // Extract policy values from all records (filter out null/undefined)
+  const policyValues = rawVizData
+    .map(record => record[indexKey])
+    .filter(v => v !== null && v !== undefined && !isNaN(v));
+  
+  if (policyValues.length === 0) {
+    console.error('No valid values found for index:', indexKey);
+    return;
+  }
   
   // Calculate statistics
   const stats = calculateStats(policyValues);
   
   // Update title and description
   const policyInfo = policyDescriptions[indexKey];
-  policyTitle.textContent = policyInfo.title;
-  policyDescription.textContent = policyInfo.description;
+  if (!policyInfo) {
+    console.error('No description found for index:', indexKey);
+    return;
+  }
   
-  // Create histogram (distribution)
-  const bins = 10;
+  policyTitle.textContent = policyInfo.title;
+  
+  // Build description with discrete distribution note if applicable
+  let descriptionHTML = `
+    <span>${policyInfo.description}</span>
+    <br><br>
+    <strong>Components:</strong> ${policyInfo.components.join(' • ')}
+    <br>
+    <span style="font-size: 11px; color: var(--muted);">Sample size: N = ${policyValues.length.toLocaleString()}</span>
+  `;
+  
+  // Add explanatory note for discrete distributions (2-item indices)
+  if (policyInfo.isDiscrete) {
+    descriptionHTML += `
+      <br>
+      <span style="font-size: 11px; color: var(--accent); font-style: italic;">
+        📊 Note: This index is constructed from ${policyInfo.itemCount} survey items, resulting in a discrete distribution with distinct peaks.
+      </span>
+    `;
+  }
+  
+  policyDescription.innerHTML = descriptionHTML;
+  
+  // Create histogram - use fewer bins for discrete distributions (2-item indices)
+  const bins = policyInfo.isDiscrete ? 10 : 20;
   const binSize = 1 / bins;
   const histogram = Array(bins).fill(0);
   
@@ -512,13 +966,22 @@ function renderPolicyIndices(indexKey) {
   const binLabels = Array.from({ length: bins }, (_, i) => {
     const start = (i * binSize).toFixed(2);
     const end = ((i + 1) * binSize).toFixed(2);
-    return `${start}-${end}`;
+    return `${start}–${end}`;
   });
   
   // Destroy previous chart if exists
   if (policyChartInstance) {
     policyChartInstance.destroy();
   }
+  
+  // Color based on index type
+  const colorMap = {
+    redistIndex: { bg: 'rgba(59, 130, 246, 0.7)', border: 'rgba(59, 130, 246, 1)' },
+    raceIndex: { bg: 'rgba(139, 92, 246, 0.7)', border: 'rgba(139, 92, 246, 1)' },
+    immigIndex: { bg: 'rgba(245, 158, 11, 0.7)', border: 'rgba(245, 158, 11, 1)' },
+    womenIndex: { bg: 'rgba(236, 72, 153, 0.7)', border: 'rgba(236, 72, 153, 1)' }
+  };
+  const colors = colorMap[indexKey] || { bg: 'rgba(100, 200, 100, 0.7)', border: 'rgba(100, 200, 100, 1)' };
   
   // Create histogram chart
   policyChartInstance = new Chart(policyChartContainer, {
@@ -529,8 +992,8 @@ function renderPolicyIndices(indexKey) {
         {
           label: "Frequency",
           data: histogram,
-          backgroundColor: "rgba(100, 200, 100, 0.7)",
-          borderColor: "rgba(100, 200, 100, 1)",
+          backgroundColor: colors.bg,
+          borderColor: colors.border,
           borderWidth: 1
         }
       ]
@@ -549,13 +1012,25 @@ function renderPolicyIndices(indexKey) {
         x: {
           title: {
             display: true,
-            text: "Index Value"
+            text: "Index Value (0–1)"
+          },
+          ticks: {
+            maxRotation: 45,
+            minRotation: 45,
+            autoSkip: true,
+            maxTicksLimit: 10
           }
         }
       },
       plugins: {
         legend: {
           display: false
+        },
+        tooltip: {
+          callbacks: {
+            title: (items) => `Range: ${items[0].label}`,
+            label: (item) => `Count: ${item.raw.toLocaleString()} (${((item.raw / policyValues.length) * 100).toFixed(1)}%)`
+          }
         }
       }
     }
@@ -569,9 +1044,15 @@ function renderPolicyIndices(indexKey) {
 }
 
 function initializePolicyIndices() {
-  renderPolicyIndices("epi");
+  // Only initialize if data is loaded
+  if (!rawVizData || rawVizData.length === 0) {
+    console.log('Waiting for data to load before initializing policy indices...');
+    return;
+  }
+  
+  renderPolicyIndices("redistIndex");
   renderScatterFiltersPanel();
-  renderScatterPlot("epi");
+  renderScatterPlot("redistIndex");
   
   policySelect.addEventListener("change", (e) => {
     renderPolicyIndices(e.target.value);
@@ -644,12 +1125,20 @@ if (closeDemographicFiltersBtn) {
 }
 
 function renderScatterFiltersPanel() {
+  if (!scatterFiltersPanel) return;
+  
+  // Wait for data to be loaded
+  if (!rawVizData || rawVizData.length === 0) {
+    scatterFiltersPanel.innerHTML = '<p style="font-size: 12px; color: var(--muted);">Loading filters...</p>';
+    return;
+  }
+  
   scatterFiltersPanel.innerHTML = "";
   
   const allVariables = ["age", "gender", "education", "income", "party", "urbanicity"];
   
   allVariables.forEach(variable => {
-    const values = getUniqueValues(mockDataViz, variable);
+    const values = getUniqueValuesFromData(variable);
     
     // Create filter column
     const column = document.createElement("div");
@@ -658,7 +1147,8 @@ function renderScatterFiltersPanel() {
     // Create header
     const header = document.createElement("div");
     header.className = "filter-column__header";
-    header.textContent = variable.toUpperCase();
+    const varLabel = variableLabels[variable]?.label || variable;
+    header.textContent = varLabel;
     column.appendChild(header);
     
     // Create options container
@@ -792,12 +1282,24 @@ function calculateCorrelation(xValues, yValues) {
 }
 
 function renderScatterPlot(indexKey) {
-  // Apply filters first
-  const filteredData = applyScatterFilters(mockDataViz);
+  // Check if data is loaded
+  if (!rawVizData || rawVizData.length === 0) {
+    console.error('Raw visualization data not loaded yet');
+    return;
+  }
   
-  // Extract data points from filtered data
-  const xValues = filteredData.map(record => record.zeroSumScore);
-  const yValues = filteredData.map(record => record[indexKey]);
+  // Apply filters first
+  const filteredData = applyScatterFilters(rawVizData);
+  
+  // Extract data points from filtered data (filter out null/undefined values)
+  const validData = filteredData.filter(record => 
+    record.zeroSumScore !== null && record.zeroSumScore !== undefined &&
+    record[indexKey] !== null && record[indexKey] !== undefined &&
+    !isNaN(record.zeroSumScore) && !isNaN(record[indexKey])
+  );
+  
+  const xValues = validData.map(record => record.zeroSumScore);
+  const yValues = validData.map(record => record[indexKey]);
   
   // Handle empty filtered data
   if (xValues.length === 0) {
@@ -833,19 +1335,60 @@ function renderScatterPlot(indexKey) {
     return;
   }
   
-  // Prepare scatter data
-  const scatterData = xValues.map((x, i) => ({
-    x: x,
-    y: yValues[i]
-  }));
+  // For large datasets, use binned/aggregated scatter or sample
+  let scatterData;
+  let displayNote = '';
   
-  // Calculate correlation
+  if (xValues.length > 2000) {
+    // Sample data for performance (random sample of 2000 points)
+    const sampleSize = 2000;
+    const indices = [];
+    const usedIndices = new Set();
+    
+    while (indices.length < sampleSize && indices.length < xValues.length) {
+      const idx = Math.floor(Math.random() * xValues.length);
+      if (!usedIndices.has(idx)) {
+        usedIndices.add(idx);
+        indices.push(idx);
+      }
+    }
+    
+    scatterData = indices.map(i => ({
+      x: xValues[i],
+      y: yValues[i]
+    }));
+    displayNote = ` (showing ${sampleSize.toLocaleString()} of ${xValues.length.toLocaleString()} points)`;
+  } else {
+    scatterData = xValues.map((x, i) => ({
+      x: x,
+      y: yValues[i]
+    }));
+  }
+  
+  // Calculate correlation using ALL data (not just sample)
   const correlation = calculateCorrelation(xValues, yValues);
   
   // Update title and description
   const policyInfo = policyDescriptions[indexKey];
+  if (!policyInfo) {
+    console.error('No description found for index:', indexKey);
+    return;
+  }
+  
   scatterTitle.textContent = `Zero-Sum Index vs ${policyInfo.title}`;
-  scatterDescription.textContent = `Each point represents one individual respondent. The X-axis shows their overall Zero-Sum Thinking score, while the Y-axis shows their score on the ${policyInfo.title}.`;
+  scatterDescription.innerHTML = `
+    Each point represents one respondent. X-axis = Zero-Sum Thinking score; Y-axis = ${policyInfo.title}.
+    <br><span style="font-size: 11px; color: var(--muted);">Correlation computed on N = ${xValues.length.toLocaleString()}${displayNote}</span>
+  `;
+  
+  // Color based on index type
+  const colorMap = {
+    redistIndex: { bg: 'rgba(59, 130, 246, 0.4)', border: 'rgba(59, 130, 246, 0.8)' },
+    raceIndex: { bg: 'rgba(139, 92, 246, 0.4)', border: 'rgba(139, 92, 246, 0.8)' },
+    immigIndex: { bg: 'rgba(245, 158, 11, 0.4)', border: 'rgba(245, 158, 11, 0.8)' },
+    womenIndex: { bg: 'rgba(236, 72, 153, 0.4)', border: 'rgba(236, 72, 153, 0.8)' }
+  };
+  const colors = colorMap[indexKey] || { bg: 'rgba(100, 150, 255, 0.4)', border: 'rgba(100, 150, 255, 0.8)' };
   
   // Destroy previous chart if exists
   if (scatterChartInstance) {
@@ -860,11 +1403,11 @@ function renderScatterPlot(indexKey) {
         {
           label: "Respondents",
           data: scatterData,
-          backgroundColor: "rgba(100, 150, 255, 0.6)",
-          borderColor: "rgba(100, 150, 255, 0.8)",
+          backgroundColor: colors.bg,
+          borderColor: colors.border,
           borderWidth: 1,
-          pointRadius: 4,
-          pointHoverRadius: 6
+          pointRadius: 3,
+          pointHoverRadius: 5
         }
       ]
     },
@@ -893,12 +1436,12 @@ function renderScatterPlot(indexKey) {
       },
       plugins: {
         legend: {
-          display: true
+          display: false
         },
         tooltip: {
           callbacks: {
             label: function(context) {
-              return `Zero-Sum: ${context.parsed.x.toFixed(2)}, ${policyInfo.title}: ${context.parsed.y.toFixed(2)}`;
+              return `Zero-Sum: ${context.parsed.x.toFixed(3)}, ${policyInfo.title}: ${context.parsed.y.toFixed(3)}`;
             }
           }
         }
@@ -906,10 +1449,18 @@ function renderScatterPlot(indexKey) {
     }
   });
   
-  // Update correlation stats
-  correlationR.textContent = correlation.r.toFixed(3);
+  // Update correlation stats with interpretation
+  const rValue = correlation.r;
+  let interpretation = '';
+  if (Math.abs(rValue) < 0.1) interpretation = '(negligible)';
+  else if (Math.abs(rValue) < 0.3) interpretation = '(weak)';
+  else if (Math.abs(rValue) < 0.5) interpretation = '(moderate)';
+  else if (Math.abs(rValue) < 0.7) interpretation = '(strong)';
+  else interpretation = '(very strong)';
+  
+  correlationR.innerHTML = `${rValue.toFixed(3)} <span style="color: var(--muted); font-size: 11px;">${interpretation}</span>`;
   correlationR2.textContent = correlation.r2.toFixed(3);
-  scatterN.textContent = xValues.length;
+  scatterN.textContent = xValues.length.toLocaleString();
 }
 
 // Sub-tab switching for Policy Indices

@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles/style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
     <script src="./lib/zeroSumTest.js"></script>
@@ -448,19 +449,26 @@
             <select id="demo-select" class="select">
               <option value="age">Age Group</option>
               <option value="gender">Gender</option>
+              <option value="race">Race/Ethnicity</option>
               <option value="education">Education Level</option>
-              <option value="income">Income Bracket</option>
+              <option value="income">Relative Income</option>
+              <option value="hhIncome">Household Income</option>
               <option value="party">Party Affiliation</option>
+              <option value="partyDetail">Party Affiliation (Detailed)</option>
               <option value="urbanicity">Urbanicity</option>
+              <option value="immigrationStatus">Immigration Status</option>
             </select>
+            <div id="variable-note" class="muted" style="margin-top: 8px; font-size: 12px; display: none;"></div>
           </div>
 
           <div class="card">
-            <h2>Zero-Sum Index by Group</h2>
+            <h2 id="chart-title">Zero-Sum Thinking by Age Group</h2>
+            <p id="chart-subtitle" class="muted" style="margin-top: -8px; margin-bottom: 16px; font-size: 14px;">Average zero-sum thinking index (0–1 scale) across different age groups. Higher values indicate stronger zero-sum beliefs.</p>
             <div style="display: flex; gap: 20px;">
               <div style="flex: 1;">
-                <canvas id="chart-container"></canvas>
+                <div id="d3-chart-container" style="width: 100%; min-height: 400px;"></div>
                 <div id="chart-info" class="muted" style="margin-top: 1rem;"></div>
+                <div id="missing-data-info" style="margin-top: 8px; padding: 10px 14px; background: rgba(108, 117, 125, 0.08); border-radius: 6px; font-size: 12px; color: var(--muted); display: none;"></div>
               </div>
               <div style="flex: 0 0 250px; border-left: 1px solid var(--border); padding-left: 16px;">
                 <h3 style="margin-top: 0; font-size: 14px;">Filters</h3>
@@ -492,15 +500,15 @@
             <div class="card">
               <h2>Select a policy index</h2>
               <select id="policy-select" class="select">
-                <option value="epi">Economic Policy Index (EPI)</option>
-                <option value="swi">Social Welfare Index (SWI)</option>
-                <option value="ipi">Immigration Policy Index (IPI)</option>
-                <option value="eoi">Education Opportunity Index (EOI)</option>
+                <option value="redistIndex">Pro-Redistribution Index</option>
+                <option value="raceIndex">Race Attitudes Index</option>
+                <option value="immigIndex">Anti-Immigration Index</option>
+                <option value="womenIndex">Gender Attitudes Index</option>
               </select>
             </div>
 
             <div class="card">
-              <h2 id="policy-title">Economic Policy Index (EPI)</h2>
+              <h2 id="policy-title">Pro-Redistribution Index</h2>
               <p id="policy-description" class="muted"></p>
               <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 16px;">
                 <div>
@@ -524,15 +532,15 @@
             <div class="card">
               <h2>Select a policy index</h2>
               <select id="policy-select-scatter" class="select">
-                <option value="epi">Economic Policy Index (EPI)</option>
-                <option value="swi">Social Welfare Index (SWI)</option>
-                <option value="ipi">Immigration Policy Index (IPI)</option>
-                <option value="eoi">Education Opportunity Index (EOI)</option>
+                <option value="redistIndex">Pro-Redistribution Index</option>
+                <option value="raceIndex">Race Attitudes Index</option>
+                <option value="immigIndex">Anti-Immigration Index</option>
+                <option value="womenIndex">Gender Attitudes Index</option>
               </select>
             </div>
 
             <div class="card">
-              <h2 id="scatter-title">Zero-Sum Index vs Economic Policy Index (EPI)</h2>
+              <h2 id="scatter-title">Zero-Sum Index vs Pro-Redistribution Index</h2>
               <p id="scatter-description" class="muted"></p>
               <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; margin-top: 16px;">
                 <div>

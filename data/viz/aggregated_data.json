@@ -1,0 +1,304 @@
+{
+  "age": [
+    {
+      "label": "18-25",
+      "mean": 0.5573,
+      "n": 2287,
+      "se": 0.0039
+    },
+    {
+      "label": "26-40",
+      "mean": 0.5548,
+      "n": 5910,
+      "se": 0.0029
+    },
+    {
+      "label": "41-55",
+      "mean": 0.5218,
+      "n": 5219,
+      "se": 0.003
+    },
+    {
+      "label": "56-70",
+      "mean": 0.4644,
+      "n": 5014,
+      "se": 0.0027
+    },
+    {
+      "label": "70+",
+      "mean": 0.4402,
+      "n": 1848,
+      "se": 0.0043
+    }
+  ],
+  "gender": [
+    {
+      "label": "Female",
+      "mean": 0.4964,
+      "n": 10376,
+      "se": 0.0019
+    },
+    {
+      "label": "Male",
+      "mean": 0.532,
+      "n": 9902,
+      "se": 0.0023
+    }
+  ],
+  "race": [
+    {
+      "label": "Asian",
+      "mean": 0.4823,
+      "n": 1237,
+      "se": 0.0058
+    },
+    {
+      "label": "Black",
+      "mean": 0.5757,
+      "n": 2420,
+      "se": 0.004
+    },
+    {
+      "label": "Hispanic",
+      "mean": 0.5277,
+      "n": 2169,
+      "se": 0.0043
+    },
+    {
+      "label": "Native American",
+      "mean": 0.5163,
+      "n": 196,
+      "se": 0.015
+    },
+    {
+      "label": "Other",
+      "mean": 0.5098,
+      "n": 541,
+      "se": 0.0089
+    },
+    {
+      "label": "Pacific Islander",
+      "mean": 0.524,
+      "n": 61,
+      "se": 0.0259
+    },
+    {
+      "label": "White",
+      "mean": 0.5036,
+      "n": 13654,
+      "se": 0.0018
+    }
+  ],
+  "education": [
+    {
+      "label": "Bachelor's (4-year)",
+      "mean": 0.4904,
+      "n": 5727,
+      "se": 0.0028
+    },
+    {
+      "label": "Graduate (Master's+)",
+      "mean": 0.5416,
+      "n": 3972,
+      "se": 0.004
+    },
+    {
+      "label": "High School",
+      "mean": 0.5334,
+      "n": 3633,
+      "se": 0.0031
+    },
+    {
+      "label": "Less than High School",
+      "mean": 0.554,
+      "n": 560,
+      "se": 0.0083
+    },
+    {
+      "label": "Some College / 2-year",
+      "mean": 0.5029,
+      "n": 6386,
+      "se": 0.0024
+    }
+  ],
+  "party": [
+    {
+      "label": "Democrat",
+      "mean": 0.5468,
+      "n": 8228,
+      "se": 0.0024
+    },
+    {
+      "label": "Independent",
+      "mean": 0.498,
+      "n": 5543,
+      "se": 0.0026
+    },
+    {
+      "label": "Republican",
+      "mean": 0.4839,
+      "n": 5852,
+      "se": 0.0028
+    }
+  ],
+  "partyDetail": [
+    {
+      "label": "Independent",
+      "mean": 0.498,
+      "n": 5543,
+      "se": 0.0026
+    },
+    {
+      "label": "Moderate Democrat",
+      "mean": 0.524,
+      "n": 3845,
+      "se": 0.0031
+    },
+    {
+      "label": "Moderate Republican",
+      "mean": 0.4803,
+      "n": 3013,
+      "se": 0.0035
+    },
+    {
+      "label": "Strong Democrat",
+      "mean": 0.5667,
+      "n": 4383,
+      "se": 0.0036
+    },
+    {
+      "label": "Strong Republican",
+      "mean": 0.4877,
+      "n": 2839,
+      "se": 0.0043
+    }
+  ],
+  "income": [
+    {
+      "label": "Above Average",
+      "mean": 0.4955,
+      "n": 5450,
+      "se": 0.0029
+    },
+    {
+      "label": "Average",
+      "mean": 0.5037,
+      "n": 7074,
+      "se": 0.0023
+    },
+    {
+      "label": "Below Average",
+      "mean": 0.5128,
+      "n": 3310,
+      "se": 0.0033
+    },
+    {
+      "label": "Far Above Average",
+      "mean": 0.5835,
+      "n": 1949,
+      "se": 0.0063
+    },
+    {
+      "label": "Far Below Average",
+      "mean": 0.5292,
+      "n": 1986,
+      "se": 0.0045
+    }
+  ],
+  "hhIncome": [
+    {
+      "label": "$100-150k",
+      "mean": 0.5099,
+      "n": 4007,
+      "se": 0.0036
+    },
+    {
+      "label": "$15-25k",
+      "mean": 0.532,
+      "n": 1737,
+      "se": 0.0046
+    },
+    {
+      "label": "$150k+",
+      "mean": 0.5277,
+      "n": 2485,
+      "se": 0.0052
+    },
+    {
+      "label": "$25-40k",
+      "mean": 0.5119,
+      "n": 2694,
+      "se": 0.0037
+    },
+    {
+      "label": "$40-55k",
+      "mean": 0.5007,
+      "n": 2304,
+      "se": 0.004
+    },
+    {
+      "label": "$55-75k",
+      "mean": 0.495,
+      "n": 2719,
+      "se": 0.0038
+    },
+    {
+      "label": "$75-100k",
+      "mean": 0.5029,
+      "n": 2559,
+      "se": 0.0041
+    },
+    {
+      "label": "< $15k",
+      "mean": 0.5502,
+      "n": 1771,
+      "se": 0.0045
+    }
+  ],
+  "urbanicity": [
+    {
+      "label": "Rural",
+      "mean": 0.5028,
+      "n": 1566,
+      "se": 0.0049
+    },
+    {
+      "label": "Suburban",
+      "mean": 0.4856,
+      "n": 4363,
+      "se": 0.003
+    },
+    {
+      "label": "Urban",
+      "mean": 0.5841,
+      "n": 2874,
+      "se": 0.0044
+    }
+  ],
+  "immigrationStatus": [
+    {
+      "label": "1st Gen (Self)",
+      "mean": 0.4683,
+      "n": 1421,
+      "se": 0.0055
+    },
+    {
+      "label": "2nd Gen (Parents)",
+      "mean": 0.5081,
+      "n": 2450,
+      "se": 0.0042
+    },
+    {
+      "label": "3rd Gen (Grandparents)",
+      "mean": 0.5054,
+      "n": 3105,
+      "se": 0.0039
+    },
+    {
+      "label": "4th+ Gen (Native)",
+      "mean": 0.5217,
+      "n": 13302,
+      "se": 0.0018
+    }
+  ]
+}
