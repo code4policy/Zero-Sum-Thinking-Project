@@ -158,72 +158,372 @@
               </div>
             </div>
 
-            <h1 style="
-              margin: 40px 0 0 0;
-              font-size: 32px;
-              font-weight: 700;
-              color: #fff;
-              line-height: 1.3;
-              max-width: 800px;
-              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-              text-align: center;
-            ">An Interactive Explainer, Data Dashboard, and Self-assessment</h1>
+            <!-- Quick Navigation Buttons -->
+            <div style="display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; justify-content: center;">
+              <button onclick="setRoute('test')" style="padding: 14px 28px; background: linear-gradient(135deg, #a51c30 0%, #8b1626 100%); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(165, 28, 48, 0.4); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(165, 28, 48, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(165, 28, 48, 0.4)';">
+                Take the Test
+              </button>
+              <button onclick="setRoute('visualization')" style="padding: 14px 28px; background: rgba(255, 255, 255, 0.15); color: white; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.5)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.3)';">
+                Explore Data
+              </button>
+              <button onclick="setRoute('explore')" style="padding: 14px 28px; background: rgba(255, 255, 255, 0.15); color: white; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.5)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.3)';">
+                Learn More
+              </button>
+            </div>
           </div>
         </div>
+
+        <!-- Divider -->
+        <div style="max-width: 1200px; margin: 48px auto; height: 1px; background: linear-gradient(90deg, transparent 0%, #e5e7eb 50%, transparent 100%);"></div>
 
         <!-- Main Content -->
         <div class="container main" style="padding-top: 40px;">
-          <h3 style="margin-top: 0; margin-bottom: 16px; font-size: 24px; color: var(--text);">Purpose of the Website</h3>
-          <p>This website translates the empirical findings of the publication "Zero-Sum Thinking and the Roots of U.S. Political Differences" by Sahil Chinoy, Nathan Nunn, Sandra Sequeira, Stefanie Stantcheva into an interactive, public-facing educational platform. It combines conceptual explanation, empirical visualization, and self-assessment, while maintaining academic rigor, transparency, and ethical safeguards.</p>
+          <h2 style="margin-top: 0; margin-bottom: 16px; font-size: 20px; color: var(--text);">How to Use This Platform</h2>
 
-          <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 24px; color: var(--text);">Why Zero-Sum Thinking</h3>
-          <p>Beliefs about gains and losses unavoidably play a central role in social and political life. Zero-sum thinking shapes how people interpret conflict and cooperation, evaluate political leaders, respond to election outcomes, and assess policies related to redistribution, immigration, trade, and social inclusion. It helps explain why similar economic or social changes can generate cooperation and trust in some settings, but fear, polarization, or conflict in others.</p>
+          <div class="card" style="
+            background: #ffffff; 
+            border: none;
+            border-left: 4px solid #a51c30;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            border-radius: 8px;
+            padding: 24px 28px;
+          ">
+            <h2 style="margin-top: 0; margin-bottom: 12px; color: var(--text); font-size: 20px;">Purpose of the Website</h2>
+            <p style="margin-bottom: 16px; line-height: 1.6;">
+              Ever wondered why people see the same issue so differently? This platform helps you understand zero-sum thinking—a mindset that shapes how we view politics, policy, and social change. Whether you're a student, educator, policymaker, or curious citizen, this site offers evidence-based insights into one of the most important divides in contemporary society.
+            </p>
 
-          <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 24px; color: var(--text);">Why This Study</h3>
-          <p>The research used draws on a large-scale, carefully designed survey study by established scholars in political economy and public economics. By systematically measuring zero-sum thinking and linking it to political attitudes, the study provides one of the most comprehensive empirical frameworks to date for understanding how underlying beliefs about gains and losses contribute to political disagreement, policy resistance, and broader patterns of social cohesion and conflict.</p>
-
-          <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 24px; color: var(--text);">What You Find on This Site</h3>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 24px;">
-            <div class="card" style="cursor: pointer;" onclick="setRoute('concept')">
-              <h4 style="margin-top: 0; color: #a51c30;">What Is Zero-Sum Thinking?</h4>
-              <p>Learn what zero-sum thinking means and how it differs from "win-win" perspectives.</p>
-            </div>
-            <div class="card" style="cursor: pointer;" onclick="setRoute('data')">
-              <h4 style="margin-top: 0; color: #a51c30;">Explore the Data</h4>
-              <p>Examine aggregated charts and maps showing patterns reported in the study.</p>
-            </div>
-            <div class="card" style="cursor: pointer;" onclick="setRoute('test')">
-              <h4 style="margin-top: 0; color: #a51c30;">Take the Zero-Sum Thinking Test</h4>
-              <p>Answer a short questionnaire adapted from the research and see how your responses compare with the overall distribution.</p>
-            </div>
-            <div class="card" style="cursor: pointer;" onclick="setRoute('research')">
-              <h4 style="margin-top: 0; color: #a51c30;">The Research</h4>
-              <p>Brief description of the research the website relies on.</p>
-            </div>
-            <div class="card" style="cursor: pointer;" onclick="setRoute('methods')">
-              <h4 style="margin-top: 0; color: #a51c30;">Methods and Transparency</h4>
-              <p>Briefly explains for the professional user about methods employed in the original research.</p>
-            </div>
-            <div class="card" style="cursor: pointer;" onclick="setRoute('ethics')">
-              <h4 style="margin-top: 0; color: #a51c30;">Ethics, Privacy and Disclaimer</h4>
-              <p>Information on how the website handles data, privacy, and responsible use.</p>
-            </div>
+            <h2 style="margin-top: 20px; margin-bottom: 12px; color: var(--text); font-size: 20px;">What You Find on This Site</h2>
+            <p class="muted" style="margin-bottom: 15px;">
+              Navigate through the platform to explore different dimensions of zero-sum thinking:
+            </p>
+            <ul class="list">
+              <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('learn')">Home:</span></strong> Understand the core concepts and how zero-sum thinking is measured.</li>
+              <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('explore')">Learn:</span></strong> Play an interactive mini-game and watch animated explanations to build intuition.</li>
+              <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('test')">Test:</span></strong> Answer questions about your own beliefs and see how you compare to the benchmark.</li>
+              <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('visualization')">Visualization:</span></strong> Explore demographic patterns, policy correlations, and geographic distributions.</li>
+            </ul>
           </div>
 
         </div>
+
+        <!-- Research Overview Card -->
+        <div class="card" style="
+          background: #ffffff;
+          border: none;
+          border-left: 4px solid #a51c30;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+          border-radius: 8px;
+          padding: 24px 28px;
+          margin-top: 2px;
+        ">
+          <h2 style="margin-bottom: 16px; color: var(--text); font-size: 20px;">Research Overview</h2>
+          <p class="muted" style="margin-bottom: 16px;">
+            This platform explores research by 
+            <a href="https://sahilchinoy.com/" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline; font-weight: 600;">Sahil Chinoy</a>, 
+            <a href="https://nathannunn.arts.ubc.ca/" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline; font-weight: 600;">Nathan Nunn</a>, 
+            <a href="https://sites.google.com/view/sandramgsequeira/home" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline; font-weight: 600;">Sandra Sequeira</a>, and 
+            <a href="https://www.stefanie-stantcheva.com/" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline; font-weight: 600;">Stefanie Stantcheva</a> 
+            on zero-sum thinking and U.S. political divides.
+          </p>
+          <p style="margin-bottom: 12px;">
+            <strong>Publication:</strong> Forthcoming at the <em>American Economic Review</em>
+          </p>
+          <p style="margin-bottom: 24px;">
+            Zero-sum thinking - believing gains for one person mean losses for another - shapes political views. The study analyzes survey data from 20,000+ respondents to measure this mindset and its correlations.
+          </p>
         </div>
+
+        <!-- Research Resources Card -->
+        <div class="card" style="
+          background: #ffffff;
+          border: none;
+          border-left: 4px solid #a51c30;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+          border-radius: 8px;
+          padding: 24px 28px;
+          margin-top: 2px;
+        ">
+          <h2 style="margin-bottom: 16px; color: var(--text); font-size: 20px;">Research Resources</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            <a href="https://socialeconomicslab.org/wp-content/uploads/2024/04/zero_sum_political_divides_OA.pdf" target="_blank" rel="noopener noreferrer" style="display: block; padding: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)';">
+              <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 12px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </div>
+                <div style="font-weight: 600; color: #1e293b; font-size: 16px;">Full Paper</div>
+              </div>
+              <div style="font-size: 14px; color: #64748b; line-height: 1.4;">Open Access PDF of the complete research</div>
+            </a>
+            <a href="https://socialeconomicslab.org/wp-content/uploads/2024/04/Zero_Sum_Slides_compressed.pdf" target="_blank" rel="noopener noreferrer" style="display: block; padding: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)';">
+              <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 12px; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </div>
+                <div style="font-weight: 600; color: #1e293b; font-size: 16px;">Presentation Slides</div>
+              </div>
+              <div style="font-size: 14px; color: #64748b; line-height: 1.4;">Visual overview of key findings</div>
+            </a>
+            <a href="https://socialeconomicslab.org/wp-content/uploads/2024/04/zero_sum_political_divides_Q.pdf" target="_blank" rel="noopener noreferrer" style="display: block; padding: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)';">
+              <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 12px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                </div>
+                <div style="font-weight: 600; color: #1e293b; font-size: 16px;">Survey Questionnaire</div>
+              </div>
+              <div style="font-size: 14px; color: #64748b; line-height: 1.4;">Complete survey instrument used</div>
+            </a>
+            <a href="https://x.com/s_stantcheva/status/1703765533571616809?s=46" target="_blank" rel="noopener noreferrer" style="display: block; padding: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)';">
+              <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 12px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </div>
+                <div style="font-weight: 600; color: #1e293b; font-size: 16px;">Twitter Thread</div>
+              </div>
+              <div style="font-size: 14px; color: #64748b; line-height: 1.4;">Concise research summary</div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div style="max-width: 1200px; margin: 48px auto 0; height: 1px; background: linear-gradient(90deg, transparent 0%, #e5e7eb 50%, transparent 100%);"></div>
+
       </section>
 
       <!-- EXPLORE (Interactive) -->
       <section id="page-concept" class="page" aria-labelledby="explore-title">
         <h1 id="explore-title">Explore: Interactive Demonstrations</h1>
 
+        <!-- Learning Path Guide -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin-bottom: 40px; overflow-x: auto;">
+          <div style="display: flex; gap: 0; align-items: center; min-width: min-content; padding: 0 8px;">
+            <!-- Step 1: Understand -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 140px;">
+              <div style="width: 48px; height: 48px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6b7280; font-weight: 600; font-size: 18px;">
+                ✓
+              </div>
+              <div style="text-align: center; font-size: 13px; font-weight: 600; color: #374151;">Understand</div>
+              <div style="text-align: center; font-size: 12px; color: #9ca3af;">Concepts</div>
+            </div>
+
+            <!-- Arrow -->
+            <div style="flex: 0 0 auto; color: #d1d5db; font-size: 24px; margin: 0 8px;">→</div>
+
+            <!-- Step 2: Learn (Current) -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 140px;">
+              <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #a51c30 0%, #8b1626 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 18px; box-shadow: 0 4px 12px rgba(165, 28, 48, 0.3);">
+                2
+              </div>
+              <div style="text-align: center; font-size: 13px; font-weight: 600; color: #a51c30;">Learn</div>
+              <div style="text-align: center; font-size: 12px; color: #9ca3af;">YOU ARE HERE</div>
+            </div>
+
+            <!-- Arrow -->
+            <div style="flex: 0 0 auto; color: #d1d5db; font-size: 24px; margin: 0 8px;">→</div>
+
+            <!-- Step 3: Test -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 140px; cursor: pointer; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7';" onclick="setRoute('test')">
+              <div style="width: 48px; height: 48px; background: #f3f4f6; border: 2px solid #d1d5db; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6b7280; font-weight: 600; font-size: 18px;">
+                3
+              </div>
+              <div style="text-align: center; font-size: 13px; font-weight: 600; color: #374151;">Test</div>
+              <div style="text-align: center; font-size: 12px; color: #9ca3af;">Self-Assess</div>
+            </div>
+
+            <!-- Arrow -->
+            <div style="flex: 0 0 auto; color: #d1d5db; font-size: 24px; margin: 0 8px;">→</div>
+
+            <!-- Step 4: Visualize -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 140px; cursor: pointer; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7';" onclick="setRoute('visualization')">
+              <div style="width: 48px; height: 48px; background: #f3f4f6; border: 2px solid #d1d5db; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6b7280; font-weight: 600; font-size: 18px;">
+                4
+              </div>
+              <div style="text-align: center; font-size: 13px; font-weight: 600; color: #374151;">Visualize</div>
+              <div style="text-align: center; font-size: 12px; color: #9ca3af;">Data Patterns</div>
+            </div>
+          </div>
+
+          <!-- Progress Info -->
+          <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            <div>
+              <div style="font-size: 12px; font-weight: 600; color: #a51c30; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Current Step</div>
+              <p style="margin: 0; color: #374151; font-size: 14px;">Interactive game and visual examples to build intuition about zero-sum thinking.</p>
+            </div>
+            <div>
+              <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Next Steps</div>
+              <p style="margin: 0; color: #6b7280; font-size: 14px;">Take the test to assess your own zero-sum thinking score, then explore demographic patterns in the data.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Introduction Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 40px;">
+          <!-- Simple Example Card -->
+          <div class="card">
+            <h2 style="margin-top: 0; margin-bottom: 16px; color: var(--text);">A Simple Example: The Pie/Pizza</h2>
+            <div style="space: 16px; line-height: 1.8;">
+              <p style="margin-bottom: 14px; color: var(--text-light);">
+                Imagine a pie shared by two groups.
+              </p>
+              
+              <!-- Visual Diagrams -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <!-- Zero-Sum -->
+                <div style="text-align: center;">
+                  <svg width="100%" height="140" viewBox="0 0 140 140" style="max-width: 100%;">
+                    <!-- Zero-sum pie (fixed size) -->
+                    <circle cx="70" cy="70" r="50" fill="#fce7e7" stroke="#ddd" stroke-width="1"/>
+                    <!-- Red slice (40%) -->
+                    <path d="M 70 70 L 70 20 A 50 50 0 0 1 110.36 39.64 Z" fill="#ef4444"/>
+                    <!-- Blue slice (60%) -->
+                    <path d="M 70 70 L 110.36 39.64 A 50 50 0 0 1 70 120 Z" fill="#3b82f6"/>
+                    <!-- Labels -->
+                    <text x="75" y="35" font-size="12" font-weight="600" fill="white">40%</text>
+                    <text x="80" y="95" font-size="12" font-weight="600" fill="white">60%</text>
+                  </svg>
+                  <p style="margin: 8px 0 0 0; font-size: 12px; color: var(--text-light);">Fixed pie size</p>
+                </div>
+                
+                <!-- Positive-Sum -->
+                <div style="text-align: center;">
+                  <svg width="100%" height="140" viewBox="0 0 140 140" style="max-width: 100%;">
+                    <!-- Positive-sum pie (grows) -->
+                    <circle cx="70" cy="70" r="60" fill="#e0f9f4" stroke="#ddd" stroke-width="1"/>
+                    <!-- Red slice (40%) -->
+                    <path d="M 70 70 L 70 10 A 60 60 0 0 1 120.96 36.36 Z" fill="#ef4444"/>
+                    <!-- Blue slice (60%) -->
+                    <path d="M 70 70 L 120.96 36.36 A 60 60 0 0 1 70 130 Z" fill="#10b981"/>
+                    <!-- Labels -->
+                    <text x="75" y="30" font-size="12" font-weight="600" fill="white">40%</text>
+                    <text x="80" y="110" font-size="12" font-weight="600" fill="white">60%</text>
+                    <!-- Growth indicator -->
+                    <path d="M 130 30 L 145 15" stroke="#10b981" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <path d="M 140 20 L 145 15 L 135 18" stroke="#10b981" stroke-width="2" fill="#10b981"/>
+                  </svg>
+                  <p style="margin: 8px 0 0 0; font-size: 12px; color: var(--text-light);">Pie can grow</p>
+                </div>
+              </div>
+              
+              <div style="background: #f8f9fa; padding: 16px; border-radius: 8px; margin-bottom: 14px;">
+                <p style="margin: 0 0 8px 0; color: var(--text); font-weight: 600;">🔴 In zero-sum thinking:</p>
+                <p style="margin: 0; color: var(--text-light); font-size: 14px;">The size of the pie never changes. If one group gets a larger slice, the other group must get a smaller one.</p>
+              </div>
+              <div style="background: #f0f8ff; padding: 16px; border-radius: 8px;">
+                <p style="margin: 0 0 8px 0; color: var(--text); font-weight: 600;">🟢 In shared-gains (positive-sum) thinking:</p>
+                <p style="margin: 0; color: var(--text-light); font-size: 14px;">The pie itself can grow. Both groups can end up with larger slices, even if the shares are not equal.</p>
+              </div>
+              <p style="margin-top: 14px; padding-top: 14px; border-top: 1px solid #e5e7eb; color: var(--muted); font-size: 14px;">
+                This example shows why zero-sum thinking focuses on competition over fixed resources, while other perspectives allow for cooperation, growth, or mutual benefit.
+              </p>
+            </div>
+          </div>
+
+          <!-- Common Examples Card -->
+          <div class="card">
+            <h2 style="margin-top: 0; margin-bottom: 16px; color: var(--text);">Common Examples in Debate</h2>
+            <p style="margin-top: 0; margin-bottom: 16px; color: var(--text-light);">
+              Zero-sum thinking often appears in debates about:
+            </p>
+            
+            <!-- Example Grid with Icons -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+              <!-- Jobs -->
+              <div style="background: linear-gradient(135deg, #fef3c7 0%, #fef9e7 100%); border: 1px solid #fcd34d; border-radius: 8px; padding: 12px; display: flex; gap: 10px; align-items: flex-start;">
+                <div style="font-size: 20px; flex-shrink: 0;">💼</div>
+                <div>
+                  <p style="margin: 0 0 4px 0; font-weight: 600; font-size: 13px; color: var(--text);">Jobs</p>
+                  <p style="margin: 0; font-size: 12px; color: var(--text-light); line-height: 1.4;">One group gets more jobs → others lose out</p>
+                </div>
+              </div>
+              
+              <!-- Trade -->
+              <div style="background: linear-gradient(135deg, #dbeafe 0%, #f0f9ff 100%); border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px; display: flex; gap: 10px; align-items: flex-start;">
+                <div style="font-size: 20px; flex-shrink: 0;">🌐</div>
+                <div>
+                  <p style="margin: 0 0 4px 0; font-weight: 600; font-size: 13px; color: var(--text);">Trade</p>
+                  <p style="margin: 0; font-size: 12px; color: var(--text-light); line-height: 1.4;">One country gains → another is harmed</p>
+                </div>
+              </div>
+              
+              <!-- Immigration -->
+              <div style="background: linear-gradient(135deg, #f3e8ff 0%, #faf5ff 100%); border: 1px solid #e9d5ff; border-radius: 8px; padding: 12px; display: flex; gap: 10px; align-items: flex-start;">
+                <div style="font-size: 20px; flex-shrink: 0;">🚀</div>
+                <div>
+                  <p style="margin: 0 0 4px 0; font-weight: 600; font-size: 13px; color: var(--text);">Immigration</p>
+                  <p style="margin: 0; font-size: 12px; color: var(--text-light); line-height: 1.4;">Immigrant gains reduce citizen opportunities</p>
+                </div>
+              </div>
+              
+              <!-- Wealth -->
+              <div style="background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%); border: 1px solid #fecaca; border-radius: 8px; padding: 12px; display: flex; gap: 10px; align-items: flex-start;">
+                <div style="font-size: 20px; flex-shrink: 0;">💰</div>
+                <div>
+                  <p style="margin: 0 0 4px 0; font-weight: 600; font-size: 13px; color: var(--text);">Income & Wealth</p>
+                  <p style="margin: 0; font-size: 12px; color: var(--text-light); line-height: 1.4;">Some get richer → others must get poorer</p>
+                </div>
+              </div>
+
+              <!-- Education -->
+              <div style="background: linear-gradient(135deg, #c7d2fe 0%, #e0e7ff 100%); border: 1px solid #a5b4fc; border-radius: 8px; padding: 12px; display: flex; gap: 10px; align-items: flex-start;">
+                <div style="font-size: 20px; flex-shrink: 0;">📚</div>
+                <div>
+                  <p style="margin: 0 0 4px 0; font-weight: 600; font-size: 13px; color: var(--text);">Education</p>
+                  <p style="margin: 0; font-size: 12px; color: var(--text-light); line-height: 1.4;">Quality resources for some → less for others</p>
+                </div>
+              </div>
+
+              <!-- Climate -->
+              <div style="background: linear-gradient(135deg, #ccfbf1 0%, #d1fae5 100%); border: 1px solid #99f6e4; border-radius: 8px; padding: 12px; display: flex; gap: 10px; align-items: flex-start;">
+                <div style="font-size: 20px; flex-shrink: 0;">🌍</div>
+                <div>
+                  <p style="margin: 0 0 4px 0; font-weight: 600; font-size: 13px; color: var(--text);">Climate Action</p>
+                  <p style="margin: 0; font-size: 12px; color: var(--text-light); line-height: 1.4;">Environment vs economic development tradeoff</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Key Insight Box -->
+            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fff7ed 100%); border-left: 4px solid #f59e0b; border-radius: 8px; padding: 14px; margin-bottom: 12px;">
+              <p style="margin: 0; font-size: 13px; color: #78350f;">
+                <strong style="color: #a16207;">💡 Key Insight:</strong> Each of these debates involves real tradeoffs, but zero-sum thinking can make people overlook creative solutions that could benefit multiple groups simultaneously.
+              </p>
+            </div>
+            
+            <p style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; color: var(--muted); font-size: 14px;">
+              These beliefs shape how people interpret social and economic change, even when the actual outcomes may be more complex.
+            </p>
+          </div>
+        </div>
+
         <div class="card">
           <h2>Mini game (2-minute intuition demo)</h2>
           <p class="muted">
             You and a competitor are fighting for market share. Choose to compete fiercely or collaborate. See how your mindset affects the outcome over 3 rounds.
           </p>
+
+          <!-- How to Play Section -->
+          <div style="background: linear-gradient(135deg, #f0f4ff 0%, #f9fafb 100%); border: 1px solid #e0e7ff; border-radius: 8px; padding: 20px; margin-bottom: 24px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+              <div>
+                <div style="font-weight: 600; color: #a51c30; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">🎯 Game Objective</div>
+                <p style="margin: 0; color: #4b5563; font-size: 14px; line-height: 1.6;">
+                  Maximize your profits across 3 rounds by choosing between aggressive competition or collaboration.
+                </p>
+              </div>
+              <div>
+                <div style="font-weight: 600; color: #a51c30; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">⚡ What You'll Learn</div>
+                <p style="margin: 0; color: #4b5563; font-size: 14px; line-height: 1.6;">
+                  Experience how zero-sum vs. positive-sum mindsets lead to different outcomes and consequences.
+                </p>
+              </div>
+              <div>
+                <div style="font-weight: 600; color: #a51c30; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">⏱️ Time Required</div>
+                <p style="margin: 0; color: #4b5563; font-size: 14px; line-height: 1.6;">
+                  2 minutes to complete. Quick, interactive, and immediately insightful.
+                </p>
+              </div>
+            </div>
+          </div>
 
           <div id="game-container" style="margin-top: 24px;">
             <!-- Game State: Not Started -->
@@ -337,6 +637,50 @@
                 <div id="game-conclusion" style="margin-bottom: 24px; padding: 16px; background: white; border-radius: 8px; border-left: 4px solid #10b981;">
                   <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">🎯 Key Takeaway</div>
                   <div id="conclusion-text" style="font-size: 14px; color: var(--text); line-height: 1.6;"></div>
+                </div>
+
+                <!-- Reflection Questions -->
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fef9e7 100%); border: 1px solid #fcd34d; border-radius: 12px; padding: 24px; margin-bottom: 24px;">
+                  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <div style="font-size: 24px;">💭</div>
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #92400e;">Reflection Questions</h3>
+                  </div>
+                  
+                  <div style="space: 16px;">
+                    <div style="background: white; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                      <p style="margin: 0; font-size: 14px; color: #78350f; line-height: 1.6;">
+                        <strong>❓ What was your initial strategy?</strong><br/>
+                        <span style="color: #92400e;">Did you tend to compete or collaborate? Why?</span>
+                      </p>
+                    </div>
+                    
+                    <div style="background: white; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                      <p style="margin: 0; font-size: 14px; color: #78350f; line-height: 1.6;">
+                        <strong>❓ Did the outcome match your expectations?</strong><br/>
+                        <span style="color: #92400e;">What surprised you about how the game unfolded?</span>
+                      </p>
+                    </div>
+                    
+                    <div style="background: white; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                      <p style="margin: 0; font-size: 14px; color: #78350f; line-height: 1.6;">
+                        <strong>❓ How does this relate to real-world decisions?</strong><br/>
+                        <span style="color: #92400e;">Think about policy debates you've encountered recently—can you see zero-sum thinking at play?</span>
+                      </p>
+                    </div>
+
+                    <div style="background: white; border-radius: 8px; padding: 12px;">
+                      <p style="margin: 0; font-size: 14px; color: #78350f; line-height: 1.6;">
+                        <strong>❓ Could a different mindset have changed the result?</strong><br/>
+                        <span style="color: #92400e;">What would happen if both players focused on shared gains instead?</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #fcd34d;">
+                    <p style="margin: 0; font-size: 13px; color: #92400e; font-weight: 600;">
+                      💡 Tip: These questions don't have "right" answers. The goal is to understand how your mindset shapes your choices and their consequences.
+                    </p>
+                  </div>
                 </div>
 
                 <button class="btn" id="play-again-btn" type="button" style="width: 100%; padding: 16px;">Play Again</button>
@@ -1014,7 +1358,7 @@
 
     <footer class="footer">
       <div class="container muted">
-        Prototype template for Stories 1–2. Replace placeholders with paper-aligned wording and PCA scoring.
+        Programming and Data for Policymakers [DPI-691M] zero-sum team
       </div>
     </footer>
 
