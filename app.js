@@ -3,9 +3,12 @@
 // ---------------------------
 const pages = {
   learn: document.getElementById("page-learn"),
-  explore: document.getElementById("page-explore"),
+  concept: document.getElementById("page-concept"),
+  research: document.getElementById("page-research"),
+  data: document.getElementById("page-data"),
   test: document.getElementById("page-test"),
-  visualization: document.getElementById("page-visualization"),
+  methods: document.getElementById("page-methods"),
+  ethics: document.getElementById("page-ethics"),
   about: document.getElementById("page-about"),
 };
 
