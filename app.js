@@ -3,9 +3,12 @@
 // ---------------------------
 const pages = {
   learn: document.getElementById("page-learn"),
-  explore: document.getElementById("page-explore"),
+  concept: document.getElementById("page-concept"),
+  research: document.getElementById("page-research"),
+  data: document.getElementById("page-data"),
   test: document.getElementById("page-test"),
-  visualization: document.getElementById("page-visualization"),
+  methods: document.getElementById("page-methods"),
+  ethics: document.getElementById("page-ethics"),
   about: document.getElementById("page-about"),
 };
 
@@ -33,6 +36,19 @@ if (mobileToggle && navMenu) {
   mobileToggle.addEventListener("click", () => {
     navMenu.classList.toggle("nav--open");
   });
+}
+
+// ---------------------------
+// Methodology panel toggle (Story 2.2)
+// ---------------------------
+function toggleMethodology() {
+  const content = document.getElementById('methodology-content');
+  const icon = document.getElementById('methodology-toggle-icon');
+  if (content && icon) {
+    const isHidden = content.style.display === 'none';
+    content.style.display = isHidden ? 'block' : 'none';
+    icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+  }
 }
 
 // ---------------------------
@@ -107,9 +123,19 @@ function createDistributionChart(userScore) {
   // 若正好等于1.0，归到最后一个bin
   if (userScore === 1) userBinIndex = zs4Counts.length - 1;
 
-  const backgroundColors = counts.map((_, i) =>
-    i === userBinIndex ? '#a51c30' : '#e5e7eb'
-  );
+  // Color scheme: 
+  // - Below user: light blue (low saturation) 
+  // - Above user: light purple (low saturation)
+  // - User's bin: orange (visible but neutral, not negative)
+  const backgroundColors = counts.map((_, i) => {
+    if (i === userBinIndex) {
+      return '#f97316'; // Orange for user's position (neutral, visible)
+    } else if (i < userBinIndex) {
+      return '#bfdbfe'; // Light blue for lower scores (low saturation)
+    } else {
+      return '#ddd6fe'; // Light purple for higher scores (low saturation)
+    }
+  });
 
   if (distributionChart) {
     distributionChart.destroy();
@@ -165,15 +191,52 @@ if (computeBtn) {
     const interpretation = ZeroSumTest.getInterpretation(score, 'en');
     
     const scorePercent = Math.round(score * 100);
-    if (scoreDisplay) scoreDisplay.textContent = scorePercent;
+    const percentile = percentileInfo.percentile;
     
-    if (percentileText) {
-      percentileText.innerHTML = `You score higher than <strong>${percentileInfo.percentile}%</strong> of the ~20,000 U.S. respondents in the study.`;
+    // Update inline score display
+    const scoreInline = document.getElementById("score-inline");
+    if (scoreInline) scoreInline.textContent = scorePercent;
+    
+    // 1️⃣ PRIMARY: Main conclusion based on percentile (cognitive anchor)
+    const mainConclusionText = document.getElementById("main-conclusion-text");
+    if (mainConclusionText) {
+      if (percentile < 25) {
+        mainConclusionText.innerHTML = `You are <strong style="color: #2563eb;">less zero-sum</strong> than most people.`;
+      } else if (percentile < 50) {
+        mainConclusionText.innerHTML = `You are <strong style="color: #0891b2;">somewhat less zero-sum</strong> than average.`;
+      } else if (percentile < 75) {
+        mainConclusionText.innerHTML = `You are <strong style="color: #d97706;">somewhat more zero-sum</strong> than average.`;
+      } else {
+        mainConclusionText.innerHTML = `You are <strong style="color: #dc2626;">more zero-sum</strong> than most people.`;
+      }
     }
     
+    // Percentile text (secondary to main conclusion)
+    if (percentileText) {
+      percentileText.innerHTML = `You score higher than <strong>${percentile}%</strong> of the ~20,000 U.S. respondents in the study.`;
+    }
+    
+    // Interpretation labels
     if (interpretationLevel) interpretationLevel.textContent = interpretation.level;
     if (interpretationTitle) interpretationTitle.textContent = interpretation.title;
     if (interpretationDesc) interpretationDesc.textContent = interpretation.description;
+    
+    // 5️⃣ TL;DR summary (most important for users)
+    const tldrText = document.getElementById("tldr-text");
+    if (tldrText) {
+      // Convert percentile to "X out of Y people" format
+      let comparisonText = '';
+      if (percentile < 25) {
+        comparisonText = `Compared to about <strong>3 out of 4 people</strong> in the study, you are <strong>less likely</strong> to see the world as zero-sum.`;
+      } else if (percentile < 50) {
+        comparisonText = `Compared to about <strong>half</strong> of the people in the study, you are <strong>less likely</strong> to see the world as zero-sum.`;
+      } else if (percentile < 75) {
+        comparisonText = `Compared to about <strong>half</strong> of the people in the study, you are <strong>more likely</strong> to see the world as zero-sum.`;
+      } else {
+        comparisonText = `Compared to about <strong>3 out of 4 people</strong> in the study, you are <strong>more likely</strong> to see the world as zero-sum.`;
+      }
+      tldrText.innerHTML = comparisonText;
+    }
     
     createDistributionChart(score);
     
@@ -341,8 +404,10 @@ function renderD3BarChart(variable) {
 
   // Set up dimensions
   const containerWidth = d3ChartContainer.clientWidth || 600;
+  const maxWidth = 700; // Maximum chart width for better aesthetics
+  const effectiveWidth = Math.min(containerWidth, maxWidth);
   const margin = { top: 30, right: 30, bottom: 80, left: 60 };
-  const width = containerWidth - margin.left - margin.right;
+  const width = effectiveWidth - margin.left - margin.right;
   const height = 400 - margin.top - margin.bottom;
 
   // Create SVG
@@ -865,28 +930,32 @@ const policyDescriptions = {
     description: "Measures support for government redistribution policies. Constructed via PCA from 6 items: tax preferences, universal healthcare, wealth accumulation, income support, outcome equality, and opportunity equality. Higher scores indicate stronger support for redistribution.",
     components: ["Tax rich vs poor", "Universal healthcare", "Wealth accumulation (rev)", "Gov income support", "Gov outcome equality", "Gov opportunity equality"],
     itemCount: 6,
-    isDiscrete: false
+    isDiscrete: false,
+    distributionNote: null
   },
   raceIndex: {
     title: "Race Attitudes Index",
     description: "Measures acknowledgment of systemic racism and its effects. Constructed via PCA from 2 items: perceived racism as a problem, and slavery's lasting impact on Black Americans. Higher scores indicate greater acknowledgment of racial inequities.",
     components: ["Racism is a problem", "Slavery makes it hard for Blacks to escape poverty"],
     itemCount: 2,
-    isDiscrete: true
+    isDiscrete: true,
+    distributionNote: "This index is constructed from only 2 survey items, resulting in a multi-modal (clustered) distribution rather than a smooth curve. This is expected and reflects the discrete nature of the underlying responses."
   },
   immigIndex: {
     title: "Anti-Immigration Index",
     description: "Measures restrictive attitudes toward immigration. Constructed via PCA from 2 items: opposition to increasing immigration, and importance of being born in U.S. for American identity. Higher scores indicate more anti-immigration views.",
     components: ["Oppose increasing immigration", "Important to be born in U.S."],
     itemCount: 2,
-    isDiscrete: true
+    isDiscrete: true,
+    distributionNote: "This index is constructed from only 2 survey items, resulting in a multi-modal (clustered) distribution rather than a smooth curve. This is expected and reflects the discrete nature of the underlying responses."
   },
   womenIndex: {
     title: "Gender Attitudes Index",
     description: "Measures recognition of gender discrimination and support for corrective policies. Constructed via PCA from 2 items: women face discrimination, and women should receive hiring preference. Higher scores indicate stronger pro-women attitudes.",
     components: ["Women face discrimination", "Women should get hiring preference"],
     itemCount: 2,
-    isDiscrete: true
+    isDiscrete: true,
+    distributionNote: "This index is constructed from only 2 survey items, resulting in a multi-modal (clustered) distribution rather than a smooth curve. This is expected and reflects the discrete nature of the underlying responses."
   }
 };
 
@@ -931,30 +1000,21 @@ function renderPolicyIndices(indexKey) {
   }
   
   policyTitle.textContent = policyInfo.title;
-  
-  // Build description with discrete distribution note if applicable
-  let descriptionHTML = `
+  policyDescription.innerHTML = `
     <span>${policyInfo.description}</span>
     <br><br>
     <strong>Components:</strong> ${policyInfo.components.join(' • ')}
     <br>
     <span style="font-size: 11px; color: var(--muted);">Sample size: N = ${policyValues.length.toLocaleString()}</span>
+    ${policyInfo.distributionNote ? `
+      <div style="margin-top: 12px; padding: 10px 12px; background: rgba(255, 193, 7, 0.1); border-left: 3px solid rgba(255, 193, 7, 0.7); border-radius: 4px; font-size: 12px; color: var(--text);">
+        <strong>📊 Note:</strong> ${policyInfo.distributionNote}
+      </div>
+    ` : ''}
   `;
   
-  // Add explanatory note for discrete distributions (2-item indices)
-  if (policyInfo.isDiscrete) {
-    descriptionHTML += `
-      <br>
-      <span style="font-size: 11px; color: var(--accent); font-style: italic;">
-        📊 Note: This index is constructed from ${policyInfo.itemCount} survey items, resulting in a discrete distribution with distinct peaks.
-      </span>
-    `;
-  }
-  
-  policyDescription.innerHTML = descriptionHTML;
-  
-  // Create histogram - use fewer bins for discrete distributions (2-item indices)
-  const bins = policyInfo.isDiscrete ? 10 : 20;
+  // Create histogram with 10 bins for all indices
+  const bins = 10;
   const binSize = 1 / bins;
   const histogram = Array(bins).fill(0);
   
@@ -1135,39 +1195,53 @@ function renderScatterFiltersPanel() {
   
   scatterFiltersPanel.innerHTML = "";
   
-  const allVariables = ["age", "gender", "education", "income", "party", "urbanicity"];
+  const allVariables = ["gender", "race", "education", "income", "hhIncome", "party", "partyDetail", "urbanicity", "immigrationStatus"];
   
   allVariables.forEach(variable => {
     const values = getUniqueValuesFromData(variable);
+    if (values.length === 0) return; // Skip if no data for this variable
     
-    // Create filter column
-    const column = document.createElement("div");
-    column.className = "filter-column";
+    // Create filter row with collapsible dropdown style (like Demographic Patterns)
+    const filterItem = document.createElement("div");
+    filterItem.style.cssText = "border-bottom: 1px solid var(--border-light); padding: 8px 0;";
     
-    // Create header
+    // Create clickable header
     const header = document.createElement("div");
-    header.className = "filter-column__header";
-    const varLabel = variableLabels[variable]?.label || variable;
-    header.textContent = varLabel;
-    column.appendChild(header);
+    header.style.cssText = "display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none;";
     
-    // Create options container
+    const varLabel = variableLabels[variable]?.label || variable;
+    const labelSpan = document.createElement("span");
+    labelSpan.style.cssText = "font-size: 13px; color: var(--text);";
+    labelSpan.textContent = varLabel;
+    
+    const arrow = document.createElement("span");
+    arrow.style.cssText = "color: var(--muted); font-size: 10px; transition: transform 0.2s;";
+    arrow.innerHTML = "▼";
+    arrow.className = "filter-arrow";
+    
+    header.appendChild(labelSpan);
+    header.appendChild(arrow);
+    
+    // Create options container (hidden by default)
     const optionsContainer = document.createElement("div");
-    optionsContainer.className = "filter-column__options";
+    optionsContainer.style.cssText = "display: none; padding-top: 8px; padding-left: 8px;";
+    optionsContainer.className = "filter-options-container";
+    
+    // Toggle visibility on header click
+    header.addEventListener("click", () => {
+      const isHidden = optionsContainer.style.display === "none";
+      optionsContainer.style.display = isHidden ? "block" : "none";
+      arrow.style.transform = isHidden ? "rotate(180deg)" : "rotate(0deg)";
+    });
     
     // Create checkboxes for each value
     values.forEach(value => {
-      const optionDiv = document.createElement("div");
-      optionDiv.className = "filter-option-item";
-      
-      // Add active class if selected
-      if (scatterFilters[variable] && scatterFilters[variable].includes(value)) {
-        optionDiv.classList.add("active");
-      }
+      const optionDiv = document.createElement("label");
+      optionDiv.style.cssText = "display: flex; align-items: center; gap: 6px; padding: 4px 0; cursor: pointer; font-size: 12px; color: var(--text-light);";
       
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
-      checkbox.id = `scatter-filter-${variable}-${value}`;
+      checkbox.style.cssText = "accent-color: var(--primary); cursor: pointer;";
       checkbox.value = value;
       
       // Check if currently selected
@@ -1179,18 +1253,17 @@ function renderScatterFiltersPanel() {
         updateScatterFilter(variable, value, checkbox.checked);
       });
       
-      const checkboxLabel = document.createElement("span");
-      checkboxLabel.className = "filter-option-label";
-      checkboxLabel.htmlFor = `scatter-filter-${variable}-${value}`;
-      checkboxLabel.textContent = value;
+      const labelText = document.createElement("span");
+      labelText.textContent = value;
       
       optionDiv.appendChild(checkbox);
-      optionDiv.appendChild(checkboxLabel);
+      optionDiv.appendChild(labelText);
       optionsContainer.appendChild(optionDiv);
     });
     
-    column.appendChild(optionsContainer);
-    scatterFiltersPanel.appendChild(column);
+    filterItem.appendChild(header);
+    filterItem.appendChild(optionsContainer);
+    scatterFiltersPanel.appendChild(filterItem);
   });
 }
 
@@ -1306,6 +1379,8 @@ function renderScatterPlot(indexKey) {
     correlationR.textContent = "—";
     correlationR2.textContent = "—";
     scatterN.textContent = "0";
+    const slopeEl = document.getElementById("scatter-slope");
+    if (slopeEl) slopeEl.textContent = "—";
     
     if (scatterChartInstance) {
       scatterChartInstance.destroy();
@@ -1320,13 +1395,9 @@ function renderScatterPlot(indexKey) {
         responsive: true,
         maintainAspectRatio: true,
         plugins: {
-          annotation: {
-            annotations: {
-              box1: {
-                type: "label",
-                content: ["No data available"]
-              }
-            }
+          title: {
+            display: true,
+            text: "No data available for selected filters"
           }
         }
       }
@@ -1335,38 +1406,67 @@ function renderScatterPlot(indexKey) {
     return;
   }
   
-  // For large datasets, use binned/aggregated scatter or sample
-  let scatterData;
-  let displayNote = '';
+  // Calculate correlation using ALL data
+  const correlation = calculateCorrelation(xValues, yValues);
   
-  if (xValues.length > 2000) {
-    // Sample data for performance (random sample of 2000 points)
-    const sampleSize = 2000;
-    const indices = [];
-    const usedIndices = new Set();
-    
-    while (indices.length < sampleSize && indices.length < xValues.length) {
-      const idx = Math.floor(Math.random() * xValues.length);
-      if (!usedIndices.has(idx)) {
-        usedIndices.add(idx);
-        indices.push(idx);
-      }
-    }
-    
-    scatterData = indices.map(i => ({
-      x: xValues[i],
-      y: yValues[i]
-    }));
-    displayNote = ` (showing ${sampleSize.toLocaleString()} of ${xValues.length.toLocaleString()} points)`;
-  } else {
-    scatterData = xValues.map((x, i) => ({
-      x: x,
-      y: yValues[i]
-    }));
+  // Calculate regression line (y = slope * x + intercept)
+  const meanX = xValues.reduce((a, b) => a + b, 0) / xValues.length;
+  const meanY = yValues.reduce((a, b) => a + b, 0) / yValues.length;
+  let numerator = 0;
+  let denominator = 0;
+  for (let i = 0; i < xValues.length; i++) {
+    numerator += (xValues[i] - meanX) * (yValues[i] - meanY);
+    denominator += (xValues[i] - meanX) ** 2;
+  }
+  const slope = denominator === 0 ? 0 : numerator / denominator;
+  const intercept = meanY - slope * meanX;
+  
+  // ========== BINSCATTER CALCULATION ==========
+  // Following Chinoy et al. (2024) methodology: divide X into equal-width bins
+  // and compute mean Y for each bin
+  const numBins = 20;
+  const binWidth = 1 / numBins;
+  const bins = [];
+  
+  // Initialize bins
+  for (let i = 0; i < numBins; i++) {
+    bins.push({
+      xMin: i * binWidth,
+      xMax: (i + 1) * binWidth,
+      xMid: (i + 0.5) * binWidth,
+      yValues: [],
+      yMean: null,
+      count: 0
+    });
   }
   
-  // Calculate correlation using ALL data (not just sample)
-  const correlation = calculateCorrelation(xValues, yValues);
+  // Assign data points to bins
+  for (let i = 0; i < xValues.length; i++) {
+    const x = xValues[i];
+    const y = yValues[i];
+    const binIndex = Math.min(Math.floor(x / binWidth), numBins - 1);
+    bins[binIndex].yValues.push(y);
+    bins[binIndex].count++;
+  }
+  
+  // Calculate mean Y for each bin
+  const binscatterData = [];
+  bins.forEach(bin => {
+    if (bin.count > 0) {
+      bin.yMean = bin.yValues.reduce((a, b) => a + b, 0) / bin.count;
+      binscatterData.push({
+        x: bin.xMid,
+        y: bin.yMean,
+        count: bin.count
+      });
+    }
+  });
+  
+  // Regression line data points
+  const regressionLine = [
+    { x: 0, y: intercept },
+    { x: 1, y: slope + intercept }
+  ];
   
   // Update title and description
   const policyInfo = policyDescriptions[indexKey];
@@ -1377,43 +1477,88 @@ function renderScatterPlot(indexKey) {
   
   scatterTitle.textContent = `Zero-Sum Index vs ${policyInfo.title}`;
   scatterDescription.innerHTML = `
-    Each point represents one respondent. X-axis = Zero-Sum Thinking score; Y-axis = ${policyInfo.title}.
-    <br><span style="font-size: 11px; color: var(--muted);">Correlation computed on N = ${xValues.length.toLocaleString()}${displayNote}</span>
+    <strong>Binned scatter plot:</strong> Each dot represents the <strong>mean ${policyInfo.title}</strong> for respondents within that Zero-Sum Index bin.
+    <br><span style="font-size: 11px; color: var(--muted);">Based on N = ${xValues.length.toLocaleString()} respondents across ${binscatterData.length} bins with data.</span>
   `;
   
   // Color based on index type
+  // raw: desaturated/grayish for background, bin: darker saturated for emphasis
   const colorMap = {
-    redistIndex: { bg: 'rgba(59, 130, 246, 0.4)', border: 'rgba(59, 130, 246, 0.8)' },
-    raceIndex: { bg: 'rgba(139, 92, 246, 0.4)', border: 'rgba(139, 92, 246, 0.8)' },
-    immigIndex: { bg: 'rgba(245, 158, 11, 0.4)', border: 'rgba(245, 158, 11, 0.8)' },
-    womenIndex: { bg: 'rgba(236, 72, 153, 0.4)', border: 'rgba(236, 72, 153, 0.8)' }
+    redistIndex: { 
+      bin: 'rgba(30, 64, 175, 1)',      // darker blue for bin means
+      raw: 'rgba(147, 165, 207, 0.15)'  // desaturated grayish-blue for raw
+    },
+    raceIndex: { 
+      bin: 'rgba(91, 33, 182, 1)',      // darker purple
+      raw: 'rgba(167, 139, 250, 0.15)'  // desaturated grayish-purple
+    },
+    immigIndex: { 
+      bin: 'rgba(180, 83, 9, 1)',       // darker amber
+      raw: 'rgba(217, 179, 130, 0.15)'  // desaturated grayish-amber
+    },
+    womenIndex: { 
+      bin: 'rgba(157, 23, 77, 1)',      // darker pink
+      raw: 'rgba(219, 150, 180, 0.15)'  // desaturated grayish-pink
+    }
   };
-  const colors = colorMap[indexKey] || { bg: 'rgba(100, 150, 255, 0.4)', border: 'rgba(100, 150, 255, 0.8)' };
+  const colors = colorMap[indexKey] || { 
+    bin: 'rgba(30, 64, 175, 1)', 
+    raw: 'rgba(147, 165, 207, 0.15)' 
+  };
+  
+  // Prepare raw data points for display (transparent background layer)
+  const rawDataPoints = xValues.map((x, i) => ({ x: x, y: yValues[i] }));
   
   // Destroy previous chart if exists
   if (scatterChartInstance) {
     scatterChartInstance.destroy();
   }
   
-  // Create scatter plot
+  // Create binscatter plot with raw data overlay
   scatterChartInstance = new Chart(scatterChartContainer, {
     type: "scatter",
     data: {
       datasets: [
         {
-          label: "Respondents",
-          data: scatterData,
-          backgroundColor: colors.bg,
-          borderColor: colors.border,
-          borderWidth: 1,
-          pointRadius: 3,
-          pointHoverRadius: 5
+          label: "Raw Data",
+          data: rawDataPoints,
+          backgroundColor: colors.raw,
+          borderColor: 'transparent',
+          borderWidth: 0,
+          pointRadius: 2.5,
+          pointHoverRadius: 4,
+          pointStyle: 'circle',
+          order: 3  // Draw first (behind everything)
+        },
+        {
+          label: "Bin Means",
+          data: binscatterData,
+          backgroundColor: colors.bin,
+          borderColor: 'rgba(255, 255, 255, 0.8)',
+          borderWidth: 1.5,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          pointStyle: 'circle',
+          order: 1  // Draw on top
+        },
+        {
+          label: "OLS Fit",
+          data: regressionLine,
+          type: "line",
+          borderColor: "rgba(220, 38, 38, 0.85)",
+          borderWidth: 2,
+          borderDash: [6, 4],
+          pointRadius: 0,
+          pointStyle: 'line',  // Use line style for legend
+          fill: false,
+          tension: 0,
+          order: 2
         }
       ]
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       scales: {
         x: {
           type: "linear",
@@ -1422,7 +1567,11 @@ function renderScatterPlot(indexKey) {
           max: 1,
           title: {
             display: true,
-            text: "Zero-Sum Index (0–1)"
+            text: "Zero-Sum Index (0–1)",
+            font: { weight: 'bold' }
+          },
+          grid: {
+            color: 'rgba(0, 0, 0, 0.05)'
           }
         },
         y: {
@@ -1430,18 +1579,50 @@ function renderScatterPlot(indexKey) {
           max: 1,
           title: {
             display: true,
-            text: `${policyInfo.title} (0–1)`
+            text: `${policyInfo.title} (0–1)`,
+            font: { weight: 'bold' }
+          },
+          grid: {
+            color: 'rgba(0, 0, 0, 0.05)'
           }
         }
       },
       plugins: {
         legend: {
-          display: false
+          display: true,
+          position: 'bottom',
+          labels: {
+            usePointStyle: true,
+            padding: 15,
+            font: { size: 11 },
+            generateLabels: function(chart) {
+              const datasets = chart.data.datasets;
+              return datasets.map((dataset, i) => {
+                return {
+                  text: dataset.label,
+                  fillStyle: i === 2 ? 'transparent' : dataset.backgroundColor,
+                  strokeStyle: i === 2 ? dataset.borderColor : dataset.borderColor,
+                  lineWidth: i === 2 ? 2 : 1,
+                  lineDash: i === 2 ? [6, 4] : [],
+                  pointStyle: i === 2 ? 'line' : 'circle',
+                  hidden: !chart.isDatasetVisible(i),
+                  datasetIndex: i
+                };
+              });
+            }
+          }
         },
         tooltip: {
           callbacks: {
             label: function(context) {
-              return `Zero-Sum: ${context.parsed.x.toFixed(3)}, ${policyInfo.title}: ${context.parsed.y.toFixed(3)}`;
+              if (context.datasetIndex === 1) {  // Bin Means is now index 1
+                const point = context.raw;
+                return [
+                  `Mean ${policyInfo.title}: ${point.y.toFixed(3)}`,
+                  `Respondents in bin: ${point.count.toLocaleString()}`
+                ];
+              }
+              return null;
             }
           }
         }
@@ -1461,6 +1642,45 @@ function renderScatterPlot(indexKey) {
   correlationR.innerHTML = `${rValue.toFixed(3)} <span style="color: var(--muted); font-size: 11px;">${interpretation}</span>`;
   correlationR2.textContent = correlation.r2.toFixed(3);
   scatterN.textContent = xValues.length.toLocaleString();
+  
+  // Update slope display
+  const slopeEl = document.getElementById("scatter-slope");
+  if (slopeEl) {
+    const slopeDir = slope > 0 ? "positive" : slope < 0 ? "negative" : "zero";
+    slopeEl.innerHTML = `${slope.toFixed(3)} <span style="color: var(--muted); font-size: 11px;">(${slopeDir})</span>`;
+  }
+  
+  // Update sample size warning
+  const scatterSampleWarning = document.getElementById("scatter-sample-warning");
+  if (scatterSampleWarning) {
+    const SCATTER_SMALL_THRESHOLD = 500;
+    const SCATTER_VERY_SMALL_THRESHOLD = 100;
+    
+    if (xValues.length < SCATTER_VERY_SMALL_THRESHOLD) {
+      scatterSampleWarning.innerHTML = `<strong>⚠️ Very small sample (N=${xValues.length})</strong><br>Results may not be reliable. Consider removing some filters.`;
+      scatterSampleWarning.style.display = "block";
+      scatterSampleWarning.style.background = "rgba(220, 38, 38, 0.1)";
+      scatterSampleWarning.style.borderLeftColor = "#dc2626";
+    } else if (xValues.length < SCATTER_SMALL_THRESHOLD) {
+      scatterSampleWarning.innerHTML = `<strong>⚠️ Small sample (N=${xValues.length})</strong><br>Interpret results with caution.`;
+      scatterSampleWarning.style.display = "block";
+      scatterSampleWarning.style.background = "rgba(245, 158, 11, 0.1)";
+      scatterSampleWarning.style.borderLeftColor = "#f59e0b";
+    } else {
+      scatterSampleWarning.style.display = "none";
+    }
+  }
+  
+  // Update dynamic methodology note based on index type
+  const methodologyTextEl = document.getElementById("index-methodology-text");
+  if (methodologyTextEl) {
+    const isTwoItemIndex = ["raceIndex", "immigIndex", "womenIndex"].includes(indexKey);
+    if (isTwoItemIndex) {
+      methodologyTextEl.innerHTML = `This index is constructed from <strong>only 2 survey items</strong> via PCA. With each item on a 5-point Likert scale (1–5), there are only 5×5 = 25 possible response combinations, producing at most <strong>~25 distinct index values</strong>. A raw scatter plot would show horizontal "stripes" due to this limited discreteness—binscatter averages within X-bins to reveal the true underlying relationship, which is exactly how Chinoy et al. (2024) present their Figures 7 and 12.`;
+    } else {
+      methodologyTextEl.innerHTML = `This index is constructed from <strong>6 survey items</strong> via PCA. With 5<sup>6</sup> = 15,625 possible response combinations, the index approaches a near-continuous distribution. Even so, Chinoy et al. (2024) use binscatter (not raw scatter) in their published figures to smooth measurement noise and highlight the systematic relationship between zero-sum thinking and policy attitudes.`;
+    }
+  }
 }
 
 // Sub-tab switching for Policy Indices
