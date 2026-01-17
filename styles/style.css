@@ -134,6 +134,53 @@ code, pre, kbd, samp {
   gap: 6px;
 }
 
+/* Dropdown container */
+.nav__dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown menu */
+.nav__dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+  padding: 8px;
+  min-width: 180px;
+  margin-top: 4px;
+  z-index: 1000;
+}
+
+.nav__dropdown:hover .nav__dropdown-menu {
+  display: block;
+}
+
+.nav__dropdown-item {
+  display: block;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  letter-spacing: 0.1px;
+  text-align: left;
+}
+
+.nav__dropdown-item:hover {
+  background: rgba(165, 28, 48, 0.08);
+  color: #a51c30;
+}
+
 .nav__link {
   position: relative;
   border: none;
