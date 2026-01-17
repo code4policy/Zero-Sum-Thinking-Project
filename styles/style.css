@@ -156,10 +156,6 @@ code, pre, kbd, samp {
   z-index: 1000;
 }
 
-.nav__dropdown:hover .nav__dropdown-menu {
-  display: block;
-}
-
 .nav__dropdown-item {
   display: block;
   width: 100%;
