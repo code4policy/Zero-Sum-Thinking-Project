@@ -7,7 +7,6 @@ const pages = {
   research: document.getElementById("page-research"),
   data: document.getElementById("page-data"),
   test: document.getElementById("page-test"),
-  ethics: document.getElementById("page-ethics"),
   about: document.getElementById("page-about"),
 };
 
