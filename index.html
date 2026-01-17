@@ -36,13 +36,20 @@
         </div>
 
         <nav class="nav">
-          <button class="nav__link" data-route="learn" aria-current="page">Home</button>
-          <button class="nav__link" data-route="concept">Concept</button>
-          <button class="nav__link" data-route="research">Research</button>
+          <div class="nav__dropdown">
+            <button class="nav__link" data-route="learn" aria-current="page">Home</button>
+            <div class="nav__dropdown-menu">
+              <button class="nav__dropdown-item" data-route="concept">Basics</button>
+              <button class="nav__dropdown-item" data-route="data">Visualize</button>
+              <button class="nav__dropdown-item" data-route="test">Test</button>
+              <button class="nav__dropdown-item" data-route="research">Research</button>
+              <button class="nav__dropdown-item" data-route="about">About</button>
+            </div>
+          </div>
+          <button class="nav__link" data-route="concept">Basics</button>
           <button class="nav__link" data-route="data">Visualize</button>
           <button class="nav__link" data-route="test">Test</button>
-          <button class="nav__link" data-route="methods">Methods</button>
-          <button class="nav__link" data-route="ethics">Ethics</button>
+          <button class="nav__link" data-route="research">Research</button>
           <button class="nav__link" data-route="about">About</button>
         </nav>
 
@@ -81,7 +88,7 @@
           "></div>
           
           <!-- Content -->
-          <div style="position: relative; z-index: 1; max-width: 1040px; margin: 0 auto;">
+          <div style="position: relative; z-index: 1; max-width: 1040px; margin: 0 auto; text-align: center;">
             
             <h1 id="learn-title" style="
               margin: 0 0 40px 0;
@@ -89,7 +96,6 @@
               font-weight: 800;
               color: #fff;
               line-height: 1.2;
-              max-width: 800px;
               text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             ">What is Zero-Sum Thinking?</h1>
             
@@ -98,6 +104,7 @@
               grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
               gap: 32px;
               max-width: 900px;
+              margin: 0 auto;
             ">
               <!-- Core Concept Card -->
               <div style="
@@ -157,6 +164,15 @@
                 </p>
               </div>
             </div>
+            
+            <h2 style="
+              margin: 40px 0 0 0;
+              font-size: 48px;
+              font-weight: 800;
+              color: #fff;
+              line-height: 1.2;
+              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            ">An Interactive Explainer, Data Dashboard, and Self-assessment</h2>
           </div>
         </div>
 
@@ -951,56 +967,6 @@
         </div>
       </section>
 
-      <!-- METHODS & TRANSPARENCY -->
-      <section id="page-methods" class="page" aria-labelledby="methods-title">
-        <h1 id="methods-title">Methods & Transparency</h1>
-
-        <div class="card">
-          <h2>Purpose of This Page</h2>
-          <p>This page explains how the research measures zero-sum thinking and how the results presented on this website are produced. It is intended to support transparency, informed interpretation, and responsible use of the findings.</p>
-
-          <h2>Research Design</h2>
-          <p>The study "Zero-Sum Thinking and the Roots of U.S. Political Differences" uses a large-scale survey-based research design to examine how beliefs about gains and losses shape political attitudes in the United States.</p>
-
-          <h2>Survey Data</h2>
-          <p>The analysis is based on a nationally large survey sample comprising more than 20,000 respondents. The survey was designed to capture beliefs, attitudes, and background characteristics across a wide range of social, economic, and political topics.</p>
-          <p>In the original study, standard survey weighting procedures are applied to improve representativeness relative to the U.S. adult population.</p>
-
-          <h2>Measurement of Zero-Sum Thinking</h2>
-          <p>Zero-sum thinking is measured using multiple survey questions that ask respondents to indicate their level of agreement with statements about gains and losses across different contexts. These questions are framed in general terms and do not require respondents to endorse specific political parties or policies.</p>
-          <p>The survey items cover several domains, including:</p>
-          <ul>
-            <li>relations between social or ethnic groups,</li>
-            <li>economic outcomes across income groups,</li>
-            <li>international trade,</li>
-            <li>competition between citizens and non-citizens.</li>
-          </ul>
-
-          <h2>Index Construction</h2>
-          <p>Responses to the zero-sum survey items are combined into a composite zero-sum thinking index. The index is constructed using standard survey research practices:</p>
-          <ul>
-            <li>responses are coded in a consistent direction,</li>
-            <li>multiple items are aggregated to capture overall orientation,</li>
-            <li>the resulting index is normalized for interpretability.</li>
-          </ul>
-          <p>Higher scores indicate a stronger tendency to view one group's gains as coming at the expense of others, while lower scores indicate greater openness to the possibility of shared gains.</p>
-
-          <h2>Analytical Methods</h2>
-          <p>The study relies on descriptive analysis and regression-based methods to examine:</p>
-          <ul>
-            <li>how zero-sum thinking varies across demographic, social, and political groups,</li>
-            <li>how it is associated with attitudes toward redistribution, immigration, trade, and other policy areas,</li>
-            <li>how it relates to political polarization beyond standard explanations based on partisanship or material interests.</li>
-          </ul>
-
-          <h2>Interpretation and Limits</h2>
-          <p>The findings are descriptive and associational, not causal. The study does not claim that zero-sum thinking directly causes specific political outcomes.</p>
-
-          <h2>Transparency and Replicability</h2>
-          <p>The original publication provides detailed documentation of survey questions, index construction, and analytical procedures in its appendices and supplementary materials. These materials allow other researchers to evaluate, replicate, or extend the analysis.</p>
-        </div>
-      </section>
-
       <!-- VISUALIZATION (Story 3) -->
       <section id="page-data" class="page" aria-labelledby="viz-title">
         <h1 id="viz-title">Visualization: Explore Zero-Sum Thinking Patterns</h1>
@@ -1254,48 +1220,6 @@
         </div>
       </div>
 
-      <!-- ETHICS, PRIVACY & DISCLAIMER -->
-      <section id="page-ethics" class="page" aria-labelledby="ethics-title">
-        <h1 id="ethics-title">Ethics, Privacy & Disclaimer</h1>
-
-        <div class="card">
-          <h2>Ethical Use of Research</h2>
-          <p>This website presents academic research for educational and informational purposes. The goal is to improve public understanding of how beliefs about gains and losses relate to political attitudes, not to persuade users toward particular views or policies.</p>
-
-          <h2>Privacy Protection</h2>
-          <p>This website is designed to respect user privacy.</p>
-          <ul>
-            <li>No personal identifying information is collected.</li>
-            <li>Responses to the self-assessment test are not stored or transmitted.</li>
-            <li>Test results are calculated locally and displayed only to the user.</li>
-          </ul>
-
-          <h2>Responsible Interpretation</h2>
-          <p>The concepts and results presented on this website should be interpreted with care.</p>
-          <ul>
-            <li>The zero-sum thinking index reflects general tendencies, not fixed traits.</li>
-            <li>Higher or lower scores do not indicate that a view is right or wrong.</li>
-            <li>Group-level patterns do not imply that all individuals in a group think the same way.</li>
-            <li>Associations shown in charts do not demonstrate causal relationships.</li>
-          </ul>
-
-          <h2>Limitations</h2>
-          <p>This website summarizes findings from a specific study conducted in a particular context. As with all research, results are subject to limitations related to survey design, measurement, and interpretation.</p>
-
-          <h2>Disclaimer</h2>
-          <p>This website is an independent educational presentation of published academic research. It does not represent the views of the original authors, their institutions, or any funding bodies.</p>
-          <p>Nothing on this site should be interpreted as professional, legal, or policy advice.</p>
-
-          <h2>How to Cite This Website</h2>
-          <p>When citing this website, please reference:</p>
-          <p>When referencing material from this site, please cite:</p>
-          <ol>
-            <li>The original academic publication: Chinoy, S., Nunn, N., Sequeira, S., & Stantcheva, S. (2025). Zero-sum thinking and the roots of U.S. political differences (NBER Working Paper No. 31688). National Bureau of Economic Research. https://doi.org/10.3386/w31688</li>
-            <li>This website: Website Team. (2026). Zero-sum thinking and U.S. political differences: An interactive educational summary. Programming and Data for Policy Makers course project. https://your-site-url</li>
-          </ol>
-        </div>
-      </section>
-
       <!-- ABOUT -->
       <section id="page-about" class="page" aria-labelledby="about-title">
         <div class="card">
@@ -1339,6 +1263,9 @@
               <p style="margin: 8px 0 0 0; font-size: 13px;">MC-MPA, Mason Fellow, HKS</p>
             </div>
           </div>
+
+          <h2>Disclaimer</h2>
+          <p>This website is an independent educational presentation of published academic research. It does not represent the views of the original authors, their institutions, or any funding bodies.</p>
         </div>
       </section>
     </main>

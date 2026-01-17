@@ -7,12 +7,11 @@ const pages = {
   research: document.getElementById("page-research"),
   data: document.getElementById("page-data"),
   test: document.getElementById("page-test"),
-  methods: document.getElementById("page-methods"),
-  ethics: document.getElementById("page-ethics"),
   about: document.getElementById("page-about"),
 };
 
 const navButtons = document.querySelectorAll(".nav__link");
+const navDropdownItems = document.querySelectorAll(".nav__dropdown-item");
 const mobileToggle = document.querySelector(".nav__mobile-toggle");
 const navMenu = document.querySelector(".nav");
 
@@ -29,6 +28,11 @@ function setRoute(route) {
 
 navButtons.forEach((btn) => {
   btn.addEventListener("click", () => setRoute(btn.dataset.route));
+});
+
+// Add click handlers for dropdown items
+navDropdownItems.forEach((item) => {
+  item.addEventListener("click", () => setRoute(item.dataset.route));
 });
 
 // Mobile menu toggle
