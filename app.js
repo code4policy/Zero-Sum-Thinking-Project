@@ -98,12 +98,30 @@ const interpretationDesc = document.getElementById("interpretation-desc");
 
 let distributionChart = null;
 
-// ZS4_unif 直方图数据（每0.02为一个bin）
-const zs4Breaks = [
-  0, 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24, 0.26, 0.28, 0.3, 0.32, 0.34, 0.36, 0.38, 0.4, 0.42, 0.44, 0.46, 0.48, 0.5, 0.52, 0.54, 0.56, 0.58, 0.6, 0.62, 0.64, 0.66, 0.68, 0.7, 0.72, 0.74, 0.76, 0.78, 0.8, 0.82, 0.84, 0.86, 0.88, 0.9, 0.92, 0.94, 0.96, 0.98
-];
+// ZS4_unif 直方图数据（每5分为一个bin，共20个区间：0-5, 5-10, ..., 95-100）
+// 通过对原始0.02粒度数据加权插值得到
+const zs4Breaks = [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0];
 const zs4Counts = [
-  379, 0, 53, 121, 58, 43, 194, 133, 49, 326, 227, 86, 1031, 182, 342, 423, 545, 340, 747, 622, 465, 548, 688, 531, 2292, 549, 487, 654, 841, 611, 570, 951, 421, 434, 487, 485, 222, 963, 136, 280, 285, 135, 94, 323, 120, 27, 197, 74, 0, 507
+  406,   // 0-5
+  206,   // 5-10
+  304,   // 10-15
+  442,   // 15-20
+  829,   // 20-25
+  1040,  // 25-30
+  1138,  // 30-35
+  1539,  // 35-40
+  1357,  // 40-45
+  3167,  // 45-50
+  1363,  // 50-55
+  1779,  // 55-60
+  1732,  // 60-65
+  1132,  // 65-70
+  1189,  // 70-75
+  898,   // 75-80
+  467,   // 80-85
+  490,   // 85-90
+  261,   // 90-95
+  544    // 95-100
 ];
 
 function isTestComplete() {
@@ -114,10 +132,12 @@ function createDistributionChart(userScore) {
   const ctx = document.getElementById('distribution-chart');
   if (!ctx) return;
 
-  // 构造labels为区间字符串，如0.00–0.02
-  const labels = zs4Breaks.map((b, i) =>
-    i < zs4Breaks.length - 1 ? `${zs4Breaks[i].toFixed(2)}–${zs4Breaks[i+1].toFixed(2)}` : `${zs4Breaks[i].toFixed(2)}–1.00`
-  ).slice(0, zs4Counts.length);
+  // 构造labels为0-100的整数区间，如"0–10", "10–20"等
+  const labels = zs4Breaks.slice(0, -1).map((b, i) => {
+    const start = Math.round(b * 100);
+    const end = Math.round(zs4Breaks[i + 1] * 100);
+    return `${start}–${end}`;
+  });
   const counts = zs4Counts;
 
   // 找到用户得分所在bin
@@ -145,6 +165,9 @@ function createDistributionChart(userScore) {
     distributionChart.destroy();
   }
 
+  // 用户得分转换为0-100
+  const userScorePercent = Math.round(userScore * 100);
+
   distributionChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -154,7 +177,7 @@ function createDistributionChart(userScore) {
         data: counts,
         backgroundColor: backgroundColors,
         borderWidth: 0,
-        borderRadius: 3
+        borderRadius: 6
       }]
     },
     options: {
@@ -165,13 +188,19 @@ function createDistributionChart(userScore) {
         tooltip: {
           callbacks: {
             title: (items) => `Score: ${labels[items[0].dataIndex]}`,
-            label: (item) => `Count: ${counts[item.dataIndex]}`
+            label: (item) => `${counts[item.dataIndex].toLocaleString()} respondents`
           }
         }
       },
       scales: {
-        x: { title: { display: true, text: 'Zero-Sum Thinking Score (zs4_unif)' }, ticks: { maxRotation: 0, minRotation: 0, autoSkip: true, maxTicksLimit: 10 } },
-        y: { title: { display: true, text: 'Number of Respondents' }, beginAtZero: true }
+        x: { 
+          title: { display: true, text: 'Zero-Sum Thinking Score (0–100)' }, 
+          ticks: { maxRotation: 0, minRotation: 0, autoSkip: false }
+        },
+        y: { 
+          title: { display: true, text: 'Number of Respondents' }, 
+          beginAtZero: true 
+        }
       }
     }
   });
@@ -197,49 +226,23 @@ if (computeBtn) {
     const scorePercent = Math.round(score * 100);
     const percentile = percentileInfo.percentile;
     
-    // Update inline score display
-    const scoreInline = document.getElementById("score-inline");
-    if (scoreInline) scoreInline.textContent = scorePercent;
+    // Update main score display
+    if (scoreDisplay) scoreDisplay.textContent = scorePercent;
     
-    // 1️⃣ PRIMARY: Main conclusion based on percentile (cognitive anchor)
-    const mainConclusionText = document.getElementById("main-conclusion-text");
-    if (mainConclusionText) {
+    // 1️⃣ Relative position statement - distribution-based, neutral language
+    const percentileStatement = document.getElementById("percentile-statement");
+    if (percentileStatement) {
+      let positionText = '';
       if (percentile < 25) {
-        mainConclusionText.innerHTML = `You are <strong style="color: #2563eb;">less zero-sum</strong> than most people.`;
+        positionText = `You scored higher than <strong>${percentile}%</strong> of the ~20,000 U.S. respondents in the study. This places you <strong>below the median</strong> in zero-sum thinking.`;
       } else if (percentile < 50) {
-        mainConclusionText.innerHTML = `You are <strong style="color: #0891b2;">somewhat less zero-sum</strong> than average.`;
+        positionText = `You scored higher than <strong>${percentile}%</strong> of the ~20,000 U.S. respondents in the study. This places you <strong>somewhat below the median</strong> in zero-sum thinking.`;
       } else if (percentile < 75) {
-        mainConclusionText.innerHTML = `You are <strong style="color: #d97706;">somewhat more zero-sum</strong> than average.`;
+        positionText = `You scored higher than <strong>${percentile}%</strong> of the ~20,000 U.S. respondents in the study. This places you <strong>somewhat above the median</strong> in zero-sum thinking.`;
       } else {
-        mainConclusionText.innerHTML = `You are <strong style="color: #dc2626;">more zero-sum</strong> than most people.`;
+        positionText = `You scored higher than <strong>${percentile}%</strong> of the ~20,000 U.S. respondents in the study. This places you <strong>above the median</strong> in zero-sum thinking.`;
       }
-    }
-    
-    // Percentile text (secondary to main conclusion)
-    if (percentileText) {
-      percentileText.innerHTML = `You score higher than <strong>${percentile}%</strong> of the ~20,000 U.S. respondents in the study.`;
-    }
-    
-    // Interpretation labels
-    if (interpretationLevel) interpretationLevel.textContent = interpretation.level;
-    if (interpretationTitle) interpretationTitle.textContent = interpretation.title;
-    if (interpretationDesc) interpretationDesc.textContent = interpretation.description;
-    
-    // 5️⃣ TL;DR summary (most important for users)
-    const tldrText = document.getElementById("tldr-text");
-    if (tldrText) {
-      // Convert percentile to "X out of Y people" format
-      let comparisonText = '';
-      if (percentile < 25) {
-        comparisonText = `Compared to about <strong>3 out of 4 people</strong> in the study, you are <strong>less likely</strong> to see the world as zero-sum.`;
-      } else if (percentile < 50) {
-        comparisonText = `Compared to about <strong>half</strong> of the people in the study, you are <strong>less likely</strong> to see the world as zero-sum.`;
-      } else if (percentile < 75) {
-        comparisonText = `Compared to about <strong>half</strong> of the people in the study, you are <strong>more likely</strong> to see the world as zero-sum.`;
-      } else {
-        comparisonText = `Compared to about <strong>3 out of 4 people</strong> in the study, you are <strong>more likely</strong> to see the world as zero-sum.`;
-      }
-      tldrText.innerHTML = comparisonText;
+      percentileStatement.innerHTML = positionText;
     }
     
     createDistributionChart(score);
@@ -295,45 +298,126 @@ const resetFiltersBtn = document.getElementById("reset-filters-btn");
 const variableLabels = {
   age: { 
     label: "Age Group", 
-    description: "Average zero-sum thinking index across different age groups. Younger adults (18-40) tend to show higher zero-sum beliefs than older adults (56+)." 
+    description: "Average zero-sum thinking index across age groups." 
   },
   gender: { 
     label: "Gender", 
-    description: "Comparison of zero-sum thinking between male and female respondents. Men show slightly higher zero-sum thinking than women on average." 
+    description: "Comparison of zero-sum thinking by gender." 
   },
   race: { 
     label: "Race/Ethnicity", 
-    description: "Average zero-sum thinking across racial and ethnic groups. Black respondents show the highest levels, while Asian respondents show the lowest." 
+    description: "Average zero-sum thinking across racial and ethnic groups." 
   },
   education: { 
     label: "Education Level", 
-    description: "How zero-sum thinking varies by educational attainment. Those with a Bachelor's degree show the lowest zero-sum beliefs." 
+    description: "Zero-sum thinking by educational attainment." 
   },
   income: { 
     label: "Relative Income", 
-    description: "Zero-sum thinking by self-reported relative income. Those who perceive themselves as 'far above average' show the highest zero-sum beliefs." 
+    description: "Zero-sum thinking by self-reported relative income." 
   },
   hhIncome: { 
     label: "Household Income", 
-    description: "Zero-sum thinking by household income brackets. The lowest income group (<$15k) shows higher zero-sum thinking than middle-income groups." 
+    description: "Zero-sum thinking by household income brackets." 
   },
   party: { 
     label: "Party Affiliation", 
-    description: "Comparison of zero-sum thinking across political party affiliations. Democrats show higher zero-sum thinking than Republicans and Independents." 
+    description: "Comparison of zero-sum thinking across political parties." 
   },
   partyDetail: { 
     label: "Party Affiliation (Detailed)", 
-    description: "Zero-sum thinking by detailed partisan identity. Strong Democrats show the highest levels, while Moderate Republicans show the lowest." 
+    description: "Zero-sum thinking by detailed partisan identity." 
   },
   urbanicity: { 
     label: "Urbanicity", 
-    description: "How zero-sum thinking varies by residential area. Urban residents show notably higher zero-sum beliefs than suburban or rural residents." 
+    description: "Zero-sum thinking by residential area type." 
   },
   immigrationStatus: { 
     label: "Immigration Status", 
-    description: "Zero-sum thinking by generational immigration status. First-generation immigrants show the lowest zero-sum beliefs, while 4th+ generation Americans show the highest." 
+    description: "Zero-sum thinking by generational immigration status." 
   }
 };
+
+// Research insights from the paper for each demographic variable
+// Strictly based on paper content - only include mechanisms explicitly stated by authors
+const demographicInsights = {
+  age: {
+    finding: "Younger respondents are more zero-sum; older respondents are less zero-sum. This is one of the clearest patterns in Figure 3.",
+    explanation: "The authors propose and test a specific mechanism: <em>birth cohort economic experience</em>. Younger cohorts grew up in conditions of lower growth and more stagnation. Using bottom-50% income growth during respondents' first 20 years of life, the paper shows: <em>'the answer to why younger individuals today are more zero-sum may be that they were born and raised in economic conditions that featured less growth and more stagnation.'</em>",
+    paperRef: "Figure 3, Figure 11, Figure 12, and Section 5"
+  },
+  gender: {
+    finding: "Women show slightly higher zero-sum thinking than men on average.",
+    explanation: "The paper documents this pattern as part of the broader demographic profile of zero-sum thinking. Gender differences are included in the analysis primarily as control variables and in interaction effects with policy preferences. The focus of the paper lies elsewhere — on origins (immigration, economic history) and consequences (policy views).",
+    paperRef: "Figure 3 (Section 3: Correlates of Zero-Sum Thinking)"
+  },
+  race: {
+    finding: "Black respondents are the most zero-sum. Asian/Asian American respondents are the least zero-sum. Hispanic/Latino respondents are slightly above White respondents.",
+    explanation: "The authors develop an extensive explanation centered on the history of slavery and systemic oppression, which created a 'fully zero-sum (or negative-sum)' environment. This experience is transmitted through: (1) direct ancestral experience, (2) local history (county-level slavery), and (3) cultural diffusion (Southern migration, Confederate culture). The paper states: <em>'we expect a history of slavery to correlate with more pronounced zero-sum thinking.'</em>",
+    paperRef: "Figure 3, Table 5, and Section 4.C (extensive discussion)"
+  },
+  education: {
+    finding: "Higher education is associated with lower zero-sum thinking. Those with high school or less are most zero-sum; college/postgraduate are least zero-sum.",
+    explanation: "The paper documents this gradient as a robust empirical pattern. Education serves as an important control variable throughout the analysis. The paper's focus is on other origins of zero-sum thinking (immigration experience, economic history) rather than the education channel.",
+    paperRef: "Figure 3 (Section 3: Correlates of Zero-Sum Thinking)"
+  },
+  income: {
+    finding: "Lower-income respondents are more zero-sum; higher-income respondents are less zero-sum. The relationship is <strong>monotonic</strong>.",
+    explanation: "The paper states: <em>'the lowest-income respondents … tend to be more zero-sum than higher-income respondents.'</em> Income is documented as part of the demographic correlates and used as a control variable. The paper's theoretical focus is on other determinants of zero-sum thinking.",
+    paperRef: "Figure 3 (Section 3: Correlates of Zero-Sum Thinking)"
+  },
+  hhIncome: {
+    finding: "Lower household income brackets are associated with higher zero-sum thinking. The gradient is monotonic.",
+    explanation: "Similar to relative income, this pattern is documented as part of the demographic profile. Household income serves as a control variable in the analysis. The paper explores other factors — particularly immigration and historical experiences — as primary explanations for variation in zero-sum thinking.",
+    paperRef: "Figure 3 (Section 3: Correlates of Zero-Sum Thinking)"
+  },
+  party: {
+    finding: "Democrats are on average more zero-sum than Republicans. However, there is substantial variation <em>within</em> each party.",
+    explanation: "The authors emphasize that zero-sum thinking is <strong>not caused by</strong> partisan identity — rather, it is <em>orthogonal</em> to partisanship. Zero-sum thinking helps explain <strong>within-party heterogeneity</strong>: zero-sum Democrats are more anti-immigration; zero-sum Republicans are more pro-redistribution. It functions as an 'interpretive lens' that shapes policy views independently of party affiliation.",
+    paperRef: "Figure 3, Figure 4, and Section 4"
+  },
+  partyDetail: {
+    finding: "Strong Democrats show the highest zero-sum thinking; Strong Republicans show the lowest. But the key insight is the variation <em>within</em> partisan categories.",
+    explanation: "The paper's central argument is that zero-sum thinking cuts across party lines. It predicts policy preferences <em>even after controlling for party</em>. A zero-sum Republican looks different from a non-zero-sum Republican on many policy questions — and the same applies to Democrats. This is what makes zero-sum thinking analytically distinct from partisanship.",
+    paperRef: "Figure 4, Table 3, and Section 4"
+  },
+  urbanicity: {
+    finding: "Urban residents show higher zero-sum thinking than suburban or rural residents.",
+    explanation: "The paper documents this as part of the demographic correlates of zero-sum thinking. Urbanicity is included as a control variable in the regression analyses. The paper's main focus is on other sources of variation in zero-sum beliefs.",
+    paperRef: "Demographic controls in regression analyses (Section 3)"
+  },
+  immigrationStatus: {
+    finding: "First-generation immigrants are the <strong>least</strong> zero-sum. Second-generation are still low but weaker. Third-generation effect fades substantially toward the baseline.",
+    explanation: "This is a central finding with a clearly articulated mechanism: the immigration experience provides direct evidence of a non-zero-sum world — immigrants observe that their economic success does not require harming others. The paper states: <em>'the immigrant experience benefits the newcomer and their descendants economically without detriment to others.'</em> This 'lived proof' is strongest for immigrants themselves and weakens across generations.",
+    paperRef: "Figure 14, Table 3, and Section 5 (Origins of Zero-Sum Thinking)"
+  }
+};
+
+// Function to update the insight card based on selected variable
+function updateDemographicInsight(variable) {
+  const insightCard = document.getElementById("demographic-insight-content");
+  if (!insightCard) return;
+  
+  const insight = demographicInsights[variable];
+  if (!insight) {
+    insightCard.innerHTML = '<p style="margin: 0; color: var(--muted); font-size: 13px;">Select a variable to see research insights from the paper.</p>';
+    return;
+  }
+  
+  insightCard.innerHTML = `
+    <p style="margin: 0 0 12px 0; font-size: 14px; line-height: 1.6; color: var(--text);">
+      <strong>Key Finding:</strong> ${insight.finding}
+    </p>
+    <div style="padding: 12px; background: rgba(255,255,255,0.7); border-radius: 8px; margin-bottom: 12px;">
+      <p style="margin: 0; font-size: 13px; line-height: 1.6; color: var(--text);">
+        <strong>Why?</strong> ${insight.explanation}
+      </p>
+    </div>
+    <p style="margin: 0; font-size: 11px; color: var(--muted);">
+      <em>Reference: Chinoy, Nunn, Sequeira & Stantcheva (2024) — ${insight.paperRef}</em>
+    </p>
+  `;
+}
 
 // Current state
 let currentXAxis = "age";
@@ -342,10 +426,10 @@ let currentXAxis = "age";
 async function loadVizData() {
   try {
     const [aggRes, orderRes, metaRes, rawRes] = await Promise.all([
-      fetch('./data/viz/aggregated_data.json'),
-      fetch('./data/viz/variable_order.json'),
-      fetch('./data/viz/variable_metadata.json'),
-      fetch('./data/viz/viz_data.json')  // Individual-level data for filtering
+      fetch('./data/vizplot/aggregated_data.json'),
+      fetch('./data/vizplot/variable_order.json'),
+      fetch('./data/vizplot/variable_metadata.json'),
+      fetch('./data/vizplot/viz_data.json')  // Individual-level data for filtering
     ]);
     
     aggregatedData = await aggRes.json();
@@ -369,8 +453,12 @@ function renderD3BarChart(variable) {
     return;
   }
 
-  // Clear previous chart
+  // Update research insight card for selected variable
+  updateDemographicInsight(variable);
+
+  // Clear previous chart and tooltip
   d3.select("#d3-chart-container").selectAll("*").remove();
+  d3.selectAll(".demo-chart-tooltip").remove();
 
   // Check if any filters are active
   const hasActiveFilters = Object.keys(currentFilters).length > 0;
@@ -412,7 +500,7 @@ function renderD3BarChart(variable) {
   const effectiveWidth = Math.min(containerWidth, maxWidth);
   const margin = { top: 30, right: 30, bottom: 80, left: 60 };
   const width = effectiveWidth - margin.left - margin.right;
-  const height = 400 - margin.top - margin.bottom;
+  const height = 480 - margin.top - margin.bottom;
 
   // Create SVG
   const svg = d3.select("#d3-chart-container")
@@ -464,10 +552,11 @@ function renderD3BarChart(variable) {
     .style("fill", "#666")
     .text("Zero-Sum Index (0–1)");
 
-  // Create tooltip
-  const tooltip = d3.select("#d3-chart-container")
+  // Create tooltip (appended to body for correct positioning)
+  const tooltip = d3.select("body")
     .append("div")
-    .style("position", "absolute")
+    .attr("class", "demo-chart-tooltip")
+    .style("position", "fixed")
     .style("visibility", "hidden")
     .style("background-color", "rgba(0, 0, 0, 0.85)")
     .style("color", "white")
@@ -478,8 +567,8 @@ function renderD3BarChart(variable) {
     .style("z-index", "1000")
     .style("box-shadow", "0 2px 8px rgba(0,0,0,0.2)");
 
-  // Color: soft blue for all bars (comfortable, non-partisan)
-  const barColor = "#6baed6";  // Soft steel blue
+  // Color: slate blue-gray for all bars (neutral, non-partisan)
+  const barColor = "#7b9cb5";  // Slate blue-gray (matches primary-light)
   const hoverColor = "#f5a623"; // Warm amber/orange on hover
 
   // Add bars with animation
@@ -506,8 +595,8 @@ function renderD3BarChart(variable) {
     })
     .on("mousemove", function(event) {
       tooltip
-        .style("top", (event.pageY - 10) + "px")
-        .style("left", (event.pageX + 15) + "px");
+        .style("top", (event.clientY - 10) + "px")
+        .style("left", (event.clientX + 15) + "px");
     })
     .on("mouseout", function(event, d) {
       d3.select(this)
@@ -560,18 +649,16 @@ function renderD3BarChart(variable) {
     filterDescription = filterParts.join(' | ');
   }
   
-  if (chartTitle) {
-    if (hasActiveFilters) {
-      chartTitle.textContent = `Zero-Sum Thinking by ${varInfo.label} (Filtered)`;
-    } else {
-      chartTitle.textContent = `Zero-Sum Thinking by ${varInfo.label}`;
-    }
-  }
+  // Title is now fixed as "Zero-Sum Thinking by" with interactive dropdown
+  // Only update subtitle for filter status
   if (chartSubtitle) {
     if (hasActiveFilters) {
-      chartSubtitle.innerHTML = `<span style="color: #2563eb; font-weight: 500;">Active Filters: ${filterDescription}</span><br><span style="color: var(--muted); font-size: 13px;">${varInfo.description}</span>`;
+      chartSubtitle.innerHTML = `<span style="color: #5b7c99; font-weight: 500;">Active Filters: ${filterDescription}</span>`;
+      chartSubtitle.style.display = 'block';
+      chartSubtitle.style.textAlign = 'right';
     } else {
-      chartSubtitle.textContent = varInfo.description;
+      chartSubtitle.textContent = '';
+      chartSubtitle.style.display = 'none';
     }
   }
 
@@ -588,7 +675,7 @@ function renderD3BarChart(variable) {
   const activeFilterCount = Object.values(currentFilters).reduce((sum, arr) => sum + arr.length, 0);
   let filterInfo = '';
   if (activeFilterCount > 0) {
-    filterInfo = `<br><span style="font-size: 11px; color: #2563eb; font-weight: 500;">🔍 Filtered: ${filteredCount.toLocaleString()} of ${totalCount.toLocaleString()} records shown (${activeFilterCount} filter${activeFilterCount > 1 ? 's' : ''} applied)</span>`;
+    filterInfo = `<br><span style="font-size: 11px; color: #5b7c99; font-weight: 500;">🔍 Filtered: ${filteredCount.toLocaleString()} of ${totalCount.toLocaleString()} records shown (${activeFilterCount} filter${activeFilterCount > 1 ? 's' : ''} applied)</span>`;
   }
 
   // Sample size warning thresholds
@@ -606,50 +693,32 @@ function renderD3BarChart(variable) {
     sampleWarning = `<br><span style="font-size: 11px; color: #f59e0b; font-weight: 500;">⚠️ Small sample warning: ${smallGroups.length} group${smallGroups.length > 1 ? 's have' : ' has'} fewer than ${VERY_SMALL_GROUP_THRESHOLD} responses: ${groupNames}</span>`;
   }
 
-  // Update summary info with comparison
+  // Update summary info with comparison - now positioned above the chart
+  const sampleInfoEl = document.getElementById('sample-info');
+  
+  // Chart summary (left box)
   chartInfo.innerHTML = `
-    <strong>Key Finding:</strong> 
     <span style="color: #4a90a4; font-weight: 600;">${minGroup.label}</span> shows the lowest zero-sum thinking (${minScore.toFixed(2)}), 
     while <span style="color: #e8a838; font-weight: 600;">${maxGroup.label}</span> shows the highest (${maxScore.toFixed(2)}) — 
-    a difference of <strong>${diff} percentage points</strong>.
-    <br><span style="font-size: 11px;">Total sample size: N = ${totalN.toLocaleString()}</span>${filterInfo}${sampleWarning}
+    a difference of <strong>${diff} percentage points</strong>.${sampleWarning}
   `;
-
-  // Show data coverage info based on current filter state
-  if (missingDataInfo) {
-    const totalSample = 20278; // Total sample size
-    
+  
+  // Sample info (above filters - subtle styling)
+  if (sampleInfoEl) {
+    const totalSample = 20278; // Full dataset size
     if (hasActiveFilters) {
-      // When filtered, show coverage relative to filtered subsample
-      const coveragePercent = ((totalN / filteredCount) * 100).toFixed(1);
-      const subsamplePercent = ((filteredCount / totalSample) * 100).toFixed(1);
-      
-      missingDataInfo.innerHTML = `
-        <strong>📊 Data Coverage:</strong> 
-        ${totalN.toLocaleString()} valid responses included (${coveragePercent}% of filtered subsample).
-        <br><span style="font-size: 11px; color: var(--muted);">Filtered subsample: ${filteredCount.toLocaleString()} records (${subsamplePercent}% of full dataset of ${totalSample.toLocaleString()}).</span>
-      `;
-      missingDataInfo.style.display = 'block';
+      const percent = ((totalN / totalSample) * 100).toFixed(1);
+      sampleInfoEl.innerHTML = `<strong>N = ${totalN.toLocaleString()}</strong> <span style="opacity: 0.7;">(${percent}% of ${totalSample.toLocaleString()})</span>`;
+      sampleInfoEl.style.background = 'rgba(37, 99, 235, 0.08)';
+      sampleInfoEl.style.color = '#5b7c99';
     } else {
-      // Original logic for unfiltered view
-      const available = metaInfo.available || totalN;
-      const missing = metaInfo.missing || 0;
-      const missingPercent = ((missing / totalSample) * 100).toFixed(1);
-      
-      if (missing > 0) {
-        missingDataInfo.innerHTML = `
-          <strong>📊 Data Coverage:</strong> 
-          ${available.toLocaleString()} valid responses (${((available / totalSample) * 100).toFixed(1)}% of total sample). 
-          ${missing.toLocaleString()} responses (${missingPercent}%) have missing data for this variable.
-          ${metaInfo.note && typeof metaInfo.note === 'string' ? `<br><em>Note: ${metaInfo.note}</em>` : ''}
-        `;
-        missingDataInfo.style.display = 'block';
-      } else {
-        missingDataInfo.innerHTML = `<strong>📊 Data Coverage:</strong> Complete data — all ${available.toLocaleString()} responses included (100% coverage).`;
-        missingDataInfo.style.display = 'block';
-      }
+      sampleInfoEl.innerHTML = `<strong>N = ${totalN.toLocaleString()}</strong>`;
+      sampleInfoEl.style.background = 'rgba(108, 117, 125, 0.04)';
+      sampleInfoEl.style.color = 'var(--muted)';
     }
   }
+
+  // Data coverage info removed - now consolidated into chart summary above
 
   // Show variable note if available (for special warnings)
   if (variableNote) {
@@ -768,11 +837,11 @@ function renderFiltersPanel() {
     // Create filter group container
     const filterGroup = document.createElement('div');
     filterGroup.className = 'filter-group';
-    filterGroup.style.cssText = 'margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);';
+    filterGroup.style.cssText = 'margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border);';
     
     // Create collapsible header
     const header = document.createElement('div');
-    header.style.cssText = 'display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 8px;';
+    header.style.cssText = 'display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 4px;';
     header.innerHTML = `
       <span style="font-size: 12px; font-weight: 600; color: var(--text);">${varInfo.label}</span>
       <span class="filter-toggle" style="font-size: 10px; color: var(--muted);">▼</span>
@@ -781,19 +850,37 @@ function renderFiltersPanel() {
     // Create options container (collapsible)
     const optionsContainer = document.createElement('div');
     optionsContainer.className = 'filter-options';
-    optionsContainer.style.cssText = 'display: none; max-height: 150px; overflow-y: auto;';
+    optionsContainer.style.cssText = 'display: none; max-height: 120px; overflow-y: auto;';
     
     // Track selected count
     const selectedCount = (currentFilters[variable] || []).length;
     if (selectedCount > 0) {
       header.querySelector('.filter-toggle').textContent = `${selectedCount} selected`;
-      header.querySelector('.filter-toggle').style.color = '#2563eb';
+      header.querySelector('.filter-toggle').style.color = '#5b7c99';
       optionsContainer.style.display = 'block';
     }
     
-    // Toggle collapse
+    // Toggle collapse (accordion style - close others when opening one)
     header.addEventListener('click', () => {
       const isOpen = optionsContainer.style.display !== 'none';
+      
+      // Close all other filter options first (accordion behavior)
+      if (!isOpen) {
+        const allFilterGroups = filtersPanel.querySelectorAll('.filter-group');
+        allFilterGroups.forEach(group => {
+          const otherOptions = group.querySelector('.filter-options');
+          const otherHeader = group.querySelector('.filter-toggle');
+          if (otherOptions && otherOptions !== optionsContainer) {
+            otherOptions.style.display = 'none';
+            // Reset toggle text if no selections
+            const otherSelectedCount = parseInt(otherHeader.textContent) || 0;
+            if (!otherHeader.textContent.includes('selected')) {
+              otherHeader.textContent = '▼';
+            }
+          }
+        });
+      }
+      
       optionsContainer.style.display = isOpen ? 'none' : 'block';
       if (selectedCount === 0) {
         header.querySelector('.filter-toggle').textContent = isOpen ? '▼' : '▲';
@@ -803,12 +890,12 @@ function renderFiltersPanel() {
     // Create checkboxes for each value
     values.forEach(value => {
       const checkboxWrapper = document.createElement('label');
-      checkboxWrapper.style.cssText = 'display: flex; align-items: center; gap: 6px; padding: 4px 0; cursor: pointer; font-size: 11px; color: var(--text);';
+      checkboxWrapper.style.cssText = 'display: flex; align-items: center; gap: 6px; padding: 2px 0; cursor: pointer; font-size: 11px; color: var(--text);';
       
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.value = value;
-      checkbox.style.cssText = 'cursor: pointer; accent-color: #2563eb;';
+      checkbox.style.cssText = 'cursor: pointer; accent-color: #5b7c99;';
       
       // Check if already selected
       if (currentFilters[variable] && currentFilters[variable].includes(value)) {
@@ -905,7 +992,7 @@ window.addEventListener("load", async () => {
     renderD3BarChart("age");
   } else {
     if (chartInfo) {
-      chartInfo.innerHTML = '<span style="color: #dc3545;">⚠️ Failed to load visualization data. Please check that the data files exist in data/viz/ folder.</span>';
+      chartInfo.innerHTML = '<span style="color: #dc3545;">⚠️ Failed to load visualization data. Please check that the data files exist in data/vizplot/ folder.</span>';
     }
   }
   
@@ -916,22 +1003,22 @@ window.addEventListener("load", async () => {
 // ---------------------------
 // Story 3.2: Policy Indices
 // ---------------------------
-let policyChartInstance = null;
 
 const policySelect = document.getElementById("policy-select");
-const policyChartContainer = document.getElementById("policy-chart-container");
-const policyTitle = document.getElementById("policy-title");
+const policyD3Container = document.getElementById("policy-d3-chart-container");
 const policyDescription = document.getElementById("policy-description");
+const policyDistributionNote = document.getElementById("policy-distribution-note");
 
 const policyMean = document.getElementById("policy-mean");
 const policyMedian = document.getElementById("policy-median");
 const policyStddev = document.getElementById("policy-stddev");
 const policyRange = document.getElementById("policy-range");
+const policyN = document.getElementById("policy-n");
 
 const policyDescriptions = {
   redistIndex: {
     title: "Pro-Redistribution Index",
-    description: "Measures support for government redistribution policies. Constructed via PCA from 6 items: tax preferences, universal healthcare, wealth accumulation, income support, outcome equality, and opportunity equality. Higher scores indicate stronger support for redistribution.",
+    description: "Captures support for government redistribution policies. Constructed from 6 survey items covering tax preferences, healthcare, wealth, and equality. Higher scores indicate stronger support for redistribution. The research finds this index is positively correlated with zero-sum thinking.",
     components: ["Tax rich vs poor", "Universal healthcare", "Wealth accumulation (rev)", "Gov income support", "Gov outcome equality", "Gov opportunity equality"],
     itemCount: 6,
     isDiscrete: false,
@@ -939,7 +1026,7 @@ const policyDescriptions = {
   },
   raceIndex: {
     title: "Race Attitudes Index",
-    description: "Measures acknowledgment of systemic racism and its effects. Constructed via PCA from 2 items: perceived racism as a problem, and slavery's lasting impact on Black Americans. Higher scores indicate greater acknowledgment of racial inequities.",
+    description: "Captures acknowledgment of systemic racism and its effects. Constructed from 2 survey items on perceived racism and slavery's lasting impact. Higher scores indicate greater acknowledgment of racial inequities. The research analyzes how this attitude relates to zero-sum thinking.",
     components: ["Racism is a problem", "Slavery makes it hard for Blacks to escape poverty"],
     itemCount: 2,
     isDiscrete: true,
@@ -947,7 +1034,7 @@ const policyDescriptions = {
   },
   immigIndex: {
     title: "Anti-Immigration Index",
-    description: "Measures restrictive attitudes toward immigration. Constructed via PCA from 2 items: opposition to increasing immigration, and importance of being born in U.S. for American identity. Higher scores indicate more anti-immigration views.",
+    description: "Captures restrictive attitudes toward immigration. Constructed from 2 survey items on immigration levels and national identity. Higher scores indicate more anti-immigration views. The research finds this index is positively correlated with zero-sum thinking.",
     components: ["Oppose increasing immigration", "Important to be born in U.S."],
     itemCount: 2,
     isDiscrete: true,
@@ -955,7 +1042,7 @@ const policyDescriptions = {
   },
   womenIndex: {
     title: "Gender Attitudes Index",
-    description: "Measures recognition of gender discrimination and support for corrective policies. Constructed via PCA from 2 items: women face discrimination, and women should receive hiring preference. Higher scores indicate stronger pro-women attitudes.",
+    description: "Captures recognition of gender discrimination and support for corrective policies. Constructed from 2 survey items on discrimination and hiring preferences. Higher scores indicate stronger pro-women attitudes. The research analyzes how this attitude relates to zero-sum thinking.",
     components: ["Women face discrimination", "Women should get hiring preference"],
     itemCount: 2,
     isDiscrete: true,
@@ -996,26 +1083,27 @@ function renderPolicyIndices(indexKey) {
   // Calculate statistics
   const stats = calculateStats(policyValues);
   
-  // Update title and description
+  // Update description in toggle
   const policyInfo = policyDescriptions[indexKey];
   if (!policyInfo) {
     console.error('No description found for index:', indexKey);
     return;
   }
   
-  policyTitle.textContent = policyInfo.title;
   policyDescription.innerHTML = `
-    <span>${policyInfo.description}</span>
-    <br><br>
-    <strong>Components:</strong> ${policyInfo.components.join(' • ')}
-    <br>
-    <span style="font-size: 11px; color: var(--muted);">Sample size: N = ${policyValues.length.toLocaleString()}</span>
-    ${policyInfo.distributionNote ? `
-      <div style="margin-top: 12px; padding: 10px 12px; background: rgba(255, 193, 7, 0.1); border-left: 3px solid rgba(255, 193, 7, 0.7); border-radius: 4px; font-size: 12px; color: var(--text);">
-        <strong>📊 Note:</strong> ${policyInfo.distributionNote}
-      </div>
-    ` : ''}
+    <p style="margin: 0 0 8px 0;">${policyInfo.description}</p>
+    <p style="margin: 0; font-size: 11px;"><strong>Components:</strong> ${policyInfo.components.join(' • ')}</p>
   `;
+  
+  // Show distribution note if applicable
+  if (policyDistributionNote) {
+    if (policyInfo.distributionNote) {
+      policyDistributionNote.innerHTML = `<strong>📊 Note:</strong> ${policyInfo.distributionNote}`;
+      policyDistributionNote.style.display = 'block';
+    } else {
+      policyDistributionNote.style.display = 'none';
+    }
+  }
   
   // Create histogram with 10 bins for all indices
   const bins = 10;
@@ -1027,84 +1115,156 @@ function renderPolicyIndices(indexKey) {
     histogram[binIndex]++;
   });
   
-  const binLabels = Array.from({ length: bins }, (_, i) => {
-    const start = (i * binSize).toFixed(2);
-    const end = ((i + 1) * binSize).toFixed(2);
-    return `${start}–${end}`;
-  });
+  // Prepare data for D3
+  const histogramData = histogram.map((count, i) => ({
+    binStart: i * binSize,
+    binEnd: (i + 1) * binSize,
+    count: count,
+    label: `${(i * binSize).toFixed(1)}–${((i + 1) * binSize).toFixed(1)}`
+  }));
   
-  // Destroy previous chart if exists
-  if (policyChartInstance) {
-    policyChartInstance.destroy();
-  }
+  // Clear previous chart and tooltip
+  d3.select("#policy-d3-chart-container").selectAll("*").remove();
+  d3.selectAll(".policy-chart-tooltip").remove();
   
   // Color based on index type
   const colorMap = {
-    redistIndex: { bg: 'rgba(59, 130, 246, 0.7)', border: 'rgba(59, 130, 246, 1)' },
-    raceIndex: { bg: 'rgba(139, 92, 246, 0.7)', border: 'rgba(139, 92, 246, 1)' },
-    immigIndex: { bg: 'rgba(245, 158, 11, 0.7)', border: 'rgba(245, 158, 11, 1)' },
-    womenIndex: { bg: 'rgba(236, 72, 153, 0.7)', border: 'rgba(236, 72, 153, 1)' }
+    redistIndex: { main: '#6b9a9e', gradient: ['#b3cfd1', '#6b9a9e'] },
+    raceIndex: { main: '#8b5cf6', gradient: ['#c4b5fd', '#8b5cf6'] },
+    immigIndex: { main: '#f59e0b', gradient: ['#fcd34d', '#f59e0b'] },
+    womenIndex: { main: '#ec4899', gradient: ['#f9a8d4', '#ec4899'] }
   };
-  const colors = colorMap[indexKey] || { bg: 'rgba(100, 200, 100, 0.7)', border: 'rgba(100, 200, 100, 1)' };
+  const colors = colorMap[indexKey] || { main: '#64748b', gradient: ['#cbd5e1', '#64748b'] };
   
-  // Create histogram chart
-  policyChartInstance = new Chart(policyChartContainer, {
-    type: "bar",
-    data: {
-      labels: binLabels,
-      datasets: [
-        {
-          label: "Frequency",
-          data: histogram,
-          backgroundColor: colors.bg,
-          borderColor: colors.border,
-          borderWidth: 1
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: "Count"
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: "Index Value (0–1)"
-          },
-          ticks: {
-            maxRotation: 45,
-            minRotation: 45,
-            autoSkip: true,
-            maxTicksLimit: 10
-          }
-        }
-      },
-      plugins: {
-        legend: {
-          display: false
-        },
-        tooltip: {
-          callbacks: {
-            title: (items) => `Range: ${items[0].label}`,
-            label: (item) => `Count: ${item.raw.toLocaleString()} (${((item.raw / policyValues.length) * 100).toFixed(1)}%)`
-          }
-        }
-      }
-    }
-  });
+  // Set up dimensions (similar to demographic chart)
+  const container = document.getElementById("policy-d3-chart-container");
+  const containerWidth = container ? container.clientWidth : 600;
+  const maxWidth = 650;
+  const effectiveWidth = Math.min(containerWidth, maxWidth);
+  const margin = { top: 30, right: 30, bottom: 60, left: 70 };
+  const width = effectiveWidth - margin.left - margin.right;
+  const height = 380 - margin.top - margin.bottom;
+  
+  // Create SVG (centered in container)
+  const svg = d3.select("#policy-d3-chart-container")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .style("display", "block")
+    .style("margin", "0 auto")
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+  
+  // X scale
+  const x = d3.scaleBand()
+    .range([0, width])
+    .domain(histogramData.map(d => d.label))
+    .padding(0.15);
+  
+  // Y scale
+  const maxCount = d3.max(histogramData, d => d.count);
+  const y = d3.scaleLinear()
+    .domain([0, maxCount * 1.1])
+    .range([height, 0]);
+  
+  // Add X axis
+  svg.append("g")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("transform", "rotate(-35)")
+    .style("text-anchor", "end")
+    .style("font-size", "11px")
+    .style("fill", "#666");
+  
+  // X axis label
+  svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", height + 50)
+    .attr("text-anchor", "middle")
+    .style("font-size", "12px")
+    .style("fill", "#666")
+    .text("Index Value (0–1)");
+  
+  // Add Y axis
+  svg.append("g")
+    .call(d3.axisLeft(y).ticks(6).tickFormat(d => d.toLocaleString()))
+    .selectAll("text")
+    .style("font-size", "11px")
+    .style("fill", "#666");
+  
+  // Y axis label
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -50)
+    .attr("x", -height / 2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "12px")
+    .style("fill", "#666")
+    .text("Count");
+  
+  // Create tooltip (appended to body for correct positioning)
+  const tooltip = d3.select("body")
+    .append("div")
+    .attr("class", "policy-chart-tooltip")
+    .style("position", "fixed")
+    .style("visibility", "hidden")
+    .style("background-color", "rgba(0, 0, 0, 0.85)")
+    .style("color", "white")
+    .style("padding", "10px 14px")
+    .style("border-radius", "6px")
+    .style("font-size", "13px")
+    .style("pointer-events", "none")
+    .style("z-index", "1000")
+    .style("box-shadow", "0 4px 12px rgba(0,0,0,0.2)");
+  
+  // Add bars with gradient effect
+  svg.selectAll(".bar")
+    .data(histogramData)
+    .enter()
+    .append("rect")
+    .attr("class", "bar")
+    .attr("x", d => x(d.label))
+    .attr("width", x.bandwidth())
+    .attr("y", height)
+    .attr("height", 0)
+    .attr("fill", colors.main)
+    .attr("rx", 3)
+    .attr("ry", 3)
+    .style("opacity", 0.85)
+    .on("mouseover", function(event, d) {
+      d3.select(this)
+        .style("opacity", 1)
+        .attr("stroke", colors.main)
+        .attr("stroke-width", 2);
+      
+      const pct = ((d.count / policyValues.length) * 100).toFixed(1);
+      tooltip
+        .style("visibility", "visible")
+        .html(`<strong>${d.label}</strong><br/>Count: ${d.count.toLocaleString()}<br/>Percentage: ${pct}%`);
+    })
+    .on("mousemove", function(event) {
+      tooltip
+        .style("top", (event.clientY - 10) + "px")
+        .style("left", (event.clientX + 15) + "px");
+    })
+    .on("mouseout", function() {
+      d3.select(this)
+        .style("opacity", 0.85)
+        .attr("stroke", "none");
+      tooltip.style("visibility", "hidden");
+    })
+    .transition()
+    .duration(600)
+    .attr("y", d => y(d.count))
+    .attr("height", d => height - y(d.count));
   
   // Update statistics display
   policyMean.textContent = stats.mean.toFixed(3);
   policyMedian.textContent = stats.median.toFixed(3);
   policyStddev.textContent = stats.stddev.toFixed(3);
   policyRange.textContent = `${stats.min.toFixed(3)} – ${stats.max.toFixed(3)}`;
+  if (policyN) policyN.textContent = policyValues.length.toLocaleString();
 }
 
 function initializePolicyIndices() {
@@ -1129,64 +1289,25 @@ function initializePolicyIndices() {
   resetScatterFiltersBtn.addEventListener("click", () => {
     resetScatterFiltersAll();
   });
-  
-  // Add event listener for map filters reset button (Story 3.3.2–3.3.3)
-  if (resetMapFiltersBtn) {
-    resetMapFiltersBtn.addEventListener("click", () => {
-      resetMapFilters();
-    });
-  }
-  
-  // Add event listener for clear demographics button (Story 3.3.3)
-  if (clearMapDemographicsBtn) {
-    clearMapDemographicsBtn.addEventListener("click", () => {
-      clearMapDemographicFilters();
-    });
-  }
 }
 
 // ---------------------------
 // Story 3.2.2: Scatter Plot (Zero-Sum vs Policy Index)
 // ---------------------------
-let scatterChartInstance = null;
 
 const policySelectScatter = document.getElementById("policy-select-scatter");
-const scatterChartContainer = document.getElementById("scatter-chart-container");
-const scatterTitle = document.getElementById("scatter-title");
+const scatterD3Container = document.getElementById("scatter-d3-container");
 const scatterDescription = document.getElementById("scatter-description");
+const scatterSampleInfo = document.getElementById("scatter-sample-info");
 const correlationR = document.getElementById("correlation-r");
 const correlationR2 = document.getElementById("correlation-r2");
 const scatterN = document.getElementById("scatter-n");
 const scatterFiltersPanel = document.getElementById("scatter-filters-panel");
 const resetScatterFiltersBtn = document.getElementById("reset-scatter-filters-btn");
 const scatterFilterSummary = document.getElementById("scatter-filter-summary");
-const resetMapFiltersBtn = document.getElementById("reset-map-filters-btn");
-const clearMapDemographicsBtn = document.getElementById("clear-map-demographics-btn");
-const toggleDemographicFiltersBtn = document.getElementById("toggle-demographic-filters-btn");
-const closeDemographicFiltersBtn = document.getElementById("close-demographic-filters-btn");
-const mapDemographicFiltersPanel = document.getElementById("map-demographic-filters-panel");
 
 // Scatter plot filter state
 let scatterFilters = {};
-
-// Handle floating panel toggle
-if (toggleDemographicFiltersBtn) {
-  toggleDemographicFiltersBtn.addEventListener("click", () => {
-    const isHidden = mapDemographicFiltersPanel.style.display === "none";
-    mapDemographicFiltersPanel.style.display = isHidden ? "block" : "none";
-    toggleDemographicFiltersBtn.textContent = isHidden ? "✕ Additional Filters" : "⚙ Additional Filters";
-  });
-}
-
-// Handle closing the floating panel
-if (closeDemographicFiltersBtn) {
-  closeDemographicFiltersBtn.addEventListener("click", () => {
-    mapDemographicFiltersPanel.style.display = "none";
-    if (toggleDemographicFiltersBtn) {
-      toggleDemographicFiltersBtn.textContent = "⚙ Additional Filters";
-    }
-  });
-}
 
 function renderScatterFiltersPanel() {
   if (!scatterFiltersPanel) return;
@@ -1231,9 +1352,26 @@ function renderScatterFiltersPanel() {
     optionsContainer.style.cssText = "display: none; padding-top: 8px; padding-left: 8px;";
     optionsContainer.className = "filter-options-container";
     
-    // Toggle visibility on header click
+    // Toggle visibility on header click (accordion style - close others when opening one)
     header.addEventListener("click", () => {
       const isHidden = optionsContainer.style.display === "none";
+      
+      // Close all other filter options first (accordion behavior)
+      if (isHidden) {
+        const allFilterItems = scatterFiltersPanel.querySelectorAll('.filter-options-container');
+        const allArrows = scatterFiltersPanel.querySelectorAll('.filter-arrow');
+        allFilterItems.forEach((container, idx) => {
+          if (container !== optionsContainer) {
+            container.style.display = 'none';
+          }
+        });
+        allArrows.forEach(arr => {
+          if (arr !== arrow) {
+            arr.style.transform = 'rotate(0deg)';
+          }
+        });
+      }
+      
       optionsContainer.style.display = isHidden ? "block" : "none";
       arrow.style.transform = isHidden ? "rotate(180deg)" : "rotate(0deg)";
     });
@@ -1378,6 +1516,10 @@ function renderScatterPlot(indexKey) {
   const xValues = validData.map(record => record.zeroSumScore);
   const yValues = validData.map(record => record[indexKey]);
   
+  // Clear previous chart and tooltip
+  d3.select("#scatter-d3-container").selectAll("*").remove();
+  d3.selectAll(".scatter-chart-tooltip").remove();
+  
   // Handle empty filtered data
   if (xValues.length === 0) {
     correlationR.textContent = "—";
@@ -1386,27 +1528,15 @@ function renderScatterPlot(indexKey) {
     const slopeEl = document.getElementById("scatter-slope");
     if (slopeEl) slopeEl.textContent = "—";
     
-    if (scatterChartInstance) {
-      scatterChartInstance.destroy();
-    }
-    
-    scatterChartInstance = new Chart(scatterChartContainer, {
-      type: "scatter",
-      data: {
-        datasets: []
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          title: {
-            display: true,
-            text: "No data available for selected filters"
-          }
-        }
-      }
-    });
-    
+    d3.select("#scatter-d3-container")
+      .append("div")
+      .style("display", "flex")
+      .style("align-items", "center")
+      .style("justify-content", "center")
+      .style("height", "400px")
+      .style("color", "var(--muted)")
+      .style("font-size", "14px")
+      .text("No data available for selected filters");
     return;
   }
   
@@ -1426,13 +1556,10 @@ function renderScatterPlot(indexKey) {
   const intercept = meanY - slope * meanX;
   
   // ========== BINSCATTER CALCULATION ==========
-  // Following Chinoy et al. (2024) methodology: divide X into equal-width bins
-  // and compute mean Y for each bin
   const numBins = 20;
   const binWidth = 1 / numBins;
   const bins = [];
   
-  // Initialize bins
   for (let i = 0; i < numBins; i++) {
     bins.push({
       xMin: i * binWidth,
@@ -1444,7 +1571,6 @@ function renderScatterPlot(indexKey) {
     });
   }
   
-  // Assign data points to bins
   for (let i = 0; i < xValues.length; i++) {
     const x = xValues[i];
     const y = yValues[i];
@@ -1453,7 +1579,6 @@ function renderScatterPlot(indexKey) {
     bins[binIndex].count++;
   }
   
-  // Calculate mean Y for each bin
   const binscatterData = [];
   bins.forEach(bin => {
     if (bin.count > 0) {
@@ -1466,12 +1591,6 @@ function renderScatterPlot(indexKey) {
     }
   });
   
-  // Regression line data points
-  const regressionLine = [
-    { x: 0, y: intercept },
-    { x: 1, y: slope + intercept }
-  ];
-  
   // Update title and description
   const policyInfo = policyDescriptions[indexKey];
   if (!policyInfo) {
@@ -1479,160 +1598,244 @@ function renderScatterPlot(indexKey) {
     return;
   }
   
-  scatterTitle.textContent = `Zero-Sum Index vs ${policyInfo.title}`;
   scatterDescription.innerHTML = `
-    <strong>Binned scatter plot:</strong> Each dot represents the <strong>mean ${policyInfo.title}</strong> for respondents within that Zero-Sum Index bin.
-    <br><span style="font-size: 11px; color: var(--muted);">Based on N = ${xValues.length.toLocaleString()} respondents across ${binscatterData.length} bins with data.</span>
+    <strong>Binned scatter plot:</strong> Each dot shows the average ${policyInfo.title.toLowerCase()} score for respondents in that zero-sum bin.
   `;
   
-  // Color based on index type
-  // raw: desaturated/grayish for background, bin: darker saturated for emphasis
-  const colorMap = {
-    redistIndex: { 
-      bin: 'rgba(30, 64, 175, 1)',      // darker blue for bin means
-      raw: 'rgba(147, 165, 207, 0.15)'  // desaturated grayish-blue for raw
-    },
-    raceIndex: { 
-      bin: 'rgba(91, 33, 182, 1)',      // darker purple
-      raw: 'rgba(167, 139, 250, 0.15)'  // desaturated grayish-purple
-    },
-    immigIndex: { 
-      bin: 'rgba(180, 83, 9, 1)',       // darker amber
-      raw: 'rgba(217, 179, 130, 0.15)'  // desaturated grayish-amber
-    },
-    womenIndex: { 
-      bin: 'rgba(157, 23, 77, 1)',      // darker pink
-      raw: 'rgba(219, 150, 180, 0.15)'  // desaturated grayish-pink
-    }
-  };
-  const colors = colorMap[indexKey] || { 
-    bin: 'rgba(30, 64, 175, 1)', 
-    raw: 'rgba(147, 165, 207, 0.15)' 
-  };
-  
-  // Prepare raw data points for display (transparent background layer)
-  const rawDataPoints = xValues.map((x, i) => ({ x: x, y: yValues[i] }));
-  
-  // Destroy previous chart if exists
-  if (scatterChartInstance) {
-    scatterChartInstance.destroy();
+  if (scatterSampleInfo) {
+    scatterSampleInfo.innerHTML = `N = ${xValues.length.toLocaleString()} respondents across ${binscatterData.length} bins`;
   }
   
-  // Create binscatter plot with raw data overlay
-  scatterChartInstance = new Chart(scatterChartContainer, {
-    type: "scatter",
-    data: {
-      datasets: [
-        {
-          label: "Raw Data",
-          data: rawDataPoints,
-          backgroundColor: colors.raw,
-          borderColor: 'transparent',
-          borderWidth: 0,
-          pointRadius: 2.5,
-          pointHoverRadius: 4,
-          pointStyle: 'circle',
-          order: 3  // Draw first (behind everything)
-        },
-        {
-          label: "Bin Means",
-          data: binscatterData,
-          backgroundColor: colors.bin,
-          borderColor: 'rgba(255, 255, 255, 0.8)',
-          borderWidth: 1.5,
-          pointRadius: 5,
-          pointHoverRadius: 7,
-          pointStyle: 'circle',
-          order: 1  // Draw on top
-        },
-        {
-          label: "OLS Fit",
-          data: regressionLine,
-          type: "line",
-          borderColor: "rgba(220, 38, 38, 0.85)",
-          borderWidth: 2,
-          borderDash: [6, 4],
-          pointRadius: 0,
-          pointStyle: 'line',  // Use line style for legend
-          fill: false,
-          tension: 0,
-          order: 2
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: {
-          type: "linear",
-          position: "bottom",
-          min: 0,
-          max: 1,
-          title: {
-            display: true,
-            text: "Zero-Sum Index (0–1)",
-            font: { weight: 'bold' }
-          },
-          grid: {
-            color: 'rgba(0, 0, 0, 0.05)'
-          }
-        },
-        y: {
-          min: 0,
-          max: 1,
-          title: {
-            display: true,
-            text: `${policyInfo.title} (0–1)`,
-            font: { weight: 'bold' }
-          },
-          grid: {
-            color: 'rgba(0, 0, 0, 0.05)'
-          }
-        }
-      },
-      plugins: {
-        legend: {
-          display: true,
-          position: 'bottom',
-          labels: {
-            usePointStyle: true,
-            padding: 15,
-            font: { size: 11 },
-            generateLabels: function(chart) {
-              const datasets = chart.data.datasets;
-              return datasets.map((dataset, i) => {
-                return {
-                  text: dataset.label,
-                  fillStyle: i === 2 ? 'transparent' : dataset.backgroundColor,
-                  strokeStyle: i === 2 ? dataset.borderColor : dataset.borderColor,
-                  lineWidth: i === 2 ? 2 : 1,
-                  lineDash: i === 2 ? [6, 4] : [],
-                  pointStyle: i === 2 ? 'line' : 'circle',
-                  hidden: !chart.isDatasetVisible(i),
-                  datasetIndex: i
-                };
-              });
-            }
-          }
-        },
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              if (context.datasetIndex === 1) {  // Bin Means is now index 1
-                const point = context.raw;
-                return [
-                  `Mean ${policyInfo.title}: ${point.y.toFixed(3)}`,
-                  `Respondents in bin: ${point.count.toLocaleString()}`
-                ];
-              }
-              return null;
-            }
-          }
-        }
-      }
-    }
-  });
+  // Color based on index type
+  const colorMap = {
+    redistIndex: { bin: '#4d8387', raw: 'rgba(107, 154, 158, 0.12)', binLight: '#8fb8bc' },
+    raceIndex: { bin: '#5b21b6', raw: 'rgba(167, 139, 250, 0.12)', binLight: '#8b5cf6' },
+    immigIndex: { bin: '#b45309', raw: 'rgba(217, 179, 130, 0.12)', binLight: '#f59e0b' },
+    womenIndex: { bin: '#9d174d', raw: 'rgba(219, 150, 180, 0.12)', binLight: '#ec4899' }
+  };
+  const colors = colorMap[indexKey] || { bin: '#3d5a6c', raw: 'rgba(91, 124, 153, 0.12)', binLight: '#7b9cb5' };
+  
+  // Prepare raw data points
+  const rawDataPoints = xValues.map((x, i) => ({ x: x, y: yValues[i] }));
+  
+  // ========== D3 CHART ==========
+  const container = document.getElementById("scatter-d3-container");
+  const containerWidth = container ? container.clientWidth : 700;
+  const margin = { top: 30, right: 40, bottom: 90, left: 60 };
+  const width = Math.min(containerWidth, 750) - margin.left - margin.right;
+  const height = 440 - margin.top - margin.bottom;
+  
+  // Create SVG
+  const svg = d3.select("#scatter-d3-container")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .style("display", "block")
+    .style("margin", "0 auto")
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+  
+  // Scales
+  const x = d3.scaleLinear().domain([0, 1]).range([0, width]);
+  const y = d3.scaleLinear().domain([0, 1]).range([height, 0]);
+  
+  // Add grid lines
+  svg.append("g")
+    .attr("class", "grid")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(x).ticks(10).tickSize(-height).tickFormat(""))
+    .selectAll("line")
+    .style("stroke", "rgba(0,0,0,0.05)");
+  
+  svg.append("g")
+    .attr("class", "grid")
+    .call(d3.axisLeft(y).ticks(10).tickSize(-width).tickFormat(""))
+    .selectAll("line")
+    .style("stroke", "rgba(0,0,0,0.05)");
+  
+  // Remove grid domain lines
+  svg.selectAll(".grid .domain").remove();
+  
+  // Add X axis
+  svg.append("g")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(x).ticks(10))
+    .selectAll("text")
+    .style("font-size", "11px")
+    .style("fill", "#666");
+  
+  // X axis label
+  svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", height + 45)
+    .attr("text-anchor", "middle")
+    .style("font-size", "13px")
+    .style("font-weight", "600")
+    .style("fill", "#333")
+    .text("Zero-Sum Index (0–1)");
+  
+  // Add Y axis
+  svg.append("g")
+    .call(d3.axisLeft(y).ticks(10))
+    .selectAll("text")
+    .style("font-size", "11px")
+    .style("fill", "#666");
+  
+  // Y axis label
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -45)
+    .attr("x", -height / 2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "13px")
+    .style("font-weight", "600")
+    .style("fill", "#333")
+    .text(`${policyInfo.title} (0–1)`);
+  
+  // Create tooltip
+  const tooltip = d3.select("body")
+    .append("div")
+    .attr("class", "scatter-chart-tooltip")
+    .style("position", "fixed")
+    .style("visibility", "hidden")
+    .style("background-color", "rgba(0, 0, 0, 0.9)")
+    .style("color", "white")
+    .style("padding", "10px 14px")
+    .style("border-radius", "8px")
+    .style("font-size", "12px")
+    .style("pointer-events", "none")
+    .style("z-index", "1000")
+    .style("box-shadow", "0 4px 12px rgba(0,0,0,0.3)");
+  
+  // Draw raw data points with animation
+  svg.selectAll(".raw-point")
+    .data(rawDataPoints)
+    .enter()
+    .append("circle")
+    .attr("class", "raw-point")
+    .attr("cx", d => x(d.x))
+    .attr("cy", d => y(d.y))
+    .attr("r", 0)
+    .attr("fill", colors.raw)
+    .transition()
+    .duration(600)
+    .delay((d, i) => Math.random() * 200)
+    .attr("r", 2.5);
+  
+  // Draw regression line with animation
+  const line = d3.line()
+    .x(d => x(d.x))
+    .y(d => y(d.y));
+  
+  const regressionData = [
+    { x: 0, y: intercept },
+    { x: 1, y: slope + intercept }
+  ];
+  
+  const regressionPath = svg.append("path")
+    .datum(regressionData)
+    .attr("fill", "none")
+    .attr("stroke", "#dc2626")
+    .attr("stroke-width", 2.5)
+    .attr("stroke-dasharray", "8,5")
+    .attr("d", line)
+    .style("opacity", 0);
+  
+  regressionPath.transition()
+    .duration(800)
+    .delay(400)
+    .style("opacity", 0.85);
+  
+  // Draw bin scatter points with animation
+  svg.selectAll(".bin-point")
+    .data(binscatterData)
+    .enter()
+    .append("circle")
+    .attr("class", "bin-point")
+    .attr("cx", d => x(d.x))
+    .attr("cy", d => y(d.y))
+    .attr("r", 0)
+    .attr("fill", colors.bin)
+    .attr("stroke", "white")
+    .attr("stroke-width", 2)
+    .style("cursor", "pointer")
+    .on("mouseover", function(event, d) {
+      d3.select(this)
+        .transition()
+        .duration(150)
+        .attr("r", 10)
+        .attr("fill", colors.binLight);
+      
+      tooltip
+        .style("visibility", "visible")
+        .html(`<strong>Bin: ${d.x.toFixed(2)}</strong><br/>Mean ${policyInfo.title}: <strong>${d.y.toFixed(3)}</strong><br/>Respondents: ${d.count.toLocaleString()}`);
+    })
+    .on("mousemove", function(event) {
+      tooltip
+        .style("top", (event.clientY - 10) + "px")
+        .style("left", (event.clientX + 15) + "px");
+    })
+    .on("mouseout", function() {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .attr("r", 7)
+        .attr("fill", colors.bin);
+      tooltip.style("visibility", "hidden");
+    })
+    .transition()
+    .duration(600)
+    .delay((d, i) => 300 + i * 30)
+    .attr("r", 7);
+  
+  // Add legend (centered at bottom)
+  const legendWidth = 230;
+  const legend = svg.append("g")
+    .attr("transform", `translate(${(width - legendWidth) / 2}, ${height + 60})`);
+  
+  // Raw data legend
+  legend.append("circle")
+    .attr("cx", 0)
+    .attr("cy", 0)
+    .attr("r", 4)
+    .attr("fill", colors.raw.replace("0.12", "0.5"));
+  legend.append("text")
+    .attr("x", 10)
+    .attr("y", 4)
+    .style("font-size", "11px")
+    .style("fill", "#666")
+    .text("Raw Data");
+  
+  // Bin means legend
+  legend.append("circle")
+    .attr("cx", 85)
+    .attr("cy", 0)
+    .attr("r", 5)
+    .attr("fill", colors.bin)
+    .attr("stroke", "white")
+    .attr("stroke-width", 1.5);
+  legend.append("text")
+    .attr("x", 95)
+    .attr("y", 4)
+    .style("font-size", "11px")
+    .style("fill", "#666")
+    .text("Bin Means");
+  
+  // OLS fit legend
+  legend.append("line")
+    .attr("x1", 175)
+    .attr("y1", 0)
+    .attr("x2", 195)
+    .attr("y2", 0)
+    .attr("stroke", "#dc2626")
+    .attr("stroke-width", 2)
+    .attr("stroke-dasharray", "5,3");
+  legend.append("text")
+    .attr("x", 200)
+    .attr("y", 4)
+    .style("font-size", "11px")
+    .style("fill", "#666")
+    .text("OLS Fit");
   
   // Update correlation stats with interpretation
   const rValue = correlation.r;
@@ -1676,7 +1879,7 @@ function renderScatterPlot(indexKey) {
   }
   
   // Update dynamic methodology note based on index type
-  const methodologyTextEl = document.getElementById("index-methodology-text");
+  const methodologyTextEl = document.getElementById("index-methodology-text-toggle");
   if (methodologyTextEl) {
     const isTwoItemIndex = ["raceIndex", "immigIndex", "womenIndex"].includes(indexKey);
     if (isTwoItemIndex) {
@@ -1687,20 +1890,20 @@ function renderScatterPlot(indexKey) {
   }
 }
 
-// Sub-tab switching for Policy Indices
-const subTabBtns = document.querySelectorAll(".sub-tab-btn");
+// View selector switching for Policy Indices (Distribution / Correlation)
+const viewSelectorBtns = document.querySelectorAll(".view-selector__btn");
 const subTabContents = document.querySelectorAll(".sub-tab-content");
 
-subTabBtns.forEach(btn => {
+viewSelectorBtns.forEach(btn => {
   btn.addEventListener("click", () => {
     const subTabName = btn.dataset.subTab;
     
     // Remove active class
-    subTabBtns.forEach(b => b.classList.remove("sub-tab-btn--active"));
+    viewSelectorBtns.forEach(b => b.classList.remove("view-selector__btn--active"));
     subTabContents.forEach(stc => stc.classList.remove("sub-tab-content--active"));
     
     // Add active class
-    btn.classList.add("sub-tab-btn--active");
+    btn.classList.add("view-selector__btn--active");
     document.getElementById(`sub-tab-${subTabName}`).classList.add("sub-tab-content--active");
     
     // Refresh scatter chart if switching to correlation
@@ -1712,8 +1915,8 @@ subTabBtns.forEach(btn => {
   });
 });
 
-// Tab switching
-const tabBtns = document.querySelectorAll(".tab-btn");
+// Tab switching (using new step-based navigation)
+const tabBtns = document.querySelectorAll(".viz-step-btn");
 const tabContents = document.querySelectorAll(".tab-content");
 
 tabBtns.forEach(btn => {
@@ -1721,12 +1924,24 @@ tabBtns.forEach(btn => {
     const tabName = btn.dataset.tab;
     
     // Remove active class from all tabs and buttons
-    tabBtns.forEach(b => b.classList.remove("tab-btn--active"));
+    tabBtns.forEach(b => b.classList.remove("viz-step-btn--active"));
     tabContents.forEach(tc => tc.classList.remove("tab-content--active"));
     
     // Add active class to selected tab and button
-    btn.classList.add("tab-btn--active");
-    document.getElementById(`tab-${tabName}`).classList.add("tab-content--active");
+    btn.classList.add("viz-step-btn--active");
+    const activeTab = document.getElementById(`tab-${tabName}`);
+    activeTab.classList.add("tab-content--active");
+    
+    // Refresh D3 chart when switching back to demographic-patterns
+    if (tabName === "demographic-patterns") {
+      // Clear D3 scatter chart and tooltip when leaving policy tab
+      d3.select("#scatter-d3-container").selectAll("*").remove();
+      d3.selectAll(".scatter-chart-tooltip").remove();
+      
+      setTimeout(() => {
+        renderDemographicChart(demoSelect.value);
+      }, 50);
+    }
     
     // Refresh charts if switching to policy indices
     if (tabName === "policy-indices") {
@@ -1745,419 +1960,540 @@ tabBtns.forEach(btn => {
         } else {
           window.countyMap.invalidateSize();
         }
-        renderCountyMapColors();
+        renderStateMap();
       }, 100);
     }
   });
 });
 
 // ---------------------------
-// Story 3.3: Geographic Map (County-Level)
+// Story 3.3: Geographic Map (State-Level) - D3 Implementation
+// Uses preprocessed data from data/vizmap/state_zero_sum_long.json
+// State GeoJSON loaded from CDN (US Atlas TopoJSON)
 // ---------------------------
-function getColorForScore(score) {
-  // Blue (0.0) to Yellow (0.5) to Orange (1.0) gradient - colorblind friendly
-  // Uses a perceptually uniform scale
-  if (score < 0.5) {
-    // Blue to Yellow (0.0 to 0.5)
-    const t = score * 2; // normalize to 0-1
-    const r = Math.round(30 + t * 225); // #1e to #ff
-    const g = Math.round(100 + t * 155); // #64 to #ff
-    const b = Math.round(255 - t * 100); // #ff to #9b
-    return `rgb(${r}, ${g}, ${b})`;
-  } else {
-    // Yellow to Orange (0.5 to 1.0)
-    const t = (score - 0.5) * 2; // normalize to 0-1
-    const r = 255; // stays at #ff
-    const g = Math.round(255 - t * 100); // #ff to #9b
-    const b = Math.round(155 - t * 155); // #9b to #00
-    return `rgb(${r}, ${g}, ${b})`;
-  }
-}
 
-// State for map immigration filters (Story 3.3.2)
-const mapFilters = {
-  immigrationStatus: null
+// Global state for D3 map
+let stateGeoData = null;       // GeoJSON for state boundaries
+let stateZeroSumData = null;   // Zero-sum thinking data by state and group (from R)
+let currentMapGroup = "all";   // Currently selected filter group
+let d3MapSvg = null;           // D3 SVG element
+let d3MapPath = null;          // D3 geo path generator
+let stateDataLookup = {};      // Quick lookup: state_fips -> data for current group
+let currentColorScaleMin = 0;  // Current color scale min (dynamic per group)
+let currentColorScaleMax = 1;  // Current color scale max (dynamic per group)
+
+// Color scale: Green (low) → Yellow (mid) → Orange (high)
+// Domain will be dynamically set based on actual data range for better differentiation
+let mapColorScale = d3.scaleLinear()
+  .domain([0, 0.5, 1])
+  .range(["#2ecc71", "#f1c40f", "#e67e22"])
+  .clamp(true);
+
+// State FIPS to name mapping
+const stateFipsToName = {
+  "01": "Alabama", "02": "Alaska", "04": "Arizona", "05": "Arkansas", "06": "California",
+  "08": "Colorado", "09": "Connecticut", "10": "Delaware", "11": "District of Columbia",
+  "12": "Florida", "13": "Georgia", "15": "Hawaii", "16": "Idaho", "17": "Illinois",
+  "18": "Indiana", "19": "Iowa", "20": "Kansas", "21": "Kentucky", "22": "Louisiana",
+  "23": "Maine", "24": "Maryland", "25": "Massachusetts", "26": "Michigan", "27": "Minnesota",
+  "28": "Mississippi", "29": "Missouri", "30": "Montana", "31": "Nebraska", "32": "Nevada",
+  "33": "New Hampshire", "34": "New Jersey", "35": "New Mexico", "36": "New York",
+  "37": "North Carolina", "38": "North Dakota", "39": "Ohio", "40": "Oklahoma", "41": "Oregon",
+  "42": "Pennsylvania", "44": "Rhode Island", "45": "South Carolina", "46": "South Dakota",
+  "47": "Tennessee", "48": "Texas", "49": "Utah", "50": "Vermont", "51": "Virginia",
+  "53": "Washington", "54": "West Virginia", "55": "Wisconsin", "56": "Wyoming", "72": "Puerto Rico"
 };
 
-// State for combined map filters (Story 3.3.3)
-const mapDemographicFilters = {
-  age: [],
-  gender: [],
-  education: [],
-  income: [],
-  party: [],
-  urbanicity: []
+// Filter labels for display (generational classification per paper)
+const filterLabels = {
+  "all": "All respondents",
+  "first_gen": "1st generation (immigrant)",
+  "second_gen": "2nd generation (immigrant parents)",
+  "third_gen": "3rd generation (immigrant grandparents)"
 };
 
-// Initialize immigration status filter panel (Story 3.3.2)
-function initializeMapFilters() {
-  const immigrationOptions = [
-    "Both parents native",
-    "One parent immigrant",
-    "Both parents immigrant",
-    "One or more grandparents immigrant"
-  ];
+// Animation duration for map transitions (ms)
+const MAP_TRANSITION_DURATION = 600;
 
-  const filterPanel = document.getElementById("map-immigration-filters");
-  filterPanel.innerHTML = "";
+/**
+ * Get the currently selected map group from dropdown
+ */
+function getSelectedGroup() {
+  const select = document.getElementById("map-group-select");
+  return select?.value || "all";
+}
 
-  // Add "All" option first
-  const allLabel = document.createElement("div");
-  allLabel.className = "filter-option-item";
-  if (mapFilters.immigrationStatus === null) allLabel.classList.add("active");
-  
-  const allCheckbox = document.createElement("input");
-  allCheckbox.type = "radio";
-  allCheckbox.name = "map-immigration-status";
-  allCheckbox.value = "";
-  allCheckbox.checked = mapFilters.immigrationStatus === null;
-  allCheckbox.addEventListener("change", () => updateMapFilter(null));
-  
-  const allLabelText = document.createElement("span");
-  allLabelText.className = "filter-option-label";
-  allLabelText.textContent = "All";
-  
-  allLabel.appendChild(allCheckbox);
-  allLabel.appendChild(allLabelText);
-  filterPanel.appendChild(allLabel);
+/**
+ * Load state boundaries (TopoJSON from CDN) and zero-sum data (local JSON)
+ * NO aggregation or computation - data is already preprocessed in R
+ */
+async function loadMapData() {
+  try {
+    console.log("[Map] Loading map data...");
+    
+    // Load state boundaries from US Atlas CDN (TopoJSON)
+    // and zero-sum data from local preprocessed JSON
+    const [topoRes, zsRes] = await Promise.all([
+      fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json'),
+      fetch('./data/vizmap/state_zero_sum_long.json')
+    ]);
+    
+    if (!topoRes.ok || !zsRes.ok) {
+      throw new Error(`HTTP error: topo=${topoRes.status}, zs=${zsRes.status}`);
+    }
+    
+    const topoData = await topoRes.json();
+    const zsJson = await zsRes.json();
+    
+    // Convert TopoJSON to GeoJSON using topojson library (loaded from CDN)
+    // The states object contains state boundaries
+    if (typeof topojson !== 'undefined') {
+      stateGeoData = topojson.feature(topoData, topoData.objects.states);
+    } else {
+      // Fallback: manually convert if topojson library not available
+      // Load topojson library dynamically
+      await loadScript('https://cdn.jsdelivr.net/npm/topojson-client@3');
+      stateGeoData = topojson.feature(topoData, topoData.objects.states);
+    }
+    
+    // Extract data array from the JSON structure (already preprocessed)
+    stateZeroSumData = zsJson.data || zsJson;
+    
+    console.log(`[Map] Loaded ${stateGeoData.features?.length || 0} state boundaries`);
+    console.log(`[Map] Loaded ${stateZeroSumData.length} state zero-sum records (preprocessed)`);
+    
+    // Log available groups
+    const groups = [...new Set(stateZeroSumData.map(d => d.group))];
+    console.log(`[Map] Available groups: ${groups.join(", ")}`);
+    
+    return true;
+  } catch (error) {
+    console.error("[Map] Failed to load map data:", error);
+    return false;
+  }
+}
 
-  immigrationOptions.forEach(option => {
-    const optionDiv = document.createElement("div");
-    optionDiv.className = "filter-option-item";
-    if (mapFilters.immigrationStatus === option) optionDiv.classList.add("active");
-    
-    const radio = document.createElement("input");
-    radio.type = "radio";
-    radio.name = "map-immigration-status";
-    radio.value = option;
-    radio.checked = mapFilters.immigrationStatus === option;
-    radio.addEventListener("change", () => updateMapFilter(option));
-    
-    const labelText = document.createElement("span");
-    labelText.className = "filter-option-label";
-    labelText.textContent = option;
-    
-    optionDiv.appendChild(radio);
-    optionDiv.appendChild(labelText);
-    filterPanel.appendChild(optionDiv);
+/**
+ * Helper to dynamically load a script
+ */
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) {
+      resolve();
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
   });
 }
 
-// Initialize demographic filters for map (Story 3.3.3)
-function initializeMapDemographicFilters() {
-  const demographicPanel = document.getElementById("map-demographic-filters");
-  demographicPanel.innerHTML = "";
+/**
+ * Build lookup table for current group selection
+ * Maps state_fips -> { avg_zs, n, small_n_state }
+ * NO computation - just indexing the preprocessed data
+ */
+function buildStateDataLookup(group) {
+  stateDataLookup = {};
   
-  const variables = [
-    { key: "age", label: "Age", options: ["18-25", "26-40", "41-55", "56-70", "70+"] },
-    { key: "gender", label: "Gender", options: ["Male", "Female"] },
-    { key: "education", label: "Education", options: ["High School", "Bachelor", "Master+"] },
-    { key: "income", label: "Income", options: ["< $30k", "$30-60k", "$60-100k", "$100k+"] },
-    { key: "party", label: "Party", options: ["Democrat", "Republican", "Independent"] },
-    { key: "urbanicity", label: "Urbanicity", options: ["Urban", "Suburban", "Rural"] }
-  ];
+  if (!stateZeroSumData) return;
   
-  variables.forEach(variable => {
-    const column = document.createElement("div");
-    column.className = "filter-column";
-    
-    const header = document.createElement("div");
-    header.className = "filter-column__header";
-    header.textContent = variable.label.toUpperCase();
-    column.appendChild(header);
-    
-    const optionsContainer = document.createElement("div");
-    optionsContainer.className = "filter-column__options";
-    
-    variable.options.forEach(option => {
-      const optionDiv = document.createElement("div");
-      optionDiv.className = "filter-option-item";
-      if (mapDemographicFilters[variable.key].includes(option)) optionDiv.classList.add("active");
-      
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.name = `map-${variable.key}`;
-      checkbox.value = option;
-      checkbox.checked = mapDemographicFilters[variable.key].includes(option);
-      checkbox.addEventListener("change", () => updateMapDemographicFilter(variable.key, option));
-      
-      const labelText = document.createElement("span");
-      labelText.className = "filter-option-label";
-      labelText.textContent = option;
-      
-      optionDiv.appendChild(checkbox);
-      optionDiv.appendChild(labelText);
-      optionsContainer.appendChild(optionDiv);
-    });
-    
-    column.appendChild(optionsContainer);
-    demographicPanel.appendChild(column);
-  });
-}
-
-// Update demographic filter selection (Story 3.3.3)
-function updateMapDemographicFilter(variable, option) {
-  const filters = mapDemographicFilters[variable];
-  const index = filters.indexOf(option);
-  
-  if (index > -1) {
-    filters.splice(index, 1);
-  } else {
-    filters.push(option);
-  }
-  
-  // Update active states for checkboxes
-  const checkbox = document.querySelector(`input[name="map-${variable}"][value="${option}"]`);
-  if (checkbox) {
-    const optionItem = checkbox.closest(".filter-option-item");
-    if (optionItem) {
-      if (checkbox.checked) {
-        optionItem.classList.add("active");
-      } else {
-        optionItem.classList.remove("active");
-      }
-    }
-  }
-  
-  updateMapFilterSummary();
-  renderCountyMapColors();
-}
-
-// Update map filter selection (Story 3.3.2)
-function updateMapFilter(immigrationStatus) {
-  mapFilters.immigrationStatus = immigrationStatus;
-  
-  // Update active states for radio buttons
-  const allRadios = document.querySelectorAll("input[name='map-immigration-status']");
-  allRadios.forEach(radio => {
-    const optionItem = radio.closest(".filter-option-item");
-    if (optionItem) {
-      if (radio.checked) {
-        optionItem.classList.add("active");
-      } else {
-        optionItem.classList.remove("active");
-      }
-    }
-  });
-  
-  updateMapFilterSummary();
-  renderCountyMapColors();
-}
-
-// Update the filter summary display (Story 3.3.2–3.3.3)
-function updateMapFilterSummary() {
-  const summaryDiv = document.getElementById("map-filter-summary");
-  const filters = [];
-  
-  if (mapFilters.immigrationStatus) {
-    filters.push(`Immigration: ${mapFilters.immigrationStatus}`);
-  }
-  
-  // Add demographic filters
-  for (const [key, values] of Object.entries(mapDemographicFilters)) {
-    if (values.length > 0) {
-      filters.push(`${key}: ${values.join(", ")}`);
-    }
-  }
-  
-  if (filters.length > 0) {
-    summaryDiv.innerHTML = `<strong>Active Filters:</strong> ${filters.join(" | ")}`;
-    summaryDiv.style.display = "block";
-  } else {
-    summaryDiv.style.display = "none";
-  }
-}
-
-// Reset all map filters (Story 3.3.3)
-function resetMapFilters() {
-  mapFilters.immigrationStatus = null;
-  mapDemographicFilters.age = [];
-  mapDemographicFilters.gender = [];
-  mapDemographicFilters.education = [];
-  mapDemographicFilters.income = [];
-  mapDemographicFilters.party = [];
-  mapDemographicFilters.urbanicity = [];
-  initializeMapFilters();
-  initializeMapDemographicFilters();
-  updateMapFilterSummary();
-  renderCountyMapColors();
-}
-
-// Clear only demographic filters, keep immigration filter (Story 3.3.3)
-function clearMapDemographicFilters() {
-  mapDemographicFilters.age = [];
-  mapDemographicFilters.gender = [];
-  mapDemographicFilters.education = [];
-  mapDemographicFilters.income = [];
-  mapDemographicFilters.party = [];
-  mapDemographicFilters.urbanicity = [];
-  initializeMapDemographicFilters();
-  updateMapFilterSummary();
-  renderCountyMapColors();
-}
-
-function initializeCountyMap() {
-  // Create a simple map centered on USA
-  const mapContainer = document.getElementById("map-container");
-  
-  window.countyMap = L.map(mapContainer).setView([39.8, -98.6], 4);
-  
-  // Add OpenStreetMap tiles
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: '© OpenStreetMap contributors',
-    maxZoom: 19,
-    opacity: 0.3
-  }).addTo(window.countyMap);
-  
-  // Create a feature group for county markers
-  window.countyMarkers = L.featureGroup().addTo(window.countyMap);
-}
-
-function renderCountyMapColors() {
-  if (!window.countyMap) return;
-  
-  // Clear existing markers
-  if (window.countyMarkers) {
-    window.countyMarkers.clearLayers();
-  }
-  
-  // Get filtered individual-level data based on combined filters (Story 3.3.3)
-  let filteredData = mockDataViz;
-  
-  // Apply demographic filters first
-  for (const [key, values] of Object.entries(mapDemographicFilters)) {
-    if (values.length > 0) {
-      filteredData = filteredData.filter(record => values.includes(record[key]));
-    }
-  }
-  
-  // Apply immigration status filter
-  if (mapFilters.immigrationStatus) {
-    filteredData = filteredData.filter(record => record.immigrationStatus === mapFilters.immigrationStatus);
-  }
-  
-  // Aggregate filtered data by county (Story 3.3.3)
-  const countyStats = {};
-  filteredData.forEach(record => {
-    if (!countyStats[record.fips]) {
-      countyStats[record.fips] = {
-        county: record.county,
-        scores: [],
-        count: 0
+  // Simply index the preprocessed data by state_fips for the selected group
+  // A state has data if there is a matching record for state_fips + group
+  stateZeroSumData
+    .filter(d => d.group === group)
+    .forEach(d => {
+      // Store the raw record - avg_zs may be a number, null, or undefined (missing field)
+      stateDataLookup[d.state_fips] = {
+        avg_zs: d.avg_zs,        // Number if present, undefined if field missing
+        n: d.n,                   // Sample size from R
+        hasRecord: true           // Flag to indicate record exists in data
       };
+    });
+  
+  // Debug: Log Nevada (state_fips="32") data for verification
+  const nevadaData = stateDataLookup["32"];
+  console.log(`[Map Debug] Nevada (32) for group "${group}":`, nevadaData);
+    
+  console.log(`[Map] Built lookup for group "${group}": ${Object.keys(stateDataLookup).length} states`);
+  
+  // Update color scale domain based on actual data range for better differentiation
+  updateColorScaleDomain();
+}
+
+/**
+ * Update color scale domain - use FIXED scale for cross-group comparison
+ * Per paper's logic, we need to compare across generations, so scale must be constant
+ * This allows users to visually compare: 1st gen (greener) vs 3rd gen (more yellow)
+ */
+function updateColorScaleDomain(minVal = null, maxVal = null) {
+  // Use provided values or default to fixed scale [0.30, 0.70]
+  currentColorScaleMin = minVal !== null ? minVal : 0.30;
+  currentColorScaleMax = maxVal !== null ? maxVal : 0.70;
+  
+  // Update the scale with domain (min, mid, max)
+  const mid = (currentColorScaleMin + currentColorScaleMax) / 2;
+  mapColorScale.domain([currentColorScaleMin, mid, currentColorScaleMax]);
+  
+  console.log(`[Map] Color scale: [${currentColorScaleMin.toFixed(2)}, ${mid.toFixed(2)}, ${currentColorScaleMax.toFixed(2)}]`);
+  
+  // Update legend and slider displays
+  updateLegendLabels();
+}
+
+/**
+ * Update legend labels to reflect current color scale domain
+ */
+function updateLegendLabels() {
+  const minLabel = document.getElementById("legend-min-label");
+  const maxLabel = document.getElementById("legend-max-label");
+  
+  if (minLabel) minLabel.textContent = currentColorScaleMin.toFixed(2);
+  if (maxLabel) maxLabel.textContent = currentColorScaleMax.toFixed(2);
+}
+
+/**
+ * Initialize the D3 SVG map
+ */
+function initializeD3Map() {
+  const container = document.getElementById("d3-map-container");
+  if (!container) {
+    console.warn("[Map] Container #d3-map-container not found");
+    return;
+  }
+  
+  // Clear any existing content
+  container.innerHTML = "";
+  
+  const width = container.clientWidth || 960;
+  const height = container.clientHeight || 520;
+  
+  // Create SVG
+  d3MapSvg = d3.select(container)
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .style("background", "#f8fafc");
+  
+  // Create projection centered on continental US
+  // Adjust scale to fit all states including Hawaii/Alaska/Washington
+  const projection = d3.geoAlbersUsa();
+  
+  // Smaller scale to ensure all states fit, centered properly
+  const scale = Math.min(width * 1.1, 1000);
+  projection
+    .scale(scale)
+    .translate([width / 2, height / 2]);
+  
+  d3MapPath = d3.geoPath().projection(projection);
+  
+  // Add a group for states
+  d3MapSvg.append("g").attr("class", "states");
+  
+  console.log(`[Map] D3 SVG initialized: ${width}x${height}`);
+}
+
+/**
+ * Render state boundaries with colors based on preprocessed zero-sum data
+ * Uses D3 transitions for smooth color changes when filters change
+ * NO computation - just visualization of R-processed data
+ */
+function renderStateMap() {
+  if (!d3MapSvg || !stateGeoData) {
+    console.warn("[Map] Cannot render: SVG or GeoData not ready");
+    return;
+  }
+  
+  const tooltip = document.getElementById("map-tooltip");
+  const statesGroup = d3MapSvg.select("g.states");
+  
+  // Build lookup for current group (just indexing, no computation)
+  buildStateDataLookup(currentMapGroup);
+  
+  // Helper function to get fill color for a state
+  const getFillColor = (d) => {
+    const fips = String(d.id).padStart(2, '0');
+    const data = stateDataLookup[fips];
+    
+    if (!data) return "#dfe6e9";
+    if (typeof data.avg_zs === 'number' && !isNaN(data.avg_zs)) {
+      return mapColorScale(data.avg_zs);
     }
-    countyStats[record.fips].scores.push(record.zeroSumScore);
-    countyStats[record.fips].count++;
-  });
-  
-  // Calculate county averages from filtered data
-  const filteredCountyData = Object.entries(countyStats).map(([fips, stats]) => ({
-    fips: parseInt(fips),
-    county: stats.county,
-    zeroSumAvg: stats.scores.length > 0 ? stats.scores.reduce((a, b) => a + b, 0) / stats.scores.length : 0,
-    n: stats.count
-  }));
-  
-  // County approximate center coordinates (for demonstration)
-  const countyCoords = {
-    6037: [34.05, -118.24],   // Los Angeles
-    17031: [41.88, -87.62],   // Cook (Chicago)
-    48201: [29.76, -95.37],   // Harris
-    4013: [33.37, -112.07],   // Maricopa (Phoenix)
-    6073: [32.71, -117.16],   // San Diego
-    12011: [26.22, -80.24],   // Broward
-    53033: [47.61, -122.33],  // King (Seattle)
-    36061: [40.71, -74.01],   // New York
-    48113: [32.78, -96.80],   // Dallas
-    48439: [32.31, -97.23],   // Tarrant
-    6059: [33.65, -117.92],   // Orange County
-    13121: [33.75, -84.39],   // Fulton (Atlanta)
-    27053: [44.97, -93.27],   // Hennepin (Minneapolis)
-    26163: [42.33, -83.27],   // Wayne (Detroit)
-    12031: [30.33, -81.66],   // Duval
-    12057: [27.94, -82.46],   // Hillsborough
-    8005: [39.74, -104.87],   // Arapahoe
-    47157: [35.15, -89.97],   // Shelby (Memphis)
-    32003: [36.17, -115.14],  // Clark (Las Vegas)
-    41051: [45.52, -122.68],  // Multnomah (Portland)
-    53053: [47.14, -122.21],  // Pierce
-    6001: [37.81, -122.27],   // Alameda
-    39035: [41.45, -81.69],   // Cuyahoga (Cleveland)
-    24003: [39.50, -76.64],   // Baltimore
-    37183: [35.78, -78.63],   // Wake
-    34023: [40.58, -74.27],   // Middlesex
-    6029: [35.37, -119.02],   // Kern
-    6085: [37.33, -121.89],   // Santa Clara
-    51059: [38.85, -77.31],   // Fairfax
-    36119: [41.28, -73.75],   // Westchester
-    12086: [25.76, -80.19],   // Dade (Miami)
-    12099: [26.71, -80.05],   // Palm Beach
-    47037: [36.16, -86.78],   // Davidson (Nashville)
-    39049: [39.96, -82.99],   // Franklin (Columbus)
-    48029: [29.42, -98.49],   // Bexar (San Antonio)
-    48453: [30.27, -97.74],   // Travis (Austin)
-    8059: [39.74, -105.23],   // Jefferson
-    8001: [39.99, -104.97],   // Adams
-    6067: [38.58, -121.49],   // Sacramento
-    6019: [36.74, -119.77],   // Fresno
-    6031: [35.75, -119.98],   // Kings
-    40143: [36.15, -95.89],   // Tulsa
-    35001: [35.09, -106.64],  // Bernalillo
-    19153: [41.59, -93.62],   // Polk
-    4019: [32.22, -110.93],   // Pima (Tucson)
-    36029: [42.88, -78.88],   // Erie (Buffalo)
-    41047: [44.97, -123.07],  // Marion
-    8069: [40.55, -105.07]    // Larimer
+    return "#dfe6e9";
   };
   
-  // Calculate statistics
-  const scores = filteredCountyData.map(d => d.zeroSumAvg);
-  const meanScore = scores.reduce((a, b) => a + b, 0) / scores.length;
-  const medianScore = scores.sort((a, b) => a - b)[Math.floor(scores.length / 2)];
-  const minScore = Math.min(...scores);
-  const maxScore = Math.max(...scores);
+  // Helper to check low reliability
+  const isLowReliability = (d) => {
+    const fips = String(d.id).padStart(2, '0');
+    const data = stateDataLookup[fips];
+    return data && typeof data.n === 'number' && data.n > 0 && data.n < 50;
+  };
   
-  // Update statistics
-  document.getElementById("map-county-count").textContent = filteredCountyData.length;
-  document.getElementById("map-mean").textContent = meanScore.toFixed(3);
-  document.getElementById("map-median").textContent = medianScore.toFixed(3);
-  document.getElementById("map-range").textContent = `${minScore.toFixed(3)} – ${maxScore.toFixed(3)}`;
+  // Bind data and render states
+  const states = statesGroup.selectAll("path")
+    .data(stateGeoData.features, d => d.id);
   
-  // Check for small sample size warning (Story 3.3.3)
+  // Enter: New states (first render)
+  const statesEnter = states.enter()
+    .append("path")
+    .attr("class", "state")
+    .attr("d", d3MapPath)
+    .attr("fill", "#dfe6e9") // Start gray
+    .attr("stroke", "#fff")
+    .attr("stroke-width", 1)
+    .style("cursor", "pointer");
+  
+  // Merge enter + update and apply transitions
+  statesEnter.merge(states)
+    .transition()
+    .duration(MAP_TRANSITION_DURATION)
+    .ease(d3.easeCubicInOut)
+    .attr("fill", getFillColor)
+    .attr("stroke", d => isLowReliability(d) ? "#e67e22" : "#fff")
+    .attr("stroke-width", d => isLowReliability(d) ? 1.5 : 1)
+    .attr("stroke-dasharray", d => isLowReliability(d) ? "4,2" : "none");
+  
+  // Add event handlers (only need to set once on enter, but merge ensures all have them)
+  statesEnter.merge(states)
+    .on("mouseenter", function(event, d) {
+      const fips = String(d.id).padStart(2, '0');
+      const data = stateDataLookup[fips];
+      const stateName = stateFipsToName[fips] || d.properties?.name || "Unknown State";
+      
+      // Debug: Log Nevada data when hovering
+      if (fips === "32") {
+        console.log(`[Map Debug] Tooltip for Nevada (32), group="${currentMapGroup}":`, JSON.stringify(data));
+      }
+      
+      // Highlight state (preserve dash for low reliability: n < 50)
+      const lowReliability = isLowReliability(d);
+      d3.select(this)
+        .transition()
+        .duration(150)
+        .attr("stroke", "#2c3e50")
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray", lowReliability ? "4,2" : "none");
+      
+      // Build tooltip content
+      let tooltipHtml = `<strong>${stateName}</strong>`;
+      tooltipHtml += `<br/><span style="color: #7f8c8d; font-size: 11px;">FIPS: ${fips}</span>`;
+      
+      if (!data) {
+        tooltipHtml += `<hr style="margin: 8px 0; border: none; border-top: 1px solid #ecf0f1;">`;
+        tooltipHtml += `<span style="color: #95a5a6;">No data available for this group</span>`;
+      } else {
+        // Record exists - show the data
+        tooltipHtml += `<hr style="margin: 8px 0; border: none; border-top: 1px solid #ecf0f1;">`;
+        
+        // Check if avg_zs is a valid number
+        if (typeof data.avg_zs === 'number' && !isNaN(data.avg_zs)) {
+          const color = mapColorScale(data.avg_zs);
+          tooltipHtml += `<div style="display: flex; justify-content: space-between; gap: 16px;">`;
+          tooltipHtml += `<span>Zero-Sum Index:</span>`;
+          tooltipHtml += `<strong style="color: ${color};">${data.avg_zs.toFixed(2)}</strong>`;
+          tooltipHtml += `</div>`;
+        } else {
+          // Record exists but avg_zs is missing/invalid
+          tooltipHtml += `<div style="display: flex; justify-content: space-between; gap: 16px;">`;
+          tooltipHtml += `<span>Zero-Sum Index:</span>`;
+          tooltipHtml += `<strong style="color: #95a5a6;">—</strong>`;
+          tooltipHtml += `</div>`;
+        }
+        
+        // Show sample size
+        tooltipHtml += `<div style="display: flex; justify-content: space-between; gap: 16px;">`;
+        tooltipHtml += `<span>Sample Size (n):</span>`;
+        tooltipHtml += `<strong>${data.n.toLocaleString()}</strong>`;
+        // Warning only when 0 < n < 50
+        if (typeof data.n === 'number' && data.n > 0 && data.n < 50) {
+          tooltipHtml += ` <span style="color: #e67e22;">⚠️ Low reliability</span>`;
+        }
+        tooltipHtml += `</div>`;
+      }
+      
+      tooltip.innerHTML = tooltipHtml;
+      tooltip.style.display = "block";
+    })
+    .on("mousemove", function(event) {
+      const container = document.getElementById("d3-map-container");
+      const rect = container.getBoundingClientRect();
+      const x = event.clientX - rect.left + 15;
+      const y = event.clientY - rect.top + 15;
+      
+      // Keep tooltip within container
+      const tooltipRect = tooltip.getBoundingClientRect();
+      const maxX = rect.width - tooltipRect.width - 10;
+      const maxY = rect.height - tooltipRect.height - 10;
+      
+      tooltip.style.left = Math.min(x, maxX) + "px";
+      tooltip.style.top = Math.min(y, maxY) + "px";
+    })
+    .on("mouseleave", function(event, d) {
+      const lowReliability = isLowReliability(d);
+      d3.select(this)
+        .transition()
+        .duration(150)
+        .attr("stroke", lowReliability ? "#e67e22" : "#fff")
+        .attr("stroke-width", lowReliability ? 1.5 : 1)
+        .attr("stroke-dasharray", lowReliability ? "4,2" : "none");
+      tooltip.style.display = "none";
+    });
+  
+  // Remove old states
+  states.exit().remove();
+  
+  // Update statistics display
+  updateMapStatistics();
+}
+
+/**
+ * Update the statistics panel with current data
+ * Just displays the preprocessed values, no computation
+ */
+function updateMapStatistics() {
+  const dataPoints = Object.values(stateDataLookup);
+  // Valid data = avg_zs is a number (record exists and has value)
+  const validData = dataPoints.filter(d => typeof d.avg_zs === 'number' && !isNaN(d.avg_zs));
+  // Low reliability = record exists AND 0 < n < 50
+  const lowReliabilityCount = dataPoints.filter(d => typeof d.n === 'number' && d.n > 0 && d.n < 50).length;
+  // No data count for states in lookup but missing avg_zs
+  const noDataCount = dataPoints.length - validData.length;
+  
+  const countEl = document.getElementById("map-state-count");
+  const meanEl = document.getElementById("map-mean");
+  const medianEl = document.getElementById("map-median");
+  const rangeEl = document.getElementById("map-range");
+  const smallNEl = document.getElementById("map-small-n-count");
   const warningDiv = document.getElementById("map-sample-size-warning");
   const warningText = document.getElementById("map-warning-text");
-  const smallSamples = filteredCountyData.filter(d => d.n < 5);
-  const verySmallSamples = filteredCountyData.filter(d => d.n < 2);
   
-  if (verySmallSamples.length > 0 || smallSamples.length > filteredCountyData.length * 0.3) {
-    const warning = verySmallSamples.length > 0 
-      ? `${verySmallSamples.length} counties have very small sample sizes (n < 2). Results may be unstable.`
-      : `${smallSamples.length} counties have small sample sizes (n < 5). Interpret with caution.`;
-    warningText.textContent = warning;
-    warningDiv.style.display = "block";
-  } else {
-    warningDiv.style.display = "none";
+  if (validData.length === 0) {
+    if (countEl) countEl.textContent = "0";
+    if (meanEl) meanEl.textContent = "—";
+    if (medianEl) medianEl.textContent = "—";
+    if (rangeEl) rangeEl.textContent = "—";
+    if (smallNEl) smallNEl.textContent = "0";
+    if (warningDiv) warningDiv.style.display = "none";
+    return;
   }
   
-  // Add county circles to map
-  filteredCountyData.forEach(county => {
-    const coords = countyCoords[county.fips];
-    if (coords) {
-      const color = getColorForScore(county.zeroSumAvg);
-      
-      L.circleMarker(coords, {
-        radius: 8,
-        fillColor: color,
-        color: "rgba(0, 0, 0, 0.2)",
-        weight: 1,
-        opacity: 0.8,
-        fillOpacity: 0.7
-      })
-        .bindPopup(`<strong>${county.county}</strong><br/>Zero-Sum Index: ${county.zeroSumAvg.toFixed(3)}<br/>N: ${county.n}`)
-        .addTo(window.countyMarkers);
+  // Simple statistics for display (these are just summaries of the viz)
+  const scores = validData.map(d => d.avg_zs).sort((a, b) => a - b);
+  const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
+  const median = scores[Math.floor(scores.length / 2)];
+  const min = scores[0];
+  const max = scores[scores.length - 1];
+  
+  if (countEl) countEl.textContent = validData.length.toString();
+  if (meanEl) meanEl.textContent = mean.toFixed(2);
+  if (medianEl) medianEl.textContent = median.toFixed(2);
+  if (rangeEl) rangeEl.textContent = `${min.toFixed(2)} – ${max.toFixed(2)}`;
+  if (smallNEl) smallNEl.textContent = lowReliabilityCount.toString();
+  
+  // Show banner warning for low reliability states (third-person wording)
+  if (lowReliabilityCount > 0 && warningDiv && warningText) {
+    warningText.textContent = `${lowReliabilityCount} state${lowReliabilityCount > 1 ? 's' : ''} in this subgroup ha${lowReliabilityCount > 1 ? 've' : 's'} sample sizes below 50 (low reliability). These are shown with dashed orange borders on the map.`;
+    warningDiv.style.display = "block";
+  } else if (warningDiv) {
+    warningDiv.style.display = "none";
+  }
+}
+
+/**
+ * Set up filter radio button event listeners
+ * Replaces the old button-based filter system
+ */
+function setupFilterListeners() {
+  const groupSelect = document.getElementById("map-group-select");
+  
+  const handleFilterChange = () => {
+    // Update global state
+    currentMapGroup = getSelectedGroup();
+    
+    // Update filter summary
+    updateMapFilterSummary();
+    
+    // Re-render map with new group (smooth transitions)
+    renderStateMap();
+  };
+  
+  if (groupSelect) groupSelect.addEventListener("change", handleFilterChange);
+}
+
+/**
+ * Update filter summary display based on current selection
+ */
+function updateMapFilterSummary() {
+  const summaryDiv = document.getElementById("map-filter-summary");
+  if (!summaryDiv) return;
+  
+  const selectedGroup = getSelectedGroup();
+  
+  if (selectedGroup === "all") {
+    summaryDiv.style.display = "none";
+  } else {
+    const label = filterLabels[selectedGroup] || selectedGroup;
+    summaryDiv.innerHTML = `<strong>Current Subgroup:</strong> Respondents with ${label}`;
+    summaryDiv.style.display = "block";
+  }
+}
+
+/**
+ * Initialize everything for the geographic map
+ */
+async function initializeGeographicMap() {
+  console.log("[Map] Initializing state-level geographic map...");
+  
+  // Show loading state
+  const container = document.getElementById("d3-map-container");
+  if (container) {
+    container.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #7f8c8d;"><p>Loading map data...</p></div>';
+  }
+  
+  // Load data (state boundaries from CDN, zero-sum data from local JSON)
+  const success = await loadMapData();
+  
+  if (!success) {
+    if (container) {
+      container.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #e74c3c;"><p>⚠️ Failed to load map data. Please check that data files exist in data/vizmap/ folder.</p></div>';
+    }
+    return;
+  }
+  
+  // Initialize D3 map
+  initializeD3Map();
+  
+  // Set up filter listeners (dropdown selects)
+  setupFilterListeners();
+  
+  // Initial render
+  renderStateMap();
+  
+  console.log("[Map] State-level geographic map initialized successfully");
+}
+
+// Initialize map when the tab is first shown (lazy loading)
+let mapInitialized = false;
+document.querySelectorAll(".viz-step-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (btn.dataset.tab === "geographic-map" && !mapInitialized) {
+      mapInitialized = true;
+      initializeGeographicMap();
     }
   });
-}
+});
+
+// Also initialize if we're already on the map tab (direct navigation)
+document.addEventListener("DOMContentLoaded", () => {
+  const activeTab = document.querySelector(".viz-step-btn--active");
+  if (activeTab && activeTab.dataset.tab === "geographic-map" && !mapInitialized) {
+    mapInitialized = true;
+    initializeGeographicMap();
+  }
+});
 
 // default route
 setRoute("learn");
