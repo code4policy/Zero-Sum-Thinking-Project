@@ -16,16 +16,22 @@
   --color-mid: #ffff9b;      /* Yellow for medium */
   --color-high: #ff9600;     /* Orange for high zero-sum */
   
-  /* Accent colors */
-  --primary: #2563eb;
-  --primary-light: #3b82f6;
-  --primary-dark: #1e40af;
+  /* Accent colors - slate/teal tones to avoid partisan association */
+  --primary: #5b7c99;
+  --primary-light: #7b9cb5;
+  --primary-dark: #3d5a6c;
 }
 
 * { box-sizing: border-box; }
 
-body {
+html, body {
   margin: 0;
+  padding: 0;
+  min-height: 0;
+  height: auto;
+}
+
+body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   font-size: 14px;
   line-height: 1.5;
@@ -502,22 +508,22 @@ h3 { font-size: 14px; font-weight: 600; margin: 12px 0 8px 0; }
 }
 
 .choice:hover {
-  background: linear-gradient(135deg, #fef7f7 0%, #fff 100%);
-  color: #a51c30;
+  background: linear-gradient(135deg, #fff7ed 0%, #fff 100%);
+  color: #f97316;
   z-index: 1;
 }
 
 .choice[aria-pressed="true"] {
-  background: linear-gradient(135deg, #a51c30 0%, #8b1728 100%);
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
   color: #fff;
-  border-color: #a51c30;
+  border-color: #f97316;
   font-weight: 600;
   z-index: 2;
-  box-shadow: 0 2px 8px rgba(165, 28, 48, 0.3);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
 }
 
 .choice[aria-pressed="true"] + .choice {
-  border-left: 1px solid #a51c30;
+  border-left: 1px solid #f97316;
 }
 
 /* Language toggle buttons */
@@ -531,17 +537,17 @@ h3 { font-size: 14px; font-weight: 600; margin: 12px 0 8px 0; }
   transition: all 0.2s ease;
 }
 .lang-btn:hover {
-  border-color: #a51c30;
-  color: #a51c30;
+  border-color: #0891b2;
+  color: #0891b2;
 }
 .lang-btn--active {
-  background: #a51c30;
+  background: #0891b2;
   color: #fff;
-  border-color: #a51c30;
+  border-color: #0891b2;
 }
 .lang-btn--active:hover {
-  background: #8a1727;
-  border-color: #8a1727;
+  background: #0e7490;
+  border-color: #0e7490;
   color: #fff;
 }
 
@@ -610,7 +616,6 @@ h3 { font-size: 14px; font-weight: 600; margin: 12px 0 8px 0; }
 /* D3 Chart Container */
 #d3-chart-container {
   position: relative;
-  min-height: 400px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -649,7 +654,116 @@ h3 { font-size: 14px; font-weight: 600; margin: 12px 0 8px 0; }
   }
 }
 
-/* Tab styles */
+/* Step-based Navigation for Visualizations */
+.viz-step-nav {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.viz-step-nav__track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 16px 12px;
+  background: linear-gradient(to bottom, rgba(165, 28, 48, 0.02), rgba(165, 28, 48, 0.04));
+  border-radius: 12px;
+  border: 1px solid rgba(165, 28, 48, 0.08);
+}
+
+.viz-step-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  min-width: 180px;
+}
+
+.viz-step-btn:hover {
+  border-color: var(--primary);
+  background: rgba(165, 28, 48, 0.02);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(165, 28, 48, 0.1);
+}
+
+.viz-step-btn--active {
+  border-color: var(--primary);
+  background: linear-gradient(135deg, rgba(165, 28, 48, 0.06), rgba(165, 28, 48, 0.02));
+  box-shadow: 0 2px 8px rgba(165, 28, 48, 0.15);
+}
+
+.viz-step-btn__number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--border);
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.viz-step-btn--active .viz-step-btn__number {
+  background: var(--primary);
+  color: #fff;
+}
+
+.viz-step-btn:hover .viz-step-btn__number {
+  background: var(--primary);
+  color: #fff;
+}
+
+.viz-step-btn__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-step-btn__title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.viz-step-btn--active .viz-step-btn__title {
+  color: var(--primary);
+}
+
+.viz-step-btn__subtitle {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.viz-step-nav__arrow {
+  font-size: 18px;
+  color: var(--muted);
+  font-weight: 300;
+  padding: 0 4px;
+  user-select: none;
+}
+
+.viz-step-nav__hint {
+  margin: 10px 0 0 0;
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Legacy tab styles (kept for compatibility) */
 .tab-btn {
   background: transparent;
   border: none;
@@ -673,14 +787,96 @@ h3 { font-size: 14px; font-weight: 600; margin: 12px 0 8px 0; }
 }
 
 .tab-content {
-  display: none;
+  display: none !important;
 }
 
 .tab-content--active {
-  display: block;
+  display: block !important;
 }
 
-/* Sub-tab styles */
+/* Responsive adjustments for step navigation */
+@media (max-width: 768px) {
+  .viz-step-nav__track {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .viz-step-btn {
+    min-width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .viz-step-nav__arrow {
+    transform: rotate(90deg);
+    padding: 0;
+  }
+}
+
+/* View Selector (secondary control for switching chart types) */
+.view-selector-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.view-selector-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.view-selector {
+  display: inline-flex;
+  background: var(--bg-alt);
+  border-radius: 8px;
+  padding: 4px;
+  gap: 4px;
+  border: 1px solid var(--border);
+}
+
+.view-selector__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.view-selector__btn:hover {
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.view-selector__btn--active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(165, 28, 48, 0.2);
+}
+
+.view-selector__btn--active:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+.view-selector__btn svg {
+  flex-shrink: 0;
+}
+
+/* Legacy sub-tab styles (kept for compatibility) */
 .sub-tab-btn {
   background: transparent;
   border: none;
@@ -1178,10 +1374,6 @@ h3 { font-size: 14px; font-weight: 600; margin: 12px 0 8px 0; }
 
 /* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
-  #d3-chart-container {
-    min-height: 300px;
-  }
-  
   .policy-chart-wrapper,
   .scatter-chart-wrapper {
     max-width: 100%;
