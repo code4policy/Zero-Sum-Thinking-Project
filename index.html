@@ -39,18 +39,38 @@
           <div class="nav__dropdown">
             <button class="nav__link" data-route="learn" aria-current="page">Home</button>
             <div class="nav__dropdown-menu">
-              <button class="nav__dropdown-item" data-route="concept">Basics</button>
-              <button class="nav__dropdown-item" data-route="data">Visualize</button>
-              <button class="nav__dropdown-item" data-route="test">Test</button>
-              <button class="nav__dropdown-item" data-route="research">Research</button>
-              <button class="nav__dropdown-item" data-route="about">About</button>
+              <button class="nav__dropdown-item" data-route="learn" data-section="home-purpose">Purpose</button>
+              <button class="nav__dropdown-item" data-route="learn" data-section="home-explore">Explore Platform</button>
+              <button class="nav__dropdown-item" data-route="learn" data-section="home-research">Research Overview</button>
+              <button class="nav__dropdown-item" data-route="learn" data-section="home-resources">Research Resources</button>
             </div>
           </div>
-          <button class="nav__link" data-route="concept">Basics</button>
+          
+          <div class="nav__dropdown">
+            <button class="nav__link" data-route="concept">Basics</button>
+            <div class="nav__dropdown-menu">
+              <button class="nav__dropdown-item" data-route="concept" data-section="concept-intro">Introduction</button>
+              <button class="nav__dropdown-item" data-route="concept" data-section="pie-example">Pie Example</button>
+              <button class="nav__dropdown-item" data-route="concept" data-section="common-examples">Common Examples</button>
+              <button class="nav__dropdown-item" data-route="concept" data-section="mini-game">Mini Game</button>
+              <button class="nav__dropdown-item" data-route="concept" data-section="video-explanation">Video</button>
+            </div>
+          </div>
+          
           <button class="nav__link" data-route="data">Visualize</button>
           <button class="nav__link" data-route="test">Test</button>
           <button class="nav__link" data-route="research">Research</button>
-          <button class="nav__link" data-route="about">About</button>
+          
+          <div class="nav__dropdown">
+            <button class="nav__link" data-route="about">About</button>
+            <div class="nav__dropdown-menu">
+              <button class="nav__dropdown-item" data-route="about" data-section="about-project">The Project</button>
+              <button class="nav__dropdown-item" data-route="about" data-section="about-authors">Research Authors</button>
+              <button class="nav__dropdown-item" data-route="about" data-section="about-website">Website Project</button>
+              <button class="nav__dropdown-item" data-route="about" data-section="about-team">Team</button>
+              <button class="nav__dropdown-item" data-route="about" data-section="about-contact">Contact</button>
+            </div>
+          </div>
         </nav>
 
         <button class="nav__mobile-toggle" aria-label="Toggle navigation menu">
@@ -191,21 +211,135 @@
             border-radius: 8px;
             padding: 24px 28px;
           ">
-            <h2 style="margin-top: 0; margin-bottom: 12px; color: var(--text); font-size: 20px;">Purpose of the Website</h2>
+            <h2 id="home-purpose" style="margin-top: 0; margin-bottom: 12px; color: var(--text); font-size: 20px;">Purpose of the Website</h2>
             <p style="margin-bottom: 16px; line-height: 1.6;">
               Ever wondered why people see the same issue so differently? This platform helps you understand zero-sum thinking—a mindset that shapes how we view politics, policy, and social change. Whether you're a student, educator, policymaker, or curious citizen, this site offers evidence-based insights into one of the most important divides in contemporary society.
             </p>
 
-            <h2 style="margin-top: 20px; margin-bottom: 12px; color: var(--text); font-size: 20px;">What You Find on This Site</h2>
-            <p class="muted" style="margin-bottom: 15px;">
-              Navigate through the platform to explore different dimensions of zero-sum thinking:
+            <h2 id="home-explore" style="margin-top: 20px; margin-bottom: 8px; color: var(--text); font-size: 20px; font-weight: 700;">Explore the Platform</h2>
+            <p class="muted" style="margin-bottom: 20px; line-height: 1.6;">
+              Navigate through different dimensions of zero-sum thinking:
             </p>
-            <ul class="list">
-              <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('learn')">Home:</span></strong> Understand the core concepts and how zero-sum thinking is measured.</li>
-              <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('concept')">Learn:</span></strong> Play an interactive mini-game and watch animated explanations to build intuition.</li>
-              <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('test')">Test:</span></strong> Answer questions about your own beliefs and see how you compare to the benchmark.</li>
-              <li><strong><span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="setRoute('data')">Visualization:</span></strong> Explore demographic patterns, policy correlations, and geographic distributions.</li>
-            </ul>
+            
+            <!-- Interactive Navigation Map -->
+            <div style="
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+              gap: 16px;
+              margin-bottom: 20px;
+            ">
+              <!-- Basics Card -->
+              <div onclick="setRoute('concept')" style="
+                cursor: pointer;
+                background: #ffffff;
+                border: 1px solid #e5e7eb;
+                border-left: 4px solid #2563eb;
+                border-radius: 8px;
+                padding: 20px;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+                position: relative;
+              " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(37, 99, 235, 0.15)'; this.style.borderLeftColor='#1e40af'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)'; this.style.borderLeftColor='#2563eb'">
+                <div style="
+                  display: flex;
+                  align-items: center;
+                  margin-bottom: 12px;
+                ">
+                  <div style="font-size: 28px; margin-right: 12px;">📚</div>
+                  <h3 style="margin: 0; color: var(--text); font-size: 18px; font-weight: 700;">Basics</h3>
+                </div>
+                <p style="margin: 0 0 12px 0; color: var(--text-light); font-size: 13px; line-height: 1.5;">
+                  Understand core concepts and learn through interactive mini-games and animated explanations
+                </p>
+                <div style="color: #2563eb; font-weight: 600; font-size: 13px;">
+                  Start Learning →
+                </div>
+              </div>
+
+              <!-- Visualization Card -->
+              <div onclick="setRoute('data')" style="
+                cursor: pointer;
+                background: #ffffff;
+                border: 1px solid #e5e7eb;
+                border-left: 4px solid #a51c30;
+                border-radius: 8px;
+                padding: 20px;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+                position: relative;
+              " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(165, 28, 48, 0.15)'; this.style.borderLeftColor='#7e1424'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)'; this.style.borderLeftColor='#a51c30'">
+                <div style="
+                  display: flex;
+                  align-items: center;
+                  margin-bottom: 12px;
+                ">
+                  <div style="font-size: 28px; margin-right: 12px;">📊</div>
+                  <h3 style="margin: 0; color: var(--text); font-size: 18px; font-weight: 700;">Visualize</h3>
+                </div>
+                <p style="margin: 0 0 12px 0; color: var(--text-light); font-size: 13px; line-height: 1.5;">
+                  Explore demographic patterns, policy correlations, and geographic distributions through data
+                </p>
+                <div style="color: #a51c30; font-weight: 600; font-size: 13px;">
+                  View Data →
+                </div>
+              </div>
+
+              <!-- Test Card -->
+              <div onclick="setRoute('test')" style="
+                cursor: pointer;
+                background: #ffffff;
+                border: 1px solid #e5e7eb;
+                border-left: 4px solid #059669;
+                border-radius: 8px;
+                padding: 20px;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+                position: relative;
+              " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(5, 150, 105, 0.15)'; this.style.borderLeftColor='#047857'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)'; this.style.borderLeftColor='#059669'">
+                <div style="
+                  display: flex;
+                  align-items: center;
+                  margin-bottom: 12px;
+                ">
+                  <div style="font-size: 28px; margin-right: 12px;">✍️</div>
+                  <h3 style="margin: 0; color: var(--text); font-size: 18px; font-weight: 700;">Test Yourself</h3>
+                </div>
+                <p style="margin: 0 0 12px 0; color: var(--text-light); font-size: 13px; line-height: 1.5;">
+                  Answer questions about your beliefs and compare yourself to national benchmarks
+                </p>
+                <div style="color: #059669; font-weight: 600; font-size: 13px;">
+                  Take Test →
+                </div>
+              </div>
+
+              <!-- About Card -->
+              <div onclick="setRoute('about')" style="
+                cursor: pointer;
+                background: #ffffff;
+                border: 1px solid #e5e7eb;
+                border-left: 4px solid #7c3aed;
+                border-radius: 8px;
+                padding: 20px;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+                position: relative;
+              " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(124, 58, 237, 0.15)'; this.style.borderLeftColor='#6d28d9'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)'; this.style.borderLeftColor='#7c3aed'">
+                <div style="
+                  display: flex;
+                  align-items: center;
+                  margin-bottom: 12px;
+                ">
+                  <div style="font-size: 28px; margin-right: 12px;">ℹ️</div>
+                  <h3 style="margin: 0; color: var(--text); font-size: 18px; font-weight: 700;">About</h3>
+                </div>
+                <p style="margin: 0 0 12px 0; color: var(--text-light); font-size: 13px; line-height: 1.5;">
+                  Learn about the research team, methodology, and academic foundations of this project
+                </p>
+                <div style="color: #7c3aed; font-weight: 600; font-size: 13px;">
+                  Learn More →
+                </div>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -220,7 +354,7 @@
           padding: 24px 28px;
           margin-top: 2px;
         ">
-          <h2 style="margin-bottom: 16px; color: var(--text); font-size: 20px;">Research Overview</h2>
+          <h2 id="home-research" style="margin-bottom: 16px; color: var(--text); font-size: 20px;">Research Overview</h2>
           <p class="muted" style="margin-bottom: 16px;">
             This platform explores research by 
             <a href="https://sahilchinoy.com/" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline; font-weight: 600;">Sahil Chinoy</a>, 
@@ -247,7 +381,7 @@
           padding: 24px 28px;
           margin-top: 2px;
         ">
-          <h2 style="margin-bottom: 16px; color: var(--text); font-size: 20px;">Research Resources</h2>
+          <h2 id="home-resources" style="margin-bottom: 16px; color: var(--text); font-size: 20px;">Research Resources</h2>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
             <a href="https://socialeconomicslab.org/wp-content/uploads/2024/04/zero_sum_political_divides_OA.pdf" target="_blank" rel="noopener noreferrer" style="display: block; padding: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)';">
               <div style="display: flex; align-items: center; margin-bottom: 12px;">
@@ -295,74 +429,19 @@
 
       <!-- EXPLORE (Interactive) -->
       <section id="page-concept" class="page" aria-labelledby="explore-title">
-        <h1 id="explore-title">Explore: Interactive Demonstrations</h1>
-
-        <!-- Learning Path Guide -->
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin-bottom: 40px; overflow-x: auto;">
-          <div style="display: flex; gap: 0; align-items: center; min-width: min-content; padding: 0 8px;">
-            <!-- Step 1: Understand -->
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 140px;">
-              <div style="width: 48px; height: 48px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6b7280; font-weight: 600; font-size: 18px;">
-                ✓
-              </div>
-              <div style="text-align: center; font-size: 13px; font-weight: 600; color: #374151;">Understand</div>
-              <div style="text-align: center; font-size: 12px; color: #9ca3af;">Concepts</div>
-            </div>
-
-            <!-- Arrow -->
-            <div style="flex: 0 0 auto; color: #d1d5db; font-size: 24px; margin: 0 8px;">→</div>
-
-            <!-- Step 2: Learn (Current) -->
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 140px;">
-              <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #a51c30 0%, #8b1626 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 18px; box-shadow: 0 4px 12px rgba(165, 28, 48, 0.3);">
-                2
-              </div>
-              <div style="text-align: center; font-size: 13px; font-weight: 600; color: #a51c30;">Learn</div>
-              <div style="text-align: center; font-size: 12px; color: #9ca3af;">YOU ARE HERE</div>
-            </div>
-
-            <!-- Arrow -->
-            <div style="flex: 0 0 auto; color: #d1d5db; font-size: 24px; margin: 0 8px;">→</div>
-
-            <!-- Step 3: Test -->
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 140px; cursor: pointer; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7';" onclick="setRoute('test')">
-              <div style="width: 48px; height: 48px; background: #f3f4f6; border: 2px solid #d1d5db; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6b7280; font-weight: 600; font-size: 18px;">
-                3
-              </div>
-              <div style="text-align: center; font-size: 13px; font-weight: 600; color: #374151;">Test</div>
-              <div style="text-align: center; font-size: 12px; color: #9ca3af;">Self-Assess</div>
-            </div>
-
-            <!-- Arrow -->
-            <div style="flex: 0 0 auto; color: #d1d5db; font-size: 24px; margin: 0 8px;">→</div>
-
-            <!-- Step 4: Visualize -->
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 140px; cursor: pointer; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7';" onclick="setRoute('data')">
-              <div style="width: 48px; height: 48px; background: #f3f4f6; border: 2px solid #d1d5db; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6b7280; font-weight: 600; font-size: 18px;">
-                4
-              </div>
-              <div style="text-align: center; font-size: 13px; font-weight: 600; color: #374151;">Visualize</div>
-              <div style="text-align: center; font-size: 12px; color: #9ca3af;">Data Patterns</div>
-            </div>
-          </div>
-
-          <!-- Progress Info -->
-          <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-            <div>
-              <div style="font-size: 12px; font-weight: 600; color: #a51c30; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Current Step</div>
-              <p style="margin: 0; color: #374151; font-size: 14px;">Interactive game and visual examples to build intuition about zero-sum thinking.</p>
-            </div>
-            <div>
-              <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Next Steps</div>
-              <p style="margin: 0; color: #6b7280; font-size: 14px;">Take the test to assess your own zero-sum thinking score, then explore demographic patterns in the data.</p>
-            </div>
-          </div>
+        <div id="concept-intro" style="margin-bottom: 48px;">
+          <h1 style="font-size: 2.5em; margin-bottom: 16px; color: var(--text);">The Basics</h1>
+          <p style="font-size: 1.2em; color: var(--text-light); max-width: 800px;">
+            Learn about zero-sum thinking through examples, concepts, and interactive demonstrations
+          </p>
         </div>
+
+        <h2 id="explore-title">Understanding the Concept</h2>
 
         <!-- Introduction Cards -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 40px;">
           <!-- Simple Example Card -->
-          <div class="card">
+          <div id="pie-example" class="card">
             <h2 style="margin-top: 0; margin-bottom: 16px; color: var(--text);">A Simple Example: The Pie/Pizza</h2>
             <div style="space: 16px; line-height: 1.8;">
               <p style="margin-bottom: 14px; color: var(--text-light);">
@@ -411,18 +490,19 @@
                 <p style="margin: 0 0 8px 0; color: var(--text); font-weight: 600;">🔴 In zero-sum thinking:</p>
                 <p style="margin: 0; color: var(--text-light); font-size: 14px;">The size of the pie never changes. If one group gets a larger slice, the other group must get a smaller one.</p>
               </div>
-              <div style="background: #f0f8ff; padding: 16px; border-radius: 8px;">
+              <div style="background: #f0f8ff; padding: 16px; border-radius: 8px; margin-bottom: 14px;">
                 <p style="margin: 0 0 8px 0; color: var(--text); font-weight: 600;">🟢 In shared-gains (positive-sum) thinking:</p>
                 <p style="margin: 0; color: var(--text-light); font-size: 14px;">The pie itself can grow. Both groups can end up with larger slices, even if the shares are not equal.</p>
               </div>
-              <p style="margin-top: 14px; padding-top: 14px; border-top: 1px solid #e5e7eb; color: var(--muted); font-size: 14px;">
-                This example shows why zero-sum thinking focuses on competition over fixed resources, while other perspectives allow for cooperation, growth, or mutual benefit.
-              </p>
+              <div style="background: #fff5f5; padding: 16px; border-radius: 8px;">
+                <p style="margin: 0 0 8px 0; color: var(--text); font-weight: 600;">🟠 In negative-sum thinking:</p>
+                <p style="margin: 0; color: var(--text-light); font-size: 14px;">The pie shrinks through conflict or poor decisions. Both groups end up with less than they started with.</p>
+              </div>
             </div>
           </div>
 
           <!-- Common Examples Card -->
-          <div class="card">
+          <div id="common-examples" class="card">
             <h2 style="margin-top: 0; margin-bottom: 16px; color: var(--text);">Common Examples in Debate</h2>
             <p style="margin-top: 0; margin-bottom: 16px; color: var(--text-light);">
               Zero-sum thinking often appears in debates about:
@@ -485,23 +565,23 @@
               </div>
             </div>
 
-            <!-- Key Insight Box -->
-            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fff7ed 100%); border-left: 4px solid #f59e0b; border-radius: 8px; padding: 14px; margin-bottom: 12px;">
-              <p style="margin: 0; font-size: 13px; color: #78350f;">
-                <strong style="color: #a16207;">💡 Key Insight:</strong> Each of these debates involves real tradeoffs, but zero-sum thinking can make people overlook creative solutions that could benefit multiple groups simultaneously.
-              </p>
+            <!-- Why People Adopt Zero-Sum Thinking -->
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+              <p style="margin: 0 0 12px 0; font-weight: 600; font-size: 14px; color: var(--text);">Why do people adopt zero-sum thinking?</p>
+              <ul style="margin: 0; padding-left: 20px; color: var(--text-light); font-size: 13px; line-height: 1.7;">
+                <li style="margin-bottom: 8px;"><strong>Visibility bias:</strong> Immediate losses are easier to see than gradual gains</li>
+                <li style="margin-bottom: 8px;"><strong>Group identity:</strong> "Us vs. them" framing shifts focus to relative outcomes</li>
+                <li style="margin-bottom: 8px;"><strong>Uncertainty:</strong> People assume fixed resources when the future is unclear</li>
+                <li><strong>Media framing:</strong> Conflicts are often presented as zero-sum competitions</li>
+              </ul>
             </div>
-            
-            <p style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; color: var(--muted); font-size: 14px;">
-              These beliefs shape how people interpret social and economic change, even when the actual outcomes may be more complex.
-            </p>
           </div>
         </div>
 
         <div class="card">
-          <h2>Mini game (2-minute intuition demo)</h2>
+          <h2 id="mini-game">Mini game (2-minute intuition demo)</h2>
           <p class="muted">
-            You and a competitor are fighting for market share. Choose to compete fiercely or collaborate. See how your mindset affects the outcome over 3 rounds.
+            A fixed market with 100 customers. What you gain, your competitor loses. Play as many rounds as you want to experience the zero-sum mindset.
           </p>
 
           <!-- How to Play Section -->
@@ -510,7 +590,7 @@
               <div>
                 <div style="font-weight: 600; color: #a51c30; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">🎯 Game Objective</div>
                 <p style="margin: 0; color: #4b5563; font-size: 14px; line-height: 1.6;">
-                  Maximize your profits across 3 rounds by choosing between aggressive competition or collaboration.
+                  Capture market share from a fixed pool of 100 customers. Every customer you gain is one they lose.
                 </p>
               </div>
               <div>
@@ -522,7 +602,7 @@
               <div>
                 <div style="font-weight: 600; color: #a51c30; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">⏱️ Time Required</div>
                 <p style="margin: 0; color: #4b5563; font-size: 14px; line-height: 1.6;">
-                  2 minutes to complete. Quick, interactive, and immediately insightful.
+                  Play at your own pace. Stop whenever you want.
                 </p>
               </div>
             </div>
@@ -531,18 +611,12 @@
           <div id="game-container" style="margin-top: 24px;">
             <!-- Game State: Not Started -->
             <div id="game-start" style="text-align: center; padding: 24px; background: linear-gradient(135deg, #f0f4ff 0%, #f9fafb 100%); border-radius: 8px;">
-              <div style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text);">Choose Your Strategy</div>
-              <p style="color: var(--text-muted); margin-bottom: 24px;">What's your approach to competition?</p>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                <button class="btn" id="start-zero-sum" type="button" style="padding: 16px;">
-                  <div style="font-weight: 700;">⚔️ Compete Hard</div>
-                  <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">I win, you lose</div>
-                </button>
-                <button class="btn" id="start-positive-sum" type="button" style="padding: 16px;">
-                  <div style="font-weight: 700;">🤝 Collaborate</div>
-                  <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">We both gain</div>
-                </button>
-              </div>
+              <div style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text);">Starting Position</div>
+              <p style="color: var(--text-muted); margin-bottom: 24px;">Both of you start with 50 customers each (50% market share)</p>
+              <button class="btn" id="start-game" type="button" style="padding: 16px; max-width: 300px; margin: 0 auto;">
+                <div style="font-weight: 700;">Start Game</div>
+                <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">Fight for market share</div>
+              </button>
             </div>
 
             <!-- Game State: Playing -->
@@ -554,13 +628,13 @@
                   <div style="font-size: 24px; font-weight: 800;" id="round-number">1</div>
                 </div>
                 <div style="text-align: center;">
-                  <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Score</div>
+                  <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Market Share (Customers)</div>
                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px;">
                     <div>
-                      <div style="font-size: 18px; font-weight: 800; color: #3b82f6;">YOU <span id="your-score">0</span></div>
+                      <div style="font-size: 18px; font-weight: 800; color: #3b82f6;">YOU <span id="your-score">50</span></div>
                     </div>
                     <div>
-                      <div style="font-size: 18px; font-weight: 800; color: #a855f7;">THEM <span id="their-score">0</span></div>
+                      <div style="font-size: 18px; font-weight: 800; color: #a855f7;">THEM <span id="their-score">50</span></div>
                     </div>
                   </div>
                 </div>
@@ -571,13 +645,13 @@
                 <div style="margin-bottom: 16px;">
                   <div style="font-weight: 700; margin-bottom: 12px; color: var(--text);">What's your move?</div>
                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                    <button class="btn" id="choice-compete" type="button" style="padding: 16px; text-align: left;">
-                      <div style="font-weight: 700;">⚔️ Compete</div>
-                      <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">Aggressive pricing, big ad spend</div>
+                    <button class="btn" id="choice-attack" type="button" style="padding: 16px; text-align: left;">
+                      <div style="font-weight: 700;">⚔️ Attack</div>
+                      <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">Steal their customers</div>
                     </button>
-                    <button class="btn btn--ghost" id="choice-collab" type="button" style="padding: 16px; text-align: left;">
-                      <div style="font-weight: 700;">🤝 Collaborate</div>
-                      <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">Share market, grow together</div>
+                    <button class="btn btn--ghost" id="choice-defend" type="button" style="padding: 16px; text-align: left;">
+                      <div style="font-weight: 700;">🛡️ Defend</div>
+                      <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">Protect your customers</div>
                     </button>
                   </div>
                 </div>
@@ -601,12 +675,12 @@
 
                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                     <div style="background: rgba(59, 130, 246, 0.2); border-radius: 6px; padding: 12px; text-align: center;">
-                      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">YOU GET</div>
-                      <div style="font-size: 28px; font-weight: 800; color: #3b82f6;" id="round-your-gain">+5</div>
+                      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">CUSTOMERS CHANGE</div>
+                      <div style="font-size: 28px; font-weight: 800; color: #3b82f6;" id="round-your-gain">+0</div>
                     </div>
                     <div style="background: rgba(168, 85, 247, 0.2); border-radius: 6px; padding: 12px; text-align: center;">
-                      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">THEY GET</div>
-                      <div style="font-size: 28px; font-weight: 800; color: #a855f7;" id="round-their-gain">+5</div>
+                      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">CUSTOMERS CHANGE</div>
+                      <div style="font-size: 28px; font-weight: 800; color: #a855f7;" id="round-their-gain">+0</div>
                     </div>
                   </div>
 
@@ -617,7 +691,10 @@
                   </div>
                 </div>
 
-                <button class="btn" id="next-round-btn" type="button" style="width: 100%;">Next Round →</button>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                  <button class="btn btn--ghost" id="end-game-btn" type="button">End Game</button>
+                  <button class="btn" id="next-round-btn" type="button">Continue →</button>
+                </div>
               </div>
             </div>
 
@@ -692,7 +769,7 @@
           </div>
         </div>
 
-        <div class="card video-card">
+        <div class="card video-card" id="video-explanation">
           <div class="video-header">
             <span class="video-badge">🎬 Video</span>
             <h2>Animated Explanation</h2>
@@ -714,6 +791,122 @@
 
           <div class="video-footer">
             <span class="video-source">📺 Source: YouTube</span>
+          </div>
+        </div>
+
+        <!-- Learning Path Guide / Next Steps -->
+        <div id="basics-learning-path" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 32px; margin-top: 40px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);">
+          <div style="text-align: center; margin-bottom: 32px;">
+            <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 700; color: var(--text);">🎯 Choose Your Path</h2>
+            <p style="margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6;">Select the journey that best matches your interests</p>
+          </div>
+
+          <!-- Path Selection -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 32px;">
+            
+            <!-- Path 1: Casual Learner -->
+            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 2px solid #bae6fd; border-radius: 12px; padding: 28px; position: relative; overflow: hidden;">
+              <div style="position: absolute; top: 16px; right: 16px; background: #0284c7; color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                For Learners
+              </div>
+              
+              <div style="margin-bottom: 20px;">
+                <div style="font-size: 36px; margin-bottom: 12px;">💡</div>
+                <h3 style="margin: 0 0 8px 0; font-size: 20px; font-weight: 700; color: #0c4a6e;">Explore & Test Yourself</h3>
+                <p style="margin: 0 0 20px 0; color: #075985; font-size: 14px; line-height: 1.6;">
+                  Perfect for curious minds who want to understand their own thinking patterns and compare with others
+                </p>
+              </div>
+
+              <!-- Path Steps -->
+              <div style="background: white; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+                <div style="font-size: 12px; font-weight: 600; color: #0284c7; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Your Journey:</div>
+                
+                <div onclick="setRoute('test')" style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s;" onmouseover="this.style.background='#f0f9ff'" onmouseout="this.style.background='transparent'">
+                  <div style="flex-shrink: 0; width: 32px; height: 32px; background: #0284c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">1</div>
+                  <div style="flex-grow: 1;">
+                    <div style="font-weight: 600; font-size: 13px; color: #0c4a6e;">Take the Test</div>
+                    <div style="font-size: 11px; color: #64748b;">Measure your zero-sum thinking</div>
+                  </div>
+                </div>
+
+                <div onclick="setRoute('data')" style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s;" onmouseover="this.style.background='#f0f9ff'" onmouseout="this.style.background='transparent'">
+                  <div style="flex-shrink: 0; width: 32px; height: 32px; background: #0ea5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">2</div>
+                  <div style="flex-grow: 1;">
+                    <div style="font-weight: 600; font-size: 13px; color: #0c4a6e;">Explore Data</div>
+                    <div style="font-size: 11px; color: #64748b;">See how others think</div>
+                  </div>
+                </div>
+
+                <div onclick="setRoute('research')" style="display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s;" onmouseover="this.style.background='#f0f9ff'" onmouseout="this.style.background='transparent'">
+                  <div style="flex-shrink: 0; width: 32px; height: 32px; background: #e0f2fe; border: 2px solid #7dd3fc; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0369a1; font-weight: 700; font-size: 14px;">3</div>
+                  <div style="flex-grow: 1;">
+                    <div style="font-weight: 600; font-size: 13px; color: #64748b;">Research (Optional)</div>
+                    <div style="font-size: 11px; color: #94a3b8;">Dive deeper if interested</div>
+                  </div>
+                </div>
+              </div>
+
+              <button onclick="setRoute('test')" style="width: 100%; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: white; border: none; padding: 14px 24px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(2, 132, 199, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(2, 132, 199, 0.3)'">
+                Start Testing →
+              </button>
+            </div>
+
+            <!-- Path 2: Research/Professional -->
+            <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border: 2px solid #fecaca; border-radius: 12px; padding: 28px; position: relative; overflow: hidden;">
+              <div style="position: absolute; top: 16px; right: 16px; background: #a51c30; color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                For Researchers
+              </div>
+              
+              <div style="margin-bottom: 20px;">
+                <div style="font-size: 36px; margin-bottom: 12px;">🔬</div>
+                <h3 style="margin: 0 0 8px 0; font-size: 20px; font-weight: 700; color: #7f1d1d;">Deep Dive into Research</h3>
+                <p style="margin: 0 0 20px 0; color: #991b1b; font-size: 14px; line-height: 1.6;">
+                  Ideal for academics, researchers, and professionals seeking detailed methodology and findings
+                </p>
+              </div>
+
+              <!-- Path Steps -->
+              <div style="background: white; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+                <div style="font-size: 12px; font-weight: 600; color: #a51c30; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Your Journey:</div>
+                
+                <div onclick="setRoute('research')" style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+                  <div style="flex-shrink: 0; width: 32px; height: 32px; background: #a51c30; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">1</div>
+                  <div style="flex-grow: 1;">
+                    <div style="font-weight: 600; font-size: 13px; color: #7f1d1d;">Study Methodology</div>
+                    <div style="font-size: 11px; color: #64748b;">Understand the research design</div>
+                  </div>
+                </div>
+
+                <div onclick="setRoute('data')" style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+                  <div style="flex-shrink: 0; width: 32px; height: 32px; background: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">2</div>
+                  <div style="flex-grow: 1;">
+                    <div style="font-weight: 600; font-size: 13px; color: #7f1d1d;">Explore Data</div>
+                    <div style="font-size: 11px; color: #64748b;">Analyze patterns & correlations</div>
+                  </div>
+                </div>
+
+                <div onclick="setRoute('test')" style="display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+                  <div style="flex-shrink: 0; width: 32px; height: 32px; background: #fee2e2; border: 2px solid #fca5a5; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #b91c1c; font-weight: 700; font-size: 14px;">3</div>
+                  <div style="flex-grow: 1;">
+                    <div style="font-weight: 600; font-size: 13px; color: #64748b;">Test (Optional)</div>
+                    <div style="font-size: 11px; color: #94a3b8;">Try it yourself if curious</div>
+                  </div>
+                </div>
+              </div>
+
+              <button onclick="setRoute('research')" style="width: 100%; background: linear-gradient(135deg, #a51c30 0%, #7f1d1d 100%); color: white; border: none; padding: 14px 24px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(165, 28, 48, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(165, 28, 48, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(165, 28, 48, 0.3)'">
+                View Research →
+              </button>
+            </div>
+          </div>
+
+          <!-- Or Go Back -->
+          <div style="text-align: center; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+            <p style="margin: 0 0 12px 0; color: var(--muted); font-size: 13px;">Want to review the concepts?</p>
+            <button onclick="setRoute('learn')" style="background: transparent; border: 1px solid #d1d5db; color: var(--text-light); padding: 8px 16px; border-radius: 6px; font-weight: 500; font-size: 13px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#2563eb'; this.style.color='#2563eb'" onmouseout="this.style.borderColor='#d1d5db'; this.style.color='var(--text-light)'">
+              ← Back to Home
+            </button>
           </div>
         </div>
       </section>
@@ -1222,50 +1415,165 @@
 
       <!-- ABOUT -->
       <section id="page-about" class="page" aria-labelledby="about-title">
-        <div class="card">
-          <h2>The Project</h2>
-          <p>This website was created as an educational project to make academic research on zero-sum thinking accessible to a broader audience. It presents a non-partisan, public-facing summary of published research, combining conceptual explanation, data visualization, and a self-assessment tool.</p>
-          <p>The site does not conduct original research or collect new data. Its purpose is to support learning, policy discussion, and informed reflection on how beliefs about gains and losses relate to political attitudes and social outcomes.</p>
+        <h1 style="font-size: 2.5em; margin-bottom: 16px; color: var(--text);">About This Project</h1>
+        <p style="font-size: 1.1em; color: var(--text-light); margin-bottom: 48px; max-width: 800px;">
+          An educational platform translating academic research into accessible, interactive content
+        </p>
 
-          <h2>The Research Authors</h2>
-          <p>The research summarized on this website was conducted by Sahil Chinoy, Nathan Nunn, Sandra Sequeira, and Stefanie Stantcheva.</p>
-          <ul>
-            <li>Sahil Chinoy: A Postdoctoral Associate and Lecturer at Yale University, he will join Stanford University as an Assistant Professor in 2026. Reference: https://politicalscience.yale.edu/people/sahil-chinoy.</li>
-            <li>Nathan Nunn: The Frederic E. Abbe Professor of Economics at Harvard (2016–2022) and currently a Professor at the Vancouver School of Economics (UBC). Reference: https://economics.ubc.ca/profile/nathan-nunn/.</li>
-            <li>Sandra Sequeira: A Professor of Development Economics at the London School of Economics (LSE) and a recipient of the 2022 Philip Leverhulme Prize. Reference: https://www.lse.ac.uk/school-of-public-policy/news/faculty/sandra-sequeira.</li>
-            <li>Stefanie Stantcheva: The Nathaniel Ropes Professor of Political Economy at Harvard University and founder of the Social Economics Lab. Reference: https://stantcheva.scholars.harvard.edu/biocv.</li>
-          </ul>
+        <div class="card" style="margin-bottom: 24px;" id="about-project">
+          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">The Project</h2>
+          <p style="line-height: 1.7; color: var(--text-light);">This website was created as an educational project to make academic research on zero-sum thinking accessible to a broader audience. It presents a non-partisan, public-facing summary of published research, combining conceptual explanation, data visualization, and a self-assessment tool.</p>
+          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 0;">The site does not conduct original research or collect new data. Its purpose is to support learning, policy discussion, and informed reflection on how beliefs about gains and losses relate to political attitudes and social outcomes.</p>
+        </div>
 
-          <h2>The Website Project</h2>
-          <p>This website was developed as part of the Programming and Data for Policy Makers course at the Harvard Kennedy School (https://www.hks.harvard.edu/courses/programming-and-data-policymakers).</p>
-          <p>The course introduces students to computational thinking, data analysis, and digital tools for policy analysis and public communication. This project applies those skills to the responsible translation of academic research into an interactive, public-facing format.</p>
-
-          <h2>Acknowledgment of Course Instructors</h2>
-          <p>The website team gratefully acknowledges the instructors of the Programming and Data for Policy Makers course Professors Dhrumil Mehta (Adjunct Professor of Public Policy) and Aarushi Sahejpal and the Course Assistant, Asa Royal for their guidance and instruction. Responsibility for the content, interpretation, and presentation of this website rests solely with the website team and does not imply endorsement by the course instructors or Harvard Kennedy School.</p>
-
-          <h2>The Website Team</h2>
-          <p>This website was developed independently by the course participant(s) as part of the above program. Any errors, omissions, or interpretations are the responsibility of the website team alone.</p>
-
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px;">
-            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; text-align: center;">
-              <h3 style="margin: 0 0 8px 0; font-size: 18px;">Liyang Chen</h3>
-              <p style="margin: 0; font-size: 14px; color: #6b7280;">Project Lead</p>
-              <p style="margin: 8px 0 0 0; font-size: 13px;">MPA Student at Harvard Kennedy School. Passionate about understanding political beliefs and building tools for evidence-based policy dialogue.</p>
+        <div class="card" style="margin-bottom: 24px;" id="about-authors">
+          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">The Research Authors</h2>
+          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 20px;">The research summarized on this website was conducted by Sahil Chinoy, Nathan Nunn, Sandra Sequeira, and Stefanie Stantcheva.</p>
+          <div style="display: grid; gap: 14px;">
+            <div style="background: #f9fafb; padding: 14px; border-radius: 6px; border-left: 3px solid #a51c30;">
+              <strong style="color: var(--text);">Sahil Chinoy</strong>
+              <p style="margin: 6px 0 0 0; color: var(--text-light); line-height: 1.6; font-size: 0.95em;">A Postdoctoral Associate and Lecturer at Yale University, he will join Stanford University as an Assistant Professor in 2026.</p>
             </div>
-            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; text-align: center;">
-              <h3 style="margin: 0 0 8px 0; font-size: 18px;">Junyu Wang</h3>
-              <p style="margin: 0; font-size: 14px; color: #6b7280;">Developer</p>
-              <p style="margin: 8px 0 0 0; font-size: 13px;">Graduate student at Harvard Kennedy School. Interested in technology, public policy, and finance development. Leading website development and technical implementation.</p>
+            <div style="background: #f9fafb; padding: 14px; border-radius: 6px; border-left: 3px solid #a51c30;">
+              <strong style="color: var(--text);">Nathan Nunn</strong>
+              <p style="margin: 6px 0 0 0; color: var(--text-light); line-height: 1.6; font-size: 0.95em;">The Frederic E. Abbe Professor of Economics at Harvard (2016–2022) and currently a Professor at the Vancouver School of Economics (UBC).</p>
             </div>
-            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; text-align: center;">
-              <h3 style="margin: 0 0 8px 0; font-size: 18px;">Wondem Goshu</h3>
-              <p style="margin: 0; font-size: 14px; color: #6b7280;">Developer</p>
-              <p style="margin: 8px 0 0 0; font-size: 13px;">MC-MPA, Mason Fellow, HKS</p>
+            <div style="background: #f9fafb; padding: 14px; border-radius: 6px; border-left: 3px solid #a51c30;">
+              <strong style="color: var(--text);">Sandra Sequeira</strong>
+              <p style="margin: 6px 0 0 0; color: var(--text-light); line-height: 1.6; font-size: 0.95em;">A Professor of Development Economics at the London School of Economics (LSE) and a recipient of the 2022 Philip Leverhulme Prize.</p>
+            </div>
+            <div style="background: #f9fafb; padding: 14px; border-radius: 6px; border-left: 3px solid #a51c30;">
+              <strong style="color: var(--text);">Stefanie Stantcheva</strong>
+              <p style="margin: 6px 0 0 0; color: var(--text-light); line-height: 1.6; font-size: 0.95em;">The Nathaniel Ropes Professor of Political Economy at Harvard University and founder of the Social Economics Lab.</p>
             </div>
           </div>
+        </div>
 
-          <h2>Disclaimer</h2>
-          <p>This website is an independent educational presentation of published academic research. It does not represent the views of the original authors, their institutions, or any funding bodies.</p>
+        <div class="card" style="margin-bottom: 24px;" id="about-website">
+          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">The Website Project</h2>
+          <p style="line-height: 1.7; color: var(--text-light);">This website was developed as part of the Programming and Data for Policy Makers course at the <strong>Harvard Kennedy School</strong>.</p>
+          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 0;">The course introduces students to computational thinking, data analysis, and digital tools for policy analysis and public communication. This project applies those skills to the responsible translation of academic research into an interactive, public-facing format.</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px; background: #f9fafb; border-left: 3px solid #a51c30;">
+          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">Acknowledgment of Course Instructors</h2>
+          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 0;">The website team gratefully acknowledges the instructors of the Programming and Data for Policy Makers course, Professors <strong><a href="https://www.hks.harvard.edu/faculty/dhrumil-mehta" target="_blank" style="color: #a51c30; text-decoration: none; border-bottom: 1px solid #a51c30;">Dhrumil Mehta</a></strong> (Adjunct Professor of Public Policy) and <strong><a href="https://www.aarushisahejpal.com/" target="_blank" style="color: #a51c30; text-decoration: none; border-bottom: 1px solid #a51c30;">Aarushi Sahejpal</a></strong>, and the Course Assistant, <strong>Asa Royal</strong>, for their guidance and instruction. Responsibility for the content, interpretation, and presentation of this website rests solely with the website team and does not imply endorsement by the course instructors or Harvard Kennedy School.</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;" id="about-team">
+          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">The Website Team</h2>
+          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 24px;">This website was developed independently by the course participants as part of the above program. Any errors, omissions, or interpretations are the responsibility of the website team alone.</p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px;">
+              <h3 style="margin: 0 0 6px 0; font-size: 1.2em; color: var(--text);">Liyang Chen</h3>
+              <p style="margin: 0 0 10px 0; font-size: 0.9em; color: #6b7280; font-weight: 600;">Developer</p>
+              <p style="margin: 0; font-size: 0.95em; line-height: 1.6; color: var(--text-light);">MPA Student at Harvard Kennedy School. Passionate about understanding political beliefs and building tools for evidence-based policy dialogue.</p>
+            </div>
+            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px;">
+              <h3 style="margin: 0 0 6px 0; font-size: 1.2em; color: var(--text);">Junyu Wang</h3>
+              <p style="margin: 0 0 10px 0; font-size: 0.9em; color: #6b7280; font-weight: 600;">Developer</p>
+              <p style="margin: 0; font-size: 0.95em; line-height: 1.6; color: var(--text-light);">Graduate student at Harvard Kennedy School. Interested in technology, public policy, and financial development. Leading website development and technical implementation.</p>
+            </div>
+            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px;">
+              <h3 style="margin: 0 0 6px 0; font-size: 1.2em; color: var(--text);">Wondem Goshu</h3>
+              <p style="margin: 0 0 10px 0; font-size: 0.9em; color: #6b7280; font-weight: 600;">Developer</p>
+              <p style="margin: 0; font-size: 0.95em; line-height: 1.6; color: var(--text-light);">MC-MPA, Mason Fellow, HKS. Interested in African development, public policy, and leveraging technology for social impact in emerging markets.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px; background: #f9fafb; border-left: 3px solid #6b7280;">
+          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">Disclaimer</h2>
+          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 0;">This website is an independent educational presentation of published academic research. It does not represent the views of the original authors, their institutions, or any funding bodies.</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">Data Sources</h2>
+          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 12px;">This website presents data and findings from the following published research:</p>
+          <ul style="margin: 0; padding-left: 20px; color: var(--text-light); line-height: 1.7;">
+            <li style="margin-bottom: 10px;"><strong>Primary Source:</strong> Chinoy, S., Nunn, N., Sequeira, S., & Stantcheva, S. (2024). "Zero-Sum Thinking and Distributional Preferences." <em>Working Paper</em>.</li>
+            <li style="margin-bottom: 10px;">All data visualizations are based on survey data collected and analyzed by the original research authors.</li>
+            <li>The interactive test and visualizations are educational tools designed to illustrate research findings, not diagnostic instruments.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">How to Cite This Project</h2>
+          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 12px;">If you reference this research in your work, please cite the original study:</p>
+          <div style="background: #f9fafb; border-left: 3px solid #a51c30; padding: 16px; margin: 0; border-radius: 4px;">
+            <p style="margin: 0; font-family: 'Courier New', monospace; font-size: 13px; color: var(--text); line-height: 1.7;">
+              Chinoy, S., Nunn, N., Sequeira, S., & Stantcheva, S. (2024). Zero-Sum Thinking and Distributional Preferences. <em>Working Paper</em>.
+            </p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">Open Source & Transparency</h2>
+          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 12px;">We believe in transparency and open access to educational resources. This project is developed with:</p>
+          <ul style="margin: 0; padding-left: 20px; color: var(--text-light); line-height: 1.7;">
+            <li style="margin-bottom: 10px;"><strong>Open-source technologies:</strong> HTML, CSS, JavaScript</li>
+            <li style="margin-bottom: 10px;"><strong>Public accessibility:</strong> No paywalls or registration requirements</li>
+            <li><strong>Reproducible methods:</strong> All visualizations and calculations are transparent and based on published research</li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">Future Development</h2>
+          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 16px;">We are committed to continually improving this educational resource. Planned enhancements include:</p>
+          <ul style="margin: 0; padding-left: 20px; color: var(--text-light); line-height: 1.7;">
+            <li style="margin-bottom: 10px;"><strong>Enhanced Visualizations:</strong> Additional interactive charts exploring different aspects of zero-sum thinking across demographics</li>
+            <li style="margin-bottom: 10px;"><strong>Multilingual Support:</strong> Translations to make research accessible to non-English speaking audiences</li>
+            <li style="margin-bottom: 10px;"><strong>Educational Resources:</strong> Classroom materials and discussion guides for educators</li>
+            <li><strong>Regular Updates:</strong> Integration of new research findings as they become available</li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px; background: linear-gradient(to bottom, #ffffff 0%, #f9fafb 100%); border: 2px solid #e5e7eb;" id="about-contact">
+          <h2 style="color: var(--text); font-size: 1.8em; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 3px solid #a51c30; display: inline-block;">Contact & Feedback</h2>
+          <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 32px; font-size: 1.05em;">We welcome feedback, suggestions, and questions from researchers, educators, policymakers, and the general public.</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+            <div style="background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 24px; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 6px 16px rgba(165,28,48,0.15)'; this.style.borderColor='#a51c30';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.05)'; this.style.borderColor='#e5e7eb';">
+              <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; box-shadow: 0 4px 8px rgba(107,114,128,0.2);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </div>
+              <h4 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1em; font-weight: 600;">Email</h4>
+              <p style="margin: 0; font-size: 0.95em; line-height: 1.6;">
+                <a href="mailto:jwang@hks.harvard.edu" style="color: #a51c30; text-decoration: none; font-weight: 500; border-bottom: 1px solid transparent; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#a51c30'" onmouseout="this.style.borderColor='transparent'">jwang@hks.harvard.edu</a>
+              </p>
+            </div>
+            <div style="background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 24px; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 6px 16px rgba(165,28,48,0.15)'; this.style.borderColor='#a51c30';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.05)'; this.style.borderColor='#e5e7eb';">
+              <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; box-shadow: 0 4px 8px rgba(107,114,128,0.2);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </div>
+              <h4 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1em; font-weight: 600;">Feedback Form</h4>
+              <p style="margin: 0; font-size: 0.95em; line-height: 1.6;">
+                <a href="survey.html" target="_blank" style="color: #a51c30; text-decoration: none; font-weight: 500; border-bottom: 1px solid transparent; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#a51c30'" onmouseout="this.style.borderColor='transparent'">Share your thoughts</a>
+              </p>
+            </div>
+            <div style="background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 24px; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 6px 16px rgba(165,28,48,0.15)'; this.style.borderColor='#a51c30';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.05)'; this.style.borderColor='#e5e7eb';">
+              <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; box-shadow: 0 4px 8px rgba(107,114,128,0.2);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
+              <h4 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1em; font-weight: 600;">Report Issues</h4>
+              <p style="margin: 0; font-size: 0.95em; line-height: 1.6;">
+                <a href="report-issue.html" target="_blank" style="color: #a51c30; text-decoration: none; font-weight: 500; border-bottom: 1px solid transparent; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#a51c30'" onmouseout="this.style.borderColor='transparent'">Report technical issues</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding-top: 32px; border-top: 1px solid #e5e7eb;">
+          <a href="#" onclick="setRoute('learn'); return false;" style="display: inline-block; padding: 12px 32px; background: var(--text); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: opacity 0.2s; cursor: pointer;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">← Back to Home</a>
         </div>
       </section>
     </main>
@@ -1280,4 +1588,4 @@
     <script src="./lib/game.js"></script>
     <script src="./app.js"></script>
   </body>
-</html>
+</html
