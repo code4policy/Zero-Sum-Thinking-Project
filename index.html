@@ -383,7 +383,7 @@
         ">
           <h2 id="home-resources" style="margin-bottom: 16px; color: var(--text); font-size: 20px;">Research Resources</h2>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-            <a href="https://socialeconomicslab.org/wp-content/uploads/2024/04/zero_sum_political_divides_OA.pdf" target="_blank" rel="noopener noreferrer" style="display: block; padding: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)';">
+            <a href="https://socialeconomicslab.org/wp-content/uploads/2025/11/zero_sum_political_divides.pdf" target="_blank" rel="noopener noreferrer" style="display: block; padding: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)';">
               <div style="display: flex; align-items: center; margin-bottom: 12px;">
                 <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 12px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -432,71 +432,92 @@
         <div id="concept-intro" style="margin-bottom: 48px;">
           <h1 style="font-size: 2.5em; margin-bottom: 16px; color: var(--text);">The Basics</h1>
           <p style="font-size: 1.2em; color: var(--text-light); max-width: 800px;">
-            Learn about zero-sum thinking through examples, concepts, and interactive demonstrations
+            Learn about zero-sum thinking through examples, gaming, and a video
           </p>
         </div>
 
-        <h2 id="explore-title">Understanding the Concept</h2>
+        <!-- Understanding the Concept Section -->
+        <div style="max-width: 1200px; margin: 0 auto 48px;">
+          <h2 id="explore-title" style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 12px; text-align: center;">Understanding the Concept</h2>
+          <p style="font-size: 16px; color: var(--text-light); text-align: center; max-width: 800px; margin: 0 auto 40px; line-height: 1.6;">
+            The belief that gains for one individual or group tend to come at the cost of others.
+          </p>
 
         <!-- Introduction Cards -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 40px;">
-          <!-- Simple Example Card -->
-          <div id="pie-example" class="card">
+        <div style="margin-bottom: 40px;">
+          <!-- Pie Example Section - Full Width -->
+          <div id="pie-example" class="card" style="margin-bottom: 24px;">
             <h2 style="margin-top: 0; margin-bottom: 16px; color: var(--text);">A Simple Example: The Pie/Pizza</h2>
-            <div style="space: 16px; line-height: 1.8;">
-              <p style="margin-bottom: 14px; color: var(--text-light);">
-                Imagine a pie shared by two groups.
-              </p>
-              
-              <!-- Visual Diagrams -->
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
-                <!-- Zero-Sum -->
-                <div style="text-align: center;">
-                  <svg width="100%" height="140" viewBox="0 0 140 140" style="max-width: 100%;">
-                    <!-- Zero-sum pie (fixed size) -->
-                    <circle cx="70" cy="70" r="50" fill="#fce7e7" stroke="#ddd" stroke-width="1"/>
-                    <!-- Red slice (40%) -->
-                    <path d="M 70 70 L 70 20 A 50 50 0 0 1 110.36 39.64 Z" fill="#ef4444"/>
-                    <!-- Blue slice (60%) -->
-                    <path d="M 70 70 L 110.36 39.64 A 50 50 0 0 1 70 120 Z" fill="#3b82f6"/>
-                    <!-- Labels -->
-                    <text x="75" y="35" font-size="12" font-weight="600" fill="white">40%</text>
-                    <text x="80" y="95" font-size="12" font-weight="600" fill="white">60%</text>
-                  </svg>
-                  <p style="margin: 8px 0 0 0; font-size: 12px; color: var(--text-light);">Fixed pie size</p>
-                </div>
-                
-                <!-- Positive-Sum -->
-                <div style="text-align: center;">
-                  <svg width="100%" height="140" viewBox="0 0 140 140" style="max-width: 100%;">
-                    <!-- Positive-sum pie (grows) -->
-                    <circle cx="70" cy="70" r="60" fill="#e0f9f4" stroke="#ddd" stroke-width="1"/>
-                    <!-- Red slice (40%) -->
-                    <path d="M 70 70 L 70 10 A 60 60 0 0 1 120.96 36.36 Z" fill="#ef4444"/>
-                    <!-- Blue slice (60%) -->
-                    <path d="M 70 70 L 120.96 36.36 A 60 60 0 0 1 70 130 Z" fill="#10b981"/>
-                    <!-- Labels -->
-                    <text x="75" y="30" font-size="12" font-weight="600" fill="white">40%</text>
-                    <text x="80" y="110" font-size="12" font-weight="600" fill="white">60%</text>
-                    <!-- Growth indicator -->
-                    <path d="M 130 30 L 145 15" stroke="#10b981" stroke-width="2" fill="none" stroke-linecap="round"/>
-                    <path d="M 140 20 L 145 15 L 135 18" stroke="#10b981" stroke-width="2" fill="#10b981"/>
-                  </svg>
-                  <p style="margin: 8px 0 0 0; font-size: 12px; color: var(--text-light);">Pie can grow</p>
+            <p style="margin-bottom: 24px; color: var(--text-light); font-size: 15px;">
+              Imagine a pie shared by two groups:
+            </p>
+            
+            <!-- Visual Diagrams - Three Pies Full Width -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
+              <!-- Zero-Sum -->
+              <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); border: 2px solid #e9ecef; border-radius: 12px; padding: 24px; text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 24px rgba(0, 0, 0, 0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                <svg width="100%" height="160" viewBox="0 0 140 140" style="max-width: 160px; margin: 0 auto;">
+                  <!-- Zero-sum pie (fixed size) -->
+                  <circle cx="70" cy="70" r="50" fill="#fce7e7" stroke="#ddd" stroke-width="1"/>
+                  <!-- Red slice (40%) -->
+                  <path d="M 70 70 L 70 20 A 50 50 0 0 1 110.36 39.64 Z" fill="#ef4444"/>
+                  <!-- Blue slice (60%) -->
+                  <path d="M 70 70 L 110.36 39.64 A 50 50 0 0 1 70 120 Z" fill="#3b82f6"/>
+                  <!-- Labels -->
+                  <text x="75" y="35" font-size="12" font-weight="600" fill="white">40%</text>
+                  <text x="80" y="95" font-size="12" font-weight="600" fill="white">60%</text>
+                </svg>
+                <p style="margin: 16px 0 12px 0; font-size: 13px; color: var(--text); font-weight: 600;">Fixed pie size</p>
+                <div style="background: #f8f9fa; padding: 16px; border-radius: 8px; text-align: left; border-left: 4px solid #ef4444;">
+                  <p style="margin: 0 0 8px 0; color: var(--text); font-weight: 600; font-size: 14px;">🔴 Zero-sum thinking</p>
+                  <p style="margin: 0; color: var(--text-light); font-size: 13px; line-height: 1.6;">The size of the pie never changes. If one group gets a larger slice, the other must get a smaller one.</p>
                 </div>
               </div>
               
-              <div style="background: #f8f9fa; padding: 16px; border-radius: 8px; margin-bottom: 14px;">
-                <p style="margin: 0 0 8px 0; color: var(--text); font-weight: 600;">🔴 In zero-sum thinking:</p>
-                <p style="margin: 0; color: var(--text-light); font-size: 14px;">The size of the pie never changes. If one group gets a larger slice, the other group must get a smaller one.</p>
+              <!-- Positive-Sum -->
+              <div style="background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%); border: 2px solid #bfdbfe; border-radius: 12px; padding: 24px; text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 24px rgba(16, 185, 129, 0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                <svg width="100%" height="160" viewBox="0 0 140 140" style="max-width: 160px; margin: 0 auto;">
+                  <!-- Positive-sum pie (grows) -->
+                  <circle cx="70" cy="70" r="60" fill="#e0f9f4" stroke="#ddd" stroke-width="1"/>
+                  <!-- Red slice (40%) -->
+                  <path d="M 70 70 L 70 10 A 60 60 0 0 1 120.96 36.36 Z" fill="#ef4444"/>
+                  <!-- Blue slice (60%) -->
+                  <path d="M 70 70 L 120.96 36.36 A 60 60 0 0 1 70 130 Z" fill="#10b981"/>
+                  <!-- Labels -->
+                  <text x="75" y="30" font-size="12" font-weight="600" fill="white">40%</text>
+                  <text x="80" y="110" font-size="12" font-weight="600" fill="white">60%</text>
+                  <!-- Growth indicator -->
+                  <path d="M 130 30 L 145 15" stroke="#10b981" stroke-width="2" fill="none" stroke-linecap="round"/>
+                  <path d="M 140 20 L 145 15 L 135 18" stroke="#10b981" stroke-width="2" fill="#10b981"/>
+                </svg>
+                <p style="margin: 16px 0 12px 0; font-size: 13px; color: var(--text); font-weight: 600;">Pie can grow</p>
+                <div style="background: #f0f8ff; padding: 16px; border-radius: 8px; text-align: left; border-left: 4px solid #10b981;">
+                  <p style="margin: 0 0 8px 0; color: var(--text); font-weight: 600; font-size: 14px;">🟢 Positive-sum thinking</p>
+                  <p style="margin: 0; color: var(--text-light); font-size: 13px; line-height: 1.6;">The pie itself can grow. Both groups can end up with larger slices, even if the shares are not equal.</p>
+                </div>
               </div>
-              <div style="background: #f0f8ff; padding: 16px; border-radius: 8px; margin-bottom: 14px;">
-                <p style="margin: 0 0 8px 0; color: var(--text); font-weight: 600;">🟢 In shared-gains (positive-sum) thinking:</p>
-                <p style="margin: 0; color: var(--text-light); font-size: 14px;">The pie itself can grow. Both groups can end up with larger slices, even if the shares are not equal.</p>
-              </div>
-              <div style="background: #fff5f5; padding: 16px; border-radius: 8px;">
-                <p style="margin: 0 0 8px 0; color: var(--text); font-weight: 600;">🟠 In negative-sum thinking:</p>
-                <p style="margin: 0; color: var(--text-light); font-size: 14px;">The pie shrinks through conflict or poor decisions. Both groups end up with less than they started with.</p>
+
+              <!-- Negative-Sum -->
+              <div style="background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%); border: 2px solid #fecaca; border-radius: 12px; padding: 24px; text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 24px rgba(239, 68, 68, 0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                <svg width="100%" height="160" viewBox="0 0 140 140" style="max-width: 160px; margin: 0 auto;">
+                  <!-- Negative-sum pie (shrinks) -->
+                  <circle cx="70" cy="70" r="40" fill="#ffe4e4" stroke="#ddd" stroke-width="1"/>
+                  <!-- Red slice (40%) -->
+                  <path d="M 70 70 L 70 30 A 40 40 0 0 1 100.85 47.15 Z" fill="#ef4444"/>
+                  <!-- Blue slice (60%) -->
+                  <path d="M 70 70 L 100.85 47.15 A 40 40 0 0 1 70 110 Z" fill="#fbbf24"/>
+                  <!-- Labels -->
+                  <text x="73" y="42" font-size="12" font-weight="600" fill="white">40%</text>
+                  <text x="77" y="88" font-size="12" font-weight="600" fill="white">60%</text>
+                  <!-- Shrink indicator -->
+                  <path d="M 10 110 L 25 125" stroke="#ef4444" stroke-width="2" fill="none" stroke-linecap="round"/>
+                  <path d="M 20 120 L 25 125 L 15 122" stroke="#ef4444" stroke-width="2" fill="#ef4444"/>
+                </svg>
+                <p style="margin: 16px 0 12px 0; font-size: 13px; color: var(--text); font-weight: 600;">Pie shrinks</p>
+                <div style="background: #fff5f5; padding: 16px; border-radius: 8px; text-align: left; border-left: 4px solid #fbbf24;">
+                  <p style="margin: 0 0 8px 0; color: var(--text); font-weight: 600; font-size: 14px;">🟠 Negative-sum thinking</p>
+                  <p style="margin: 0; color: var(--text-light); font-size: 13px; line-height: 1.6;">The pie shrinks through conflict or poor decisions. Both groups end up with less than they started with.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -613,9 +634,9 @@
             <div id="game-start" style="text-align: center; padding: 24px; background: linear-gradient(135deg, #f0f4ff 0%, #f9fafb 100%); border-radius: 8px;">
               <div style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text);">Starting Position</div>
               <p style="color: var(--text-muted); margin-bottom: 24px;">Both of you start with 50 customers each (50% market share)</p>
-              <button class="btn" id="start-game" type="button" style="padding: 16px; max-width: 300px; margin: 0 auto;">
-                <div style="font-weight: 700;">Start Game</div>
-                <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">Fight for market share</div>
+              <button class="btn" id="start-game" type="button" style="padding: 16px; max-width: 300px; margin: 0 auto; cursor: pointer; user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation;">
+                <div style="font-weight: 700; pointer-events: none;">Start Game</div>
+                <div style="font-size: 12px; opacity: 0.8; margin-top: 4px; pointer-events: none;">Fight for market share</div>
               </button>
             </div>
 
@@ -797,7 +818,7 @@
         <!-- Learning Path Guide / Next Steps -->
         <div id="basics-learning-path" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 32px; margin-top: 40px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);">
           <div style="text-align: center; margin-bottom: 32px;">
-            <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 700; color: var(--text);">🎯 Choose Your Path</h2>
+            <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 700; color: var(--text);">Choose Your Path</h2>
             <p style="margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6;">Select the journey that best matches your interests</p>
           </div>
 
@@ -853,41 +874,41 @@
             </div>
 
             <!-- Path 2: Research/Professional -->
-            <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border: 2px solid #fecaca; border-radius: 12px; padding: 28px; position: relative; overflow: hidden;">
-              <div style="position: absolute; top: 16px; right: 16px; background: #a51c30; color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #bbf7d0; border-radius: 12px; padding: 28px; position: relative; overflow: hidden;">
+              <div style="position: absolute; top: 16px; right: 16px; background: #16a34a; color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
                 For Researchers
               </div>
               
               <div style="margin-bottom: 20px;">
                 <div style="font-size: 36px; margin-bottom: 12px;">🔬</div>
-                <h3 style="margin: 0 0 8px 0; font-size: 20px; font-weight: 700; color: #7f1d1d;">Deep Dive into Research</h3>
-                <p style="margin: 0 0 20px 0; color: #991b1b; font-size: 14px; line-height: 1.6;">
+                <h3 style="margin: 0 0 8px 0; font-size: 20px; font-weight: 700; color: #14532d;">Deep Dive into Research</h3>
+                <p style="margin: 0 0 20px 0; color: #166534; font-size: 14px; line-height: 1.6;">
                   Ideal for academics, researchers, and professionals seeking detailed methodology and findings
                 </p>
               </div>
 
               <!-- Path Steps -->
               <div style="background: white; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-                <div style="font-size: 12px; font-weight: 600; color: #a51c30; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Your Journey:</div>
+                <div style="font-size: 12px; font-weight: 600; color: #16a34a; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Your Journey:</div>
                 
-                <div onclick="setRoute('research')" style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
-                  <div style="flex-shrink: 0; width: 32px; height: 32px; background: #a51c30; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">1</div>
+                <div onclick="setRoute('research')" style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s;" onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='transparent'">
+                  <div style="flex-shrink: 0; width: 32px; height: 32px; background: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">1</div>
                   <div style="flex-grow: 1;">
-                    <div style="font-weight: 600; font-size: 13px; color: #7f1d1d;">Study Methodology</div>
+                    <div style="font-weight: 600; font-size: 13px; color: #14532d;">Study Methodology</div>
                     <div style="font-size: 11px; color: #64748b;">Understand the research design</div>
                   </div>
                 </div>
 
-                <div onclick="setRoute('data')" style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
-                  <div style="flex-shrink: 0; width: 32px; height: 32px; background: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">2</div>
+                <div onclick="setRoute('data')" style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s;" onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='transparent'">
+                  <div style="flex-shrink: 0; width: 32px; height: 32px; background: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">2</div>
                   <div style="flex-grow: 1;">
-                    <div style="font-weight: 600; font-size: 13px; color: #7f1d1d;">Explore Data</div>
+                    <div style="font-weight: 600; font-size: 13px; color: #14532d;">Explore Data</div>
                     <div style="font-size: 11px; color: #64748b;">Analyze patterns & correlations</div>
                   </div>
                 </div>
 
-                <div onclick="setRoute('test')" style="display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
-                  <div style="flex-shrink: 0; width: 32px; height: 32px; background: #fee2e2; border: 2px solid #fca5a5; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #b91c1c; font-weight: 700; font-size: 14px;">3</div>
+                <div onclick="setRoute('test')" style="display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s;" onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='transparent'">
+                  <div style="flex-shrink: 0; width: 32px; height: 32px; background: #dcfce7; border: 2px solid #bbf7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #15803d; font-weight: 700; font-size: 14px;">3</div>
                   <div style="flex-grow: 1;">
                     <div style="font-weight: 600; font-size: 13px; color: #64748b;">Test (Optional)</div>
                     <div style="font-size: 11px; color: #94a3b8;">Try it yourself if curious</div>
@@ -895,7 +916,7 @@
                 </div>
               </div>
 
-              <button onclick="setRoute('research')" style="width: 100%; background: linear-gradient(135deg, #a51c30 0%, #7f1d1d 100%); color: white; border: none; padding: 14px 24px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(165, 28, 48, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(165, 28, 48, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(165, 28, 48, 0.3)'">
+              <button onclick="setRoute('research')" style="width: 100%; background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; border: none; padding: 14px 24px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(22, 163, 74, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(22, 163, 74, 0.3)'">
                 View Research →
               </button>
             </div>
