@@ -32,7 +32,39 @@ navButtons.forEach((btn) => {
 
 // Add click handlers for dropdown items
 navDropdownItems.forEach((item) => {
-  item.addEventListener("click", () => setRoute(item.dataset.route));
+  item.addEventListener("click", () => {
+    const route = item.dataset.route;
+    const section = item.dataset.section;
+    
+    // First switch to the correct page
+    setRoute(route);
+    
+    // Then scroll to the section if specified
+    if (section) {
+      // Small delay to ensure page is visible before scrolling
+      setTimeout(() => {
+        const targetElement = document.getElementById(section);
+        if (targetElement) {
+          // For visualization tabs, also activate the tab
+          if (section.startsWith('tab-')) {
+            const tabName = section.replace('tab-', '');
+            // Activate the corresponding tab button
+            const tabButtons = document.querySelectorAll('.viz-step-btn');
+            tabButtons.forEach(btn => {
+              btn.classList.toggle('viz-step-btn--active', btn.dataset.tab === tabName);
+            });
+            // Show the corresponding tab content
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+              content.classList.toggle('tab-content--active', content.id === section);
+            });
+          }
+          
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  });
 });
 
 // Mobile menu toggle

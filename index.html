@@ -40,24 +40,32 @@
             <button class="nav__link" data-route="learn" aria-current="page">Home</button>
             <div class="nav__dropdown-menu">
               <button class="nav__dropdown-item" data-route="learn" data-section="home-purpose">Purpose</button>
+              <button class="nav__dropdown-item" data-route="learn" data-section="home-research">About the Research</button>
               <button class="nav__dropdown-item" data-route="learn" data-section="home-explore">Explore Platform</button>
-              <button class="nav__dropdown-item" data-route="learn" data-section="home-research">Research Overview</button>
-              <button class="nav__dropdown-item" data-route="learn" data-section="home-resources">Research Resources</button>
+              <button class="nav__dropdown-item" data-route="learn" data-section="home-resources">Resources</button>
             </div>
           </div>
           
           <div class="nav__dropdown">
             <button class="nav__link" data-route="concept">Basics</button>
             <div class="nav__dropdown-menu">
-              <button class="nav__dropdown-item" data-route="concept" data-section="concept-intro">Introduction</button>
               <button class="nav__dropdown-item" data-route="concept" data-section="pie-example">Pie Example</button>
               <button class="nav__dropdown-item" data-route="concept" data-section="common-examples">Common Examples</button>
               <button class="nav__dropdown-item" data-route="concept" data-section="mini-game">Mini Game</button>
               <button class="nav__dropdown-item" data-route="concept" data-section="video-explanation">Video</button>
+              <button class="nav__dropdown-item" data-route="concept" data-section="basics-learning-path">Choose Your Path</button>
             </div>
           </div>
           
-          <button class="nav__link" data-route="data">Visualize</button>
+          <div class="nav__dropdown">
+            <button class="nav__link" data-route="data">Visualize</button>
+            <div class="nav__dropdown-menu">
+              <button class="nav__dropdown-item" data-route="data" data-section="tab-demographic-patterns">Demographic Patterns</button>
+              <button class="nav__dropdown-item" data-route="data" data-section="tab-policy-indices">Policy Attitudes</button>
+              <button class="nav__dropdown-item" data-route="data" data-section="tab-geographic-map">Geographic Map</button>
+            </div>
+          </div>
+          
           <button class="nav__link" data-route="test">Test</button>
           <button class="nav__link" data-route="research">Research</button>
           
@@ -89,13 +97,14 @@
         <!-- Hero Section with Background Image -->
         <div class="learn-hero" style="
           position: relative;
-          margin: -18px -16px 0 -16px;
+          margin: -18px 0 0 0;
           padding: 120px 40px 100px;
           background-image: url('https://www.philenews.com/wp-content/uploads/webp/2025/04/zero-sum-thinking.webp');
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
           overflow: hidden;
+          border-radius: 8px;
         ">
           <!-- Dark overlay for text readability -->
           <div style="
@@ -108,7 +117,7 @@
           "></div>
           
           <!-- Content -->
-          <div style="position: relative; z-index: 1; max-width: 1040px; margin: 0 auto; text-align: center;">
+          <div style="position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 24px; text-align: center;">
             
             <h1 id="learn-title" style="
               margin: 0 0 40px 0;
@@ -128,13 +137,13 @@
             ">
               <!-- Core Concept Card -->
               <div style="
-                background: rgba(30, 30, 30, 0.65);
-                border: 1px solid rgba(255, 255, 255, 0.15);
+                background: rgba(30, 30, 30, 0.45);
+                border: 1px solid rgba(255, 255, 255, 0.1);
                 border-radius: 12px;
                 padding: 24px;
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
               ">
                 <div style="
                   font-size: 13px;
@@ -157,13 +166,13 @@
               
               <!-- Why It Matters Card -->
               <div style="
-                background: rgba(30, 30, 30, 0.65);
-                border: 1px solid rgba(255, 255, 255, 0.15);
+                background: rgba(30, 30, 30, 0.45);
+                border: 1px solid rgba(255, 255, 255, 0.1);
                 border-radius: 12px;
                 padding: 24px;
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
               ">
                 <div style="
                   font-size: 13px;
@@ -185,71 +194,78 @@
               </div>
             </div>
             
-            <h2 style="
-              margin: 40px 0 0 0;
-              font-size: 48px;
-              font-weight: 800;
-              color: #fff;
-              line-height: 1.2;
-              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            ">An Interactive Explainer, Data Dashboard, and Self-assessment</h2>
+            <p style="
+              margin: 32px 0 0 0;
+              font-size: 18px;
+              font-weight: 400;
+              font-style: italic;
+              color: rgba(255, 255, 255, 0.85);
+              line-height: 1.5;
+              letter-spacing: 0.3px;
+            ">An Interactive Explainer, Data Dashboard, and Self-assessment</p>
           </div>
         </div>
 
-        <!-- Divider -->
-        <div style="max-width: 1200px; margin: 20px auto; height: 1px; background: linear-gradient(90deg, transparent 0%, #e5e7eb 50%, transparent 100%);"></div>
-
         <!-- Main Content -->
-        <div class="container main" style="padding-top: 16px;">
-          <h2 style="margin-top: 0; margin-bottom: 16px; font-size: 20px; color: var(--text);">How to Use This Platform</h2>
+        <div class="container main" style="padding-top: 20px; padding-bottom: 8px;">
 
           <div class="card" style="
-            background: #ffffff; 
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); 
             border: none;
             border-left: 4px solid #a51c30;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-            border-radius: 8px;
-            padding: 24px 28px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            padding: 20px 24px;
           ">
-            <h2 id="home-purpose" style="margin-top: 0; margin-bottom: 12px; color: var(--text); font-size: 20px;">Purpose of the Website</h2>
-            <p style="margin-bottom: 16px; line-height: 1.6;">
+            <h2 id="home-purpose" style="margin-top: 0; margin-bottom: 10px; color: var(--text); font-size: 22px; font-weight: 700;">Purpose of the Website</h2>
+            <p style="margin-bottom: 14px; line-height: 1.65; font-size: 15px; color: #374151;">
               Ever wondered why people see the same issue so differently? This platform helps you understand zero-sum thinking—a mindset that shapes how we view politics, policy, and social change. Whether you're a student, educator, policymaker, or curious citizen, this site offers evidence-based insights into one of the most important divides in contemporary society.
             </p>
 
-            <h2 id="home-explore" style="margin-top: 20px; margin-bottom: 8px; color: var(--text); font-size: 20px; font-weight: 700;">Explore the Platform</h2>
-            <p class="muted" style="margin-bottom: 20px; line-height: 1.6;">
+            <h2 id="home-research" style="margin-top: 16px; margin-bottom: 10px; color: var(--text); font-size: 22px; font-weight: 700;">About the Research</h2>
+            <p style="margin-bottom: 10px; line-height: 1.65; font-size: 15px; color: #374151;">
+              This website translates the empirical findings of "<a href="https://socialeconomicslab.org/wp-content/uploads/2025/11/zero_sum_political_divides.pdf" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline;">Zero-Sum Thinking and the Roots of U.S. Political Divides</a>" (forthcoming in the <em>American Economic Review</em>) by 
+              <a href="https://sahilchinoy.com/" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline;">Sahil Chinoy</a>, 
+              <a href="https://nathannunn.arts.ubc.ca/" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline;">Nathan Nunn</a>, 
+              <a href="https://sites.google.com/view/sandramgsequeira/home" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline;">Sandra Sequeira</a>, and 
+              <a href="https://www.stefanie-stantcheva.com/" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline;">Stefanie Stantcheva</a> 
+              into an interactive educational platform—combining conceptual explanation, data visualization, and self-assessment while maintaining academic rigor and transparency.
+            </p>
+
+            <h2 id="home-explore" style="margin-top: 16px; margin-bottom: 6px; color: var(--text); font-size: 22px; font-weight: 700;">Explore the Platform</h2>
+            <p class="muted" style="margin-bottom: 16px; line-height: 1.5; font-size: 15px;">
               Navigate through different dimensions of zero-sum thinking:
             </p>
             
             <!-- Interactive Navigation Map -->
             <div style="
               display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-              gap: 16px;
-              margin-bottom: 20px;
+              grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+              gap: 12px;
+              margin-bottom: 16px;
             ">
               <!-- Basics Card -->
               <div onclick="setRoute('concept')" style="
                 cursor: pointer;
-                background: #ffffff;
-                border: 1px solid #e5e7eb;
+                background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+                border: 1px solid #dbeafe;
                 border-left: 4px solid #2563eb;
-                border-radius: 8px;
-                padding: 20px;
+                border-radius: 10px;
+                padding: 16px;
                 transition: all 0.3s ease;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+                box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06);
                 position: relative;
-              " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(37, 99, 235, 0.15)'; this.style.borderLeftColor='#1e40af'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)'; this.style.borderLeftColor='#2563eb'">
+              " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(37, 99, 235, 0.15)'; this.style.borderLeftColor='#1e40af'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(37, 99, 235, 0.06)'; this.style.borderLeftColor='#2563eb'">
                 <div style="
                   display: flex;
                   align-items: center;
-                  margin-bottom: 12px;
+                  margin-bottom: 8px;
                 ">
-                  <div style="font-size: 28px; margin-right: 12px;">📚</div>
-                  <h3 style="margin: 0; color: var(--text); font-size: 18px; font-weight: 700;">Basics</h3>
+                  <div style="font-size: 24px; margin-right: 10px;">📚</div>
+                  <h3 style="margin: 0; color: var(--text); font-size: 17px; font-weight: 700;">Basics</h3>
                 </div>
-                <p style="margin: 0 0 12px 0; color: var(--text-light); font-size: 13px; line-height: 1.5;">
-                  Understand core concepts and learn through interactive mini-games and animated explanations
+                <p style="margin: 0 0 8px 0; color: var(--text-light); font-size: 13px; line-height: 1.45;">
+                  Core concepts through interactive mini-games and animated explanations
                 </p>
                 <div style="color: #2563eb; font-weight: 600; font-size: 13px;">
                   Start Learning →
@@ -259,25 +275,25 @@
               <!-- Visualization Card -->
               <div onclick="setRoute('data')" style="
                 cursor: pointer;
-                background: #ffffff;
-                border: 1px solid #e5e7eb;
+                background: linear-gradient(135deg, #f8fafc 0%, #fef2f2 100%);
+                border: 1px solid #fecaca;
                 border-left: 4px solid #a51c30;
-                border-radius: 8px;
-                padding: 20px;
+                border-radius: 10px;
+                padding: 16px;
                 transition: all 0.3s ease;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+                box-shadow: 0 2px 8px rgba(165, 28, 48, 0.06);
                 position: relative;
-              " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(165, 28, 48, 0.15)'; this.style.borderLeftColor='#7e1424'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)'; this.style.borderLeftColor='#a51c30'">
+              " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(165, 28, 48, 0.15)'; this.style.borderLeftColor='#7e1424'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(165, 28, 48, 0.06)'; this.style.borderLeftColor='#a51c30'">
                 <div style="
                   display: flex;
                   align-items: center;
-                  margin-bottom: 12px;
+                  margin-bottom: 8px;
                 ">
-                  <div style="font-size: 28px; margin-right: 12px;">📊</div>
-                  <h3 style="margin: 0; color: var(--text); font-size: 18px; font-weight: 700;">Visualize</h3>
+                  <div style="font-size: 24px; margin-right: 10px;">📊</div>
+                  <h3 style="margin: 0; color: var(--text); font-size: 17px; font-weight: 700;">Visualize</h3>
                 </div>
-                <p style="margin: 0 0 12px 0; color: var(--text-light); font-size: 13px; line-height: 1.5;">
-                  Explore demographic patterns, policy correlations, and geographic distributions through data
+                <p style="margin: 0 0 8px 0; color: var(--text-light); font-size: 13px; line-height: 1.45;">
+                  Demographic patterns, policy correlations, and geographic distributions
                 </p>
                 <div style="color: #a51c30; font-weight: 600; font-size: 13px;">
                   View Data →
@@ -287,25 +303,25 @@
               <!-- Test Card -->
               <div onclick="setRoute('test')" style="
                 cursor: pointer;
-                background: #ffffff;
-                border: 1px solid #e5e7eb;
+                background: linear-gradient(135deg, #f8fafc 0%, #ecfdf5 100%);
+                border: 1px solid #a7f3d0;
                 border-left: 4px solid #059669;
-                border-radius: 8px;
-                padding: 20px;
+                border-radius: 10px;
+                padding: 16px;
                 transition: all 0.3s ease;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+                box-shadow: 0 2px 8px rgba(5, 150, 105, 0.06);
                 position: relative;
-              " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(5, 150, 105, 0.15)'; this.style.borderLeftColor='#047857'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)'; this.style.borderLeftColor='#059669'">
+              " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(5, 150, 105, 0.15)'; this.style.borderLeftColor='#047857'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(5, 150, 105, 0.06)'; this.style.borderLeftColor='#059669'">
                 <div style="
                   display: flex;
                   align-items: center;
-                  margin-bottom: 12px;
+                  margin-bottom: 8px;
                 ">
-                  <div style="font-size: 28px; margin-right: 12px;">✍️</div>
-                  <h3 style="margin: 0; color: var(--text); font-size: 18px; font-weight: 700;">Test Yourself</h3>
+                  <div style="font-size: 24px; margin-right: 10px;">✍️</div>
+                  <h3 style="margin: 0; color: var(--text); font-size: 17px; font-weight: 700;">Test Yourself</h3>
                 </div>
-                <p style="margin: 0 0 12px 0; color: var(--text-light); font-size: 13px; line-height: 1.5;">
-                  Answer questions about your beliefs and compare yourself to national benchmarks
+                <p style="margin: 0 0 8px 0; color: var(--text-light); font-size: 13px; line-height: 1.45;">
+                  Answer questions and compare yourself to national benchmarks
                 </p>
                 <div style="color: #059669; font-weight: 600; font-size: 13px;">
                   Take Test →
@@ -315,28 +331,30 @@
               <!-- About Card -->
               <div onclick="setRoute('about')" style="
                 cursor: pointer;
-                background: #ffffff;
-                border: 1px solid #e5e7eb;
+                background: linear-gradient(135deg, #f8fafc 0%, #f5f3ff 100%);
+                border: 1px solid #ddd6fe;
                 border-left: 4px solid #7c3aed;
-                border-radius: 8px;
-                padding: 20px;
+                border-radius: 10px;
+                padding: 16px;
                 transition: all 0.3s ease;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+                box-shadow: 0 2px 8px rgba(124, 58, 237, 0.06);
                 position: relative;
-              " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(124, 58, 237, 0.15)'; this.style.borderLeftColor='#6d28d9'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)'; this.style.borderLeftColor='#7c3aed'">
+              " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(124, 58, 237, 0.15)'; this.style.borderLeftColor='#6d28d9'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(124, 58, 237, 0.06)'; this.style.borderLeftColor='#7c3aed'">
                 <div style="
                   display: flex;
                   align-items: center;
-                  margin-bottom: 12px;
+                  margin-bottom: 8px;
                 ">
-                  <div style="font-size: 28px; margin-right: 12px;">ℹ️</div>
-                  <h3 style="margin: 0; color: var(--text); font-size: 18px; font-weight: 700;">About</h3>
+                  <div style="font-size: 24px; margin-right: 10px;">ℹ️</div>
+                  <h3 style="margin: 0; color: var(--text); font-size: 17px; font-weight: 700;">About</h3>
                 </div>
-                <p style="margin: 0 0 12px 0; color: var(--text-light); font-size: 13px; line-height: 1.5;">
-                  Learn about the research team, methodology, and academic foundations of this project
+                <p style="margin: 0 0 8px 0; color: var(--text-light); font-size: 13px; line-height: 1.45;">
+                  Research team, methodology, and academic foundations
                 </p>
                 <div style="color: #7c3aed; font-weight: 600; font-size: 13px;">
                   Learn More →
+                </div>
+              </div>
                 </div>
               </div>
             </div>
@@ -344,86 +362,56 @@
 
         </div>
 
-        <!-- Research Overview Card -->
-        <div class="card" style="
-          background: #ffffff;
-          border: none;
-          border-left: 4px solid #a51c30;
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-          border-radius: 8px;
-          padding: 24px 28px;
-          margin-top: 2px;
-        ">
-          <h2 id="home-research" style="margin-bottom: 16px; color: var(--text); font-size: 20px;">Research Overview</h2>
-          <p class="muted" style="margin-bottom: 16px;">
-            This platform explores research by 
-            <a href="https://sahilchinoy.com/" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline; font-weight: 600;">Sahil Chinoy</a>, 
-            <a href="https://nathannunn.arts.ubc.ca/" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline; font-weight: 600;">Nathan Nunn</a>, 
-            <a href="https://sites.google.com/view/sandramgsequeira/home" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline; font-weight: 600;">Sandra Sequeira</a>, and 
-            <a href="https://www.stefanie-stantcheva.com/" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline; font-weight: 600;">Stefanie Stantcheva</a> 
-            on zero-sum thinking and U.S. political divides.
-          </p>
-          <p style="margin-bottom: 12px;">
-            <strong>Publication:</strong> Forthcoming at the <em>American Economic Review</em>
-          </p>
-          <p style="margin-bottom: 24px;">
-            Zero-sum thinking - believing gains for one person mean losses for another - shapes political views. The study analyzes survey data from 20,000+ respondents to measure this mindset and its correlations.
-          </p>
-        </div>
-
         <!-- Research Resources Card -->
         <div class="card" style="
-          background: #ffffff;
+          background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
           border: none;
           border-left: 4px solid #a51c30;
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-          border-radius: 8px;
-          padding: 24px 28px;
-          margin-top: 2px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          border-radius: 12px;
+          padding: 20px 24px;
+          margin-top: 16px;
         ">
-          <h2 id="home-resources" style="margin-bottom: 16px; color: var(--text); font-size: 20px;">Research Resources</h2>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-            <a href="https://socialeconomicslab.org/wp-content/uploads/2025/11/zero_sum_political_divides.pdf" target="_blank" rel="noopener noreferrer" style="display: block; padding: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)';">
-              <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 12px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          <h2 id="home-resources" style="margin-bottom: 14px; color: var(--text); font-size: 22px; font-weight: 700;">Research Resources</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+            <a href="https://socialeconomicslab.org/wp-content/uploads/2025/11/zero_sum_political_divides.pdf" target="_blank" rel="noopener noreferrer" style="display: block; padding: 14px; background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%); border: 1px solid #fecaca; border-radius: 10px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0, 0, 0, 0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 6px rgba(0, 0, 0, 0.04)';">
+              <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; box-shadow: 0 3px 10px rgba(239, 68, 68, 0.25);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                 </div>
-                <div style="font-weight: 600; color: #1e293b; font-size: 16px;">Full Paper</div>
+                <div style="font-weight: 600; color: #1e293b; font-size: 15px;">Full Paper</div>
               </div>
-              <div style="font-size: 14px; color: #64748b; line-height: 1.4;">Open Access PDF of the complete research</div>
+              <div style="font-size: 12px; color: #64748b; line-height: 1.4;">Open Access PDF</div>
             </a>
-            <a href="https://socialeconomicslab.org/wp-content/uploads/2024/04/Zero_Sum_Slides_compressed.pdf" target="_blank" rel="noopener noreferrer" style="display: block; padding: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)';">
-              <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #7b9cb5 0%, #5b7c99 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 12px; box-shadow: 0 4px 12px rgba(91, 124, 153, 0.3);">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            <a href="https://socialeconomicslab.org/wp-content/uploads/2024/04/Zero_Sum_Slides_compressed.pdf" target="_blank" rel="noopener noreferrer" style="display: block; padding: 14px; background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%); border: 1px solid #cbd5e1; border-radius: 10px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0, 0, 0, 0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 6px rgba(0, 0, 0, 0.04)';">
+              <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #7b9cb5 0%, #5b7c99 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; box-shadow: 0 3px 10px rgba(91, 124, 153, 0.25);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                 </div>
-                <div style="font-weight: 600; color: #1e293b; font-size: 16px;">Presentation Slides</div>
+                <div style="font-weight: 600; color: #1e293b; font-size: 15px;">Slides</div>
               </div>
-              <div style="font-size: 14px; color: #64748b; line-height: 1.4;">Visual overview of key findings</div>
+              <div style="font-size: 12px; color: #64748b; line-height: 1.4;">Key findings overview</div>
             </a>
-            <a href="https://socialeconomicslab.org/wp-content/uploads/2024/04/zero_sum_political_divides_Q.pdf" target="_blank" rel="noopener noreferrer" style="display: block; padding: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)';">
-              <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 12px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+            <a href="https://socialeconomicslab.org/wp-content/uploads/2024/04/zero_sum_political_divides_Q.pdf" target="_blank" rel="noopener noreferrer" style="display: block; padding: 14px; background: linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%); border: 1px solid #a7f3d0; border-radius: 10px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0, 0, 0, 0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 6px rgba(0, 0, 0, 0.04)';">
+              <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; box-shadow: 0 3px 10px rgba(16, 185, 129, 0.25);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
                 </div>
-                <div style="font-weight: 600; color: #1e293b; font-size: 16px;">Survey Questionnaire</div>
+                <div style="font-weight: 600; color: #1e293b; font-size: 15px;">Questionnaire</div>
               </div>
-              <div style="font-size: 14px; color: #64748b; line-height: 1.4;">Complete survey instrument used</div>
+              <div style="font-size: 12px; color: #64748b; line-height: 1.4;">Survey instrument</div>
             </a>
-            <a href="https://x.com/s_stantcheva/status/1703765533571616809?s=46" target="_blank" rel="noopener noreferrer" style="display: block; padding: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)';">
-              <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 12px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <a href="https://x.com/s_stantcheva/status/1703765533571616809?s=46" target="_blank" rel="noopener noreferrer" style="display: block; padding: 14px; background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%); border: 1px solid #bae6fd; border-radius: 10px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0, 0, 0, 0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 6px rgba(0, 0, 0, 0.04)';">
+              <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; box-shadow: 0 3px 10px rgba(14, 165, 233, 0.25);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </div>
-                <div style="font-weight: 600; color: #1e293b; font-size: 16px;">Twitter Thread</div>
+                <div style="font-weight: 600; color: #1e293b; font-size: 15px;">Twitter</div>
               </div>
-              <div style="font-size: 14px; color: #64748b; line-height: 1.4;">Concise research summary</div>
+              <div style="font-size: 12px; color: #64748b; line-height: 1.4;">Research summary</div>
             </a>
           </div>
         </div>
-
-        <!-- Divider -->
-        <div style="max-width: 1200px; margin: 48px auto 0; height: 1px; background: linear-gradient(90deg, transparent 0%, #e5e7eb 50%, transparent 100%);"></div>
 
       </section>
 
@@ -747,8 +735,8 @@
                     <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #92400e;">Reflection Questions</h3>
                   </div>
                   
-                  <div style="space: 16px;">
-                    <div style="background: white; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                  <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div style="background: white; border-radius: 8px; padding: 12px;">
                       <p style="margin: 0; font-size: 14px; color: #78350f; line-height: 1.6;">
                         <strong>❓ What was your initial strategy?</strong><br/>
                         <span style="color: #92400e;">Did you tend to compete or collaborate? Why?</span>
@@ -934,38 +922,196 @@
 
       <!-- THE RESEARCH -->
       <section id="page-research" class="page" aria-labelledby="research-title">
-        <h1 id="research-title">The Research</h1>
+        <div style="margin-bottom: 32px;">
+          <h1 id="research-title" style="font-size: 2.2em; margin-bottom: 12px; color: var(--text);">The Research</h1>
+          <p style="font-size: 1.1em; color: var(--text-light); max-width: 800px; line-height: 1.6;">Understanding the methodology behind "Zero-Sum Thinking and the Roots of U.S. Political Divides"</p>
+        </div>
 
-        <div class="card">
-          <h2>Purpose of the Study</h2>
-          <p>The study "Zero-Sum Thinking and the Roots of U.S. Political Differences" investigates how beliefs about gains and losses shape political attitudes in the United States. Rather than focusing only on material interests or partisan identities, the research examines a deeper cognitive framework: whether individuals tend to see social and economic outcomes as zero-sum or as allowing for shared gains.</p>
-          <p>The central claim is that zero-sum thinking is a measurable mindset that helps explain persistent political disagreement across a wide range of policy areas.</p>
+        <!-- Purpose of the Study -->
+        <div class="card" style="margin-bottom: 20px; border-left: 4px solid #a51c30;">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <div style="font-size: 32px; flex-shrink: 0;">🎯</div>
+            <div>
+              <h2 style="margin: 0 0 12px 0; color: var(--text); font-size: 1.3em;">Purpose of the Study</h2>
+              <p style="margin: 0 0 12px 0; line-height: 1.7; color: var(--text-light);">The study investigates how beliefs about gains and losses shape political attitudes in the United States. Rather than focusing only on material interests or partisan identities, the research examines a deeper cognitive framework.</p>
+              <div style="background: linear-gradient(135deg, #fef3c7 0%, #fef9e7 100%); border: 1px solid #fcd34d; border-radius: 8px; padding: 16px;">
+                <p style="margin: 0; font-weight: 600; color: #92400e; font-size: 15px;">💡 Central Claim</p>
+                <p style="margin: 8px 0 0 0; color: #78350f; line-height: 1.6;">Zero-sum thinking is a measurable mindset that helps explain persistent political disagreement across a wide range of policy areas.</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <h2>How Zero-Sum Thinking Is Measured</h2>
-          <p>The study measures zero-sum thinking using survey questions designed to capture respondents' beliefs about whether gains for one group come at the expense of others.</p>
-          <p>Respondents are asked to indicate their level of agreement with statements expressing zero-sum views across different social and economic domains. Higher agreement with these statements indicates a stronger zero-sum orientation.</p>
+        <!-- How It's Measured -->
+        <div class="card" style="margin-bottom: 20px; border-left: 4px solid #2563eb;">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <div style="font-size: 32px; flex-shrink: 0;">📏</div>
+            <div style="flex: 1;">
+              <h2 style="margin: 0 0 12px 0; color: var(--text); font-size: 1.3em;">How Zero-Sum Thinking Is Measured</h2>
+              <p style="margin: 0 0 16px 0; line-height: 1.7; color: var(--text-light);">The study uses survey questions designed to capture respondents' beliefs about whether gains for one group come at the expense of others.</p>
+              
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                <div style="background: #eff6ff; border-radius: 8px; padding: 14px; text-align: center;">
+                  <div style="font-size: 24px; margin-bottom: 8px;">📋</div>
+                  <div style="font-weight: 600; color: #1e40af; font-size: 14px;">Survey Questions</div>
+                  <div style="font-size: 12px; color: #3b82f6; margin-top: 4px;">Agreement statements</div>
+                </div>
+                <div style="background: #eff6ff; border-radius: 8px; padding: 14px; text-align: center;">
+                  <div style="font-size: 24px; margin-bottom: 8px;">📊</div>
+                  <div style="font-weight: 600; color: #1e40af; font-size: 14px;">Multiple Domains</div>
+                  <div style="font-size: 12px; color: #3b82f6; margin-top: 4px;">Cross-topic consistency</div>
+                </div>
+                <div style="background: #eff6ff; border-radius: 8px; padding: 14px; text-align: center;">
+                  <div style="font-size: 24px; margin-bottom: 8px;">🎚️</div>
+                  <div style="font-weight: 600; color: #1e40af; font-size: 14px;">Likert Scale</div>
+                  <div style="font-size: 12px; color: #3b82f6; margin-top: 4px;">1-5 agreement levels</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <h2>Domains Covered</h2>
-          <p>Zero-sum thinking is measured across multiple domains, including:</p>
-          <ul>
-            <li>Ethnic and social groups: Beliefs about whether gains for one group imply losses for others.</li>
-            <li>International trade: Beliefs about whether economic gains from trade are necessarily offset by losses elsewhere.</li>
-            <li>Income and economic groups: Beliefs about whether increases in wealth for some groups require others to become worse off.</li>
-            <li>Citizens and non-citizens: Beliefs about competition over economic opportunities and resources.</li>
-          </ul>
-          <p>Measuring multiple domains allowed the researchers to assess whether zero-sum thinking reflects a general mindset rather than issue-specific opinions.</p>
+        <!-- Domains Covered -->
+        <div class="card" style="margin-bottom: 20px; border-left: 4px solid #059669;">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <div style="font-size: 32px; flex-shrink: 0;">🌐</div>
+            <div style="flex: 1;">
+              <h2 style="margin: 0 0 12px 0; color: var(--text); font-size: 1.3em;">Domains Covered</h2>
+              <p style="margin: 0 0 16px 0; line-height: 1.7; color: var(--text-light);">Zero-sum thinking is measured across multiple domains to assess whether it reflects a general mindset rather than issue-specific opinions:</p>
+              
+              <div style="display: grid; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 16px;">
+                  <div style="width: 40px; height: 40px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="color: white; font-size: 18px;">👥</span>
+                  </div>
+                  <div>
+                    <div style="font-weight: 600; color: #065f46; font-size: 14px;">Ethnic & Social Groups</div>
+                    <div style="font-size: 13px; color: #047857;">Beliefs about whether gains for one group imply losses for others</div>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 16px;">
+                  <div style="width: 40px; height: 40px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="color: white; font-size: 18px;">🌍</span>
+                  </div>
+                  <div>
+                    <div style="font-weight: 600; color: #065f46; font-size: 14px;">International Trade</div>
+                    <div style="font-size: 13px; color: #047857;">Beliefs about whether economic gains from trade are offset by losses elsewhere</div>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 16px;">
+                  <div style="width: 40px; height: 40px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="color: white; font-size: 18px;">💰</span>
+                  </div>
+                  <div>
+                    <div style="font-weight: 600; color: #065f46; font-size: 14px;">Income & Economic Groups</div>
+                    <div style="font-size: 13px; color: #047857;">Beliefs about whether increases in wealth for some require others to become worse off</div>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 16px;">
+                  <div style="width: 40px; height: 40px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="color: white; font-size: 18px;">🛂</span>
+                  </div>
+                  <div>
+                    <div style="font-weight: 600; color: #065f46; font-size: 14px;">Citizens & Non-citizens</div>
+                    <div style="font-size: 13px; color: #047857;">Beliefs about competition over economic opportunities and resources</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <h2>From Survey Responses to an Index</h2>
-          <p>Individual responses are combined into a standardized zero-sum thinking index, typically scaled from low to high values. Higher scores indicate a stronger tendency to view social and economic outcomes as zero-sum.</p>
-          <p>The index construction follows standard practices in survey research, ensuring internal consistency and comparability across respondents.</p>
-          <p>Details on question wording, scaling, and validation are provided in the original paper and its supplementary materials.</p>
+        <!-- From Survey to Index -->
+        <div class="card" style="margin-bottom: 20px; border-left: 4px solid #7c3aed;">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <div style="font-size: 32px; flex-shrink: 0;">🔢</div>
+            <div style="flex: 1;">
+              <h2 style="margin: 0 0 12px 0; color: var(--text); font-size: 1.3em;">From Survey Responses to an Index</h2>
+              <p style="margin: 0 0 16px 0; line-height: 1.7; color: var(--text-light);">Individual responses are combined into a standardized zero-sum thinking index, following standard practices in survey research.</p>
+              
+              <!-- Process Flow -->
+              <div style="display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; background: #f5f3ff; border-radius: 8px; padding: 20px;">
+                <div style="background: white; border: 2px solid #8b5cf6; border-radius: 8px; padding: 12px 16px; text-align: center;">
+                  <div style="font-size: 20px;">📝</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6d28d9; margin-top: 4px;">Survey Responses</div>
+                </div>
+                <div style="color: #8b5cf6; font-size: 24px;">→</div>
+                <div style="background: white; border: 2px solid #8b5cf6; border-radius: 8px; padding: 12px 16px; text-align: center;">
+                  <div style="font-size: 20px;">⚙️</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6d28d9; margin-top: 4px;">Standardization</div>
+                </div>
+                <div style="color: #8b5cf6; font-size: 24px;">→</div>
+                <div style="background: white; border: 2px solid #8b5cf6; border-radius: 8px; padding: 12px 16px; text-align: center;">
+                  <div style="font-size: 20px;">📈</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6d28d9; margin-top: 4px;">ZST Index (0-1)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <h2>How to Interpret the Zero-Sum Thinking Index</h2>
-          <p>The zero-sum thinking index is scaled so that higher values indicate a stronger tendency to view social and economic outcomes as zero-sum, meaning that gains for one group are perceived as coming at the expense of others. Lower values indicate a weaker zero-sum orientation and a greater openness to the possibility of shared gains.</p>
+        <!-- How to Interpret -->
+        <div class="card" style="margin-bottom: 20px; border-left: 4px solid #f59e0b;">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <div style="font-size: 32px; flex-shrink: 0;">📖</div>
+            <div style="flex: 1;">
+              <h2 style="margin: 0 0 12px 0; color: var(--text); font-size: 1.3em;">How to Interpret the Index</h2>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+                <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border: 1px solid #fecaca; border-radius: 8px; padding: 16px;">
+                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                    <div style="width: 24px; height: 24px; background: #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                      <span style="color: white; font-size: 12px; font-weight: bold;">↑</span>
+                    </div>
+                    <span style="font-weight: 700; color: #b91c1c;">Higher Values</span>
+                  </div>
+                  <p style="margin: 0; font-size: 13px; color: #991b1b; line-height: 1.5;">Stronger tendency to view outcomes as zero-sum — gains for one group are perceived as losses for others.</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px;">
+                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                    <div style="width: 24px; height: 24px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                      <span style="color: white; font-size: 12px; font-weight: bold;">↓</span>
+                    </div>
+                    <span style="font-weight: 700; color: #065f46;">Lower Values</span>
+                  </div>
+                  <p style="margin: 0; font-size: 13px; color: #047857; line-height: 1.5;">Weaker zero-sum orientation — greater openness to the possibility of shared gains.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <h2>Data Transparency</h2>
-          <p>This website presents aggregated results only, based on the published study and its associated materials. Individual-level data are not displayed or stored here.</p>
-          <p>For full methodological details, replication materials, and technical discussion, users are encouraged to consult the original publication and its appendices.</p>
+        <!-- Data Transparency -->
+        <div class="card" style="margin-bottom: 20px; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1px solid #cbd5e1;">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <div style="font-size: 32px; flex-shrink: 0;">🔒</div>
+            <div style="flex: 1;">
+              <h2 style="margin: 0 0 12px 0; color: var(--text); font-size: 1.3em;">Data Transparency</h2>
+              <div style="display: grid; gap: 12px;">
+                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                  <span style="color: #64748b; font-size: 18px;">✓</span>
+                  <p style="margin: 0; color: var(--text-light); line-height: 1.6; font-size: 14px;">This website presents <strong>aggregated results only</strong>, based on the published study and its associated materials.</p>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                  <span style="color: #64748b; font-size: 18px;">✓</span>
+                  <p style="margin: 0; color: var(--text-light); line-height: 1.6; font-size: 14px;"><strong>Individual-level data</strong> are not displayed or stored here.</p>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                  <span style="color: #64748b; font-size: 18px;">✓</span>
+                  <p style="margin: 0; color: var(--text-light); line-height: 1.6; font-size: 14px;">For full methodological details, consult the <strong>original publication and appendices</strong>.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Link to Paper -->
+        <div style="text-align: center; padding: 24px; background: linear-gradient(135deg, #fef2f2 0%, #fff5f5 100%); border: 2px solid #fecaca; border-radius: 12px;">
+          <p style="margin: 0 0 16px 0; color: var(--text); font-size: 15px;">Want to dive deeper into the research methodology?</p>
+          <a href="https://socialeconomicslab.org/wp-content/uploads/2025/11/zero_sum_political_divides.pdf" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; background: #a51c30; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.background='#8b1728'" onmouseout="this.style.background='#a51c30'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            Read the Full Paper
+          </a>
         </div>
       </section>
 
@@ -1572,165 +1718,268 @@
 
       <!-- ABOUT -->
       <section id="page-about" class="page" aria-labelledby="about-title">
-        <h1 style="font-size: 2.5em; margin-bottom: 16px; color: var(--text);">About This Project</h1>
-        <p style="font-size: 1.1em; color: var(--text-light); margin-bottom: 48px; max-width: 800px;">
-          An educational platform translating academic research into accessible, interactive content
-        </p>
-
-        <div class="card" style="margin-bottom: 24px;" id="about-project">
-          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">The Project</h2>
-          <p style="line-height: 1.7; color: var(--text-light);">This website was created as an educational project to make academic research on zero-sum thinking accessible to a broader audience. It presents a non-partisan, public-facing summary of published research, combining conceptual explanation, data visualization, and a self-assessment tool.</p>
-          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 0;">The site does not conduct original research or collect new data. Its purpose is to support learning, policy discussion, and informed reflection on how beliefs about gains and losses relate to political attitudes and social outcomes.</p>
+        <!-- Hero Header -->
+        <div style="margin-bottom: 40px; text-align: center;">
+          <div style="display: inline-flex; align-items: center; justify-content: center; width: 80px; height: 80px; background: linear-gradient(135deg, #a51c30 0%, #7e1424 100%); border-radius: 50%; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(165, 28, 48, 0.25);">
+            <span style="font-size: 36px;">📖</span>
+          </div>
+          <h1 id="about-title" style="font-size: 2.4em; margin-bottom: 12px; color: var(--text);">About This Project</h1>
+          <p style="font-size: 1.15em; color: var(--text-light); max-width: 700px; margin: 0 auto; line-height: 1.6;">
+            Translating academic research into accessible, interactive educational content
+          </p>
         </div>
 
-        <div class="card" style="margin-bottom: 24px;" id="about-authors">
-          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">The Research Authors</h2>
-          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 20px;">The research summarized on this website was conducted by Sahil Chinoy, Nathan Nunn, Sandra Sequeira, and Stefanie Stantcheva.</p>
-          <div style="display: grid; gap: 14px;">
-            <div style="background: #f9fafb; padding: 14px; border-radius: 6px; border-left: 3px solid #a51c30;">
-              <strong style="color: var(--text);">Sahil Chinoy</strong>
-              <p style="margin: 6px 0 0 0; color: var(--text-light); line-height: 1.6; font-size: 0.95em;">A Postdoctoral Associate and Lecturer at Yale University, he will join Stanford University as an Assistant Professor in 2026.</p>
-            </div>
-            <div style="background: #f9fafb; padding: 14px; border-radius: 6px; border-left: 3px solid #a51c30;">
-              <strong style="color: var(--text);">Nathan Nunn</strong>
-              <p style="margin: 6px 0 0 0; color: var(--text-light); line-height: 1.6; font-size: 0.95em;">The Frederic E. Abbe Professor of Economics at Harvard (2016–2022) and currently a Professor at the Vancouver School of Economics (UBC).</p>
-            </div>
-            <div style="background: #f9fafb; padding: 14px; border-radius: 6px; border-left: 3px solid #a51c30;">
-              <strong style="color: var(--text);">Sandra Sequeira</strong>
-              <p style="margin: 6px 0 0 0; color: var(--text-light); line-height: 1.6; font-size: 0.95em;">A Professor of Development Economics at the London School of Economics (LSE) and a recipient of the 2022 Philip Leverhulme Prize.</p>
-            </div>
-            <div style="background: #f9fafb; padding: 14px; border-radius: 6px; border-left: 3px solid #a51c30;">
-              <strong style="color: var(--text);">Stefanie Stantcheva</strong>
-              <p style="margin: 6px 0 0 0; color: var(--text-light); line-height: 1.6; font-size: 0.95em;">The Nathaniel Ropes Professor of Political Economy at Harvard University and founder of the Social Economics Lab.</p>
+        <!-- Quick Navigation Pills -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 36px;">
+          <a href="#about-project" style="padding: 8px 16px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 20px; font-size: 13px; color: var(--text-light); text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#a51c30'; this.style.color='white'; this.style.borderColor='#a51c30'" onmouseout="this.style.background='#f1f5f9'; this.style.color='var(--text-light)'; this.style.borderColor='#e2e8f0'">🎯 Project</a>
+          <a href="#about-authors" style="padding: 8px 16px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 20px; font-size: 13px; color: var(--text-light); text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#a51c30'; this.style.color='white'; this.style.borderColor='#a51c30'" onmouseout="this.style.background='#f1f5f9'; this.style.color='var(--text-light)'; this.style.borderColor='#e2e8f0'">👨‍🔬 Authors</a>
+          <a href="#about-team" style="padding: 8px 16px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 20px; font-size: 13px; color: var(--text-light); text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#a51c30'; this.style.color='white'; this.style.borderColor='#a51c30'" onmouseout="this.style.background='#f1f5f9'; this.style.color='var(--text-light)'; this.style.borderColor='#e2e8f0'">👥 Team</a>
+          <a href="#about-contact" style="padding: 8px 16px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 20px; font-size: 13px; color: var(--text-light); text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#a51c30'; this.style.color='white'; this.style.borderColor='#a51c30'" onmouseout="this.style.background='#f1f5f9'; this.style.color='var(--text-light)'; this.style.borderColor='#e2e8f0'">✉️ Contact</a>
+        </div>
+
+        <!-- Project Overview Card -->
+        <div class="card" style="margin-bottom: 24px; border-left: 4px solid #a51c30; background: linear-gradient(135deg, #ffffff 0%, #fef7f8 100%);" id="about-project">
+          <div style="display: flex; align-items: flex-start; gap: 20px;">
+            <div style="font-size: 40px; flex-shrink: 0;">🎯</div>
+            <div style="flex: 1;">
+              <h2 style="margin: 0 0 16px 0; color: var(--text); font-size: 1.4em;">Project Overview</h2>
+              <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 16px;">
+                This educational platform makes academic research on zero-sum thinking accessible to a broader audience. It presents a non-partisan, public-facing summary combining conceptual explanation, data visualization, and self-assessment.
+              </p>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;">
+                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; text-align: center;">
+                  <div style="font-size: 24px; margin-bottom: 6px;">📊</div>
+                  <div style="font-size: 12px; font-weight: 600; color: var(--text);">Data Visualization</div>
+                </div>
+                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; text-align: center;">
+                  <div style="font-size: 24px; margin-bottom: 6px;">🎮</div>
+                  <div style="font-size: 12px; font-weight: 600; color: var(--text);">Interactive Tools</div>
+                </div>
+                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; text-align: center;">
+                  <div style="font-size: 24px; margin-bottom: 6px;">📝</div>
+                  <div style="font-size: 12px; font-weight: 600; color: var(--text);">Self-Assessment</div>
+                </div>
+                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; text-align: center;">
+                  <div style="font-size: 24px; margin-bottom: 6px;">🔬</div>
+                  <div style="font-size: 12px; font-weight: 600; color: var(--text);">Research-Based</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="card" style="margin-bottom: 24px;" id="about-website">
-          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">The Website Project</h2>
-          <p style="line-height: 1.7; color: var(--text-light);">This website was developed as part of the Programming and Data for Policy Makers course at the <strong>Harvard Kennedy School</strong>.</p>
-          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 0;">The course introduces students to computational thinking, data analysis, and digital tools for policy analysis and public communication. This project applies those skills to the responsible translation of academic research into an interactive, public-facing format.</p>
-        </div>
-
-        <div class="card" style="margin-bottom: 24px; background: #f9fafb; border-left: 3px solid #a51c30;">
-          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">Acknowledgment of Course Instructors</h2>
-          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 0;">The website team gratefully acknowledges the instructors of the Programming and Data for Policy Makers course, Professors <strong><a href="https://www.hks.harvard.edu/faculty/dhrumil-mehta" target="_blank" style="color: #a51c30; text-decoration: none; border-bottom: 1px solid #a51c30;">Dhrumil Mehta</a></strong> (Adjunct Professor of Public Policy) and <strong><a href="https://www.aarushisahejpal.com/" target="_blank" style="color: #a51c30; text-decoration: none; border-bottom: 1px solid #a51c30;">Aarushi Sahejpal</a></strong>, and the Course Assistant, <strong>Asa Royal</strong>, for their guidance and instruction. Responsibility for the content, interpretation, and presentation of this website rests solely with the website team and does not imply endorsement by the course instructors or Harvard Kennedy School.</p>
-        </div>
-
-        <div class="card" style="margin-bottom: 24px;" id="about-team">
-          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">The Website Team</h2>
-          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 24px;">This website was developed independently by the course participants as part of the above program. Any errors, omissions, or interpretations are the responsibility of the website team alone.</p>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px;">
-              <h3 style="margin: 0 0 6px 0; font-size: 1.2em; color: var(--text);">Liyang Chen</h3>
-              <p style="margin: 0 0 10px 0; font-size: 0.9em; color: #6b7280; font-weight: 600;">Developer</p>
-              <p style="margin: 0; font-size: 0.95em; line-height: 1.6; color: var(--text-light);">MPA Student at Harvard Kennedy School. Passionate about understanding political beliefs and building tools for evidence-based policy dialogue.</p>
-            </div>
-            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px;">
-              <h3 style="margin: 0 0 6px 0; font-size: 1.2em; color: var(--text);">Junyu Wang</h3>
-              <p style="margin: 0 0 10px 0; font-size: 0.9em; color: #6b7280; font-weight: 600;">Developer</p>
-              <p style="margin: 0; font-size: 0.95em; line-height: 1.6; color: var(--text-light);">Graduate student at Harvard Kennedy School. Interested in technology, public policy, and financial development. Leading website development and technical implementation.</p>
-            </div>
-            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px;">
-              <h3 style="margin: 0 0 6px 0; font-size: 1.2em; color: var(--text);">Wondem Goshu</h3>
-              <p style="margin: 0 0 10px 0; font-size: 0.9em; color: #6b7280; font-weight: 600;">Developer</p>
-              <p style="margin: 0; font-size: 0.95em; line-height: 1.6; color: var(--text-light);">MC-MPA, Mason Fellow, HKS. Interested in African development, public policy, and leveraging technology for social impact in emerging markets.</p>
+        <!-- Research Authors Section -->
+        <div class="card" style="margin-bottom: 24px; border-left: 4px solid #2563eb; background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);" id="about-authors">
+          <div style="display: flex; align-items: flex-start; gap: 20px;">
+            <div style="font-size: 40px; flex-shrink: 0;">👨‍🔬</div>
+            <div style="flex: 1;">
+              <h2 style="margin: 0 0 8px 0; color: var(--text); font-size: 1.4em;">Research Authors</h2>
+              <p style="color: var(--text-light); margin-bottom: 20px; font-size: 14px;">The original research was conducted by leading economists specializing in political economy and development.</p>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
+                <a href="https://sahilchinoy.com/" target="_blank" style="display: flex; align-items: center; gap: 14px; background: white; border: 1px solid #dbeafe; border-radius: 10px; padding: 14px; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.borderColor='#2563eb'; this.style.boxShadow='0 4px 12px rgba(37,99,235,0.12)'" onmouseout="this.style.borderColor='#dbeafe'; this.style.boxShadow='none'">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="color: white; font-weight: 700; font-size: 18px;">SC</span>
+                  </div>
+                  <div>
+                    <div style="font-weight: 600; color: var(--text); font-size: 15px;">Sahil Chinoy</div>
+                    <div style="font-size: 12px; color: var(--text-light);">Yale → Stanford (2026)</div>
+                  </div>
+                </a>
+                <a href="https://nathannunn.arts.ubc.ca/" target="_blank" style="display: flex; align-items: center; gap: 14px; background: white; border: 1px solid #dbeafe; border-radius: 10px; padding: 14px; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.borderColor='#2563eb'; this.style.boxShadow='0 4px 12px rgba(37,99,235,0.12)'" onmouseout="this.style.borderColor='#dbeafe'; this.style.boxShadow='none'">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="color: white; font-weight: 700; font-size: 18px;">NN</span>
+                  </div>
+                  <div>
+                    <div style="font-weight: 600; color: var(--text); font-size: 15px;">Nathan Nunn</div>
+                    <div style="font-size: 12px; color: var(--text-light);">UBC Vancouver School</div>
+                  </div>
+                </a>
+                <a href="https://sites.google.com/view/sandramgsequeira/home" target="_blank" style="display: flex; align-items: center; gap: 14px; background: white; border: 1px solid #dbeafe; border-radius: 10px; padding: 14px; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.borderColor='#2563eb'; this.style.boxShadow='0 4px 12px rgba(37,99,235,0.12)'" onmouseout="this.style.borderColor='#dbeafe'; this.style.boxShadow='none'">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="color: white; font-weight: 700; font-size: 18px;">SS</span>
+                  </div>
+                  <div>
+                    <div style="font-weight: 600; color: var(--text); font-size: 15px;">Sandra Sequeira</div>
+                    <div style="font-size: 12px; color: var(--text-light);">LSE • Leverhulme Prize</div>
+                  </div>
+                </a>
+                <a href="https://www.stefanie-stantcheva.com/" target="_blank" style="display: flex; align-items: center; gap: 14px; background: white; border: 1px solid #dbeafe; border-radius: 10px; padding: 14px; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.borderColor='#2563eb'; this.style.boxShadow='0 4px 12px rgba(37,99,235,0.12)'" onmouseout="this.style.borderColor='#dbeafe'; this.style.boxShadow='none'">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="color: white; font-weight: 700; font-size: 18px;">SS</span>
+                  </div>
+                  <div>
+                    <div style="font-weight: 600; color: var(--text); font-size: 15px;">Stefanie Stantcheva</div>
+                    <div style="font-size: 12px; color: var(--text-light);">Harvard • Social Econ Lab</div>
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="card" style="margin-bottom: 24px; background: #f9fafb; border-left: 3px solid #6b7280;">
-          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">Disclaimer</h2>
-          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 0;">This website is an independent educational presentation of published academic research. It does not represent the views of the original authors, their institutions, or any funding bodies.</p>
-        </div>
-
-        <div class="card" style="margin-bottom: 24px;">
-          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">Data Sources</h2>
-          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 12px;">This website presents data and findings from the following published research:</p>
-          <ul style="margin: 0; padding-left: 20px; color: var(--text-light); line-height: 1.7;">
-            <li style="margin-bottom: 10px;"><strong>Primary Source:</strong> Chinoy, S., Nunn, N., Sequeira, S., & Stantcheva, S. (2024). "Zero-Sum Thinking and Distributional Preferences." <em>Working Paper</em>.</li>
-            <li style="margin-bottom: 10px;">All data visualizations are based on survey data collected and analyzed by the original research authors.</li>
-            <li>The interactive test and visualizations are educational tools designed to illustrate research findings, not diagnostic instruments.</li>
-          </ul>
-        </div>
-
-        <div class="card" style="margin-bottom: 24px;">
-          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">How to Cite This Project</h2>
-          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 12px;">If you reference this research in your work, please cite the original study:</p>
-          <div style="background: #f9fafb; border-left: 3px solid #a51c30; padding: 16px; margin: 0; border-radius: 4px;">
-            <p style="margin: 0; font-family: 'Courier New', monospace; font-size: 13px; color: var(--text); line-height: 1.7;">
-              Chinoy, S., Nunn, N., Sequeira, S., & Stantcheva, S. (2024). Zero-Sum Thinking and Distributional Preferences. <em>Working Paper</em>.
-            </p>
+        <!-- HKS Course Context Card -->
+        <div class="card" style="margin-bottom: 24px; border-left: 4px solid #059669; background: linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%);" id="about-website">
+          <div style="display: flex; align-items: flex-start; gap: 20px;">
+            <div style="font-size: 40px; flex-shrink: 0;">🏛️</div>
+            <div style="flex: 1;">
+              <h2 style="margin: 0 0 12px 0; color: var(--text); font-size: 1.4em;">Harvard Kennedy School Project</h2>
+              <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 16px;">
+                Developed as part of <strong>Programming and Data for Policy Makers (DPI-691M)</strong>, a course that introduces computational thinking, data analysis, and digital tools for policy communication.
+              </p>
+              <div style="background: white; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px;">
+                <div style="font-weight: 600; color: #065f46; margin-bottom: 12px; font-size: 14px;">👏 Course Instructors</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                  <a href="https://www.hks.harvard.edu/faculty/dhrumil-mehta" target="_blank" style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: #f0fdf4; border-radius: 6px; text-decoration: none;">
+                    <span style="font-size: 14px; font-weight: 500; color: #047857;">Dhrumil Mehta</span>
+                    <span style="font-size: 11px; color: #10b981;">Adjunct Prof.</span>
+                  </a>
+                  <a href="https://www.aarushisahejpal.com/" target="_blank" style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: #f0fdf4; border-radius: 6px; text-decoration: none;">
+                    <span style="font-size: 14px; font-weight: 500; color: #047857;">Aarushi Sahejpal</span>
+                    <span style="font-size: 11px; color: #10b981;">Instructor</span>
+                  </a>
+                  <span style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: #f0fdf4; border-radius: 6px;">
+                    <span style="font-size: 14px; font-weight: 500; color: #047857;">Asa Royal</span>
+                    <span style="font-size: 11px; color: #10b981;">Course Asst.</span>
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="card" style="margin-bottom: 24px;">
-          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">Open Source & Transparency</h2>
-          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 12px;">We believe in transparency and open access to educational resources. This project is developed with:</p>
-          <ul style="margin: 0; padding-left: 20px; color: var(--text-light); line-height: 1.7;">
-            <li style="margin-bottom: 10px;"><strong>Open-source technologies:</strong> HTML, CSS, JavaScript</li>
-            <li style="margin-bottom: 10px;"><strong>Public accessibility:</strong> No paywalls or registration requirements</li>
-            <li><strong>Reproducible methods:</strong> All visualizations and calculations are transparent and based on published research</li>
-          </ul>
+        <!-- Website Team -->
+        <div class="card" style="margin-bottom: 24px; border-left: 4px solid #7c3aed; background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);" id="about-team">
+          <div style="display: flex; align-items: flex-start; gap: 20px;">
+            <div style="font-size: 40px; flex-shrink: 0;">👥</div>
+            <div style="flex: 1;">
+              <h2 style="margin: 0 0 8px 0; color: var(--text); font-size: 1.4em;">Website Team</h2>
+              <p style="color: var(--text-light); margin-bottom: 20px; font-size: 14px;">Developed by graduate students at Harvard Kennedy School. Any errors or interpretations are the team's responsibility alone.</p>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+                <div style="background: white; border: 1px solid #e9d5ff; border-radius: 12px; padding: 20px; position: relative; overflow: hidden;">
+                  <div style="position: absolute; top: 0; right: 0; width: 60px; height: 60px; background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); border-radius: 0 0 0 60px; opacity: 0.1;"></div>
+                  <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 12px;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                      <span style="color: white; font-weight: 700; font-size: 18px;">LC</span>
+                    </div>
+                    <div>
+                      <h3 style="margin: 0; font-size: 1.1em; color: var(--text);">Liyang Chen</h3>
+                      <p style="margin: 2px 0 0 0; font-size: 12px; color: #7c3aed; font-weight: 600;">Developer</p>
+                    </div>
+                  </div>
+                  <p style="margin: 0; font-size: 13px; line-height: 1.6; color: var(--text-light);">MPA Student at HKS. Passionate about understanding political beliefs and building tools for evidence-based policy dialogue.</p>
+                </div>
+                <div style="background: white; border: 1px solid #e9d5ff; border-radius: 12px; padding: 20px; position: relative; overflow: hidden;">
+                  <div style="position: absolute; top: 0; right: 0; width: 60px; height: 60px; background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); border-radius: 0 0 0 60px; opacity: 0.1;"></div>
+                  <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 12px;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                      <span style="color: white; font-weight: 700; font-size: 18px;">JW</span>
+                    </div>
+                    <div>
+                      <h3 style="margin: 0; font-size: 1.1em; color: var(--text);">Junyu Wang</h3>
+                      <p style="margin: 2px 0 0 0; font-size: 12px; color: #7c3aed; font-weight: 600;">Developer</p>
+                    </div>
+                  </div>
+                  <p style="margin: 0; font-size: 13px; line-height: 1.6; color: var(--text-light);">HKS graduate student. Interested in technology, public policy, and financial development. Leading website development.</p>
+                </div>
+                <div style="background: white; border: 1px solid #e9d5ff; border-radius: 12px; padding: 20px; position: relative; overflow: hidden;">
+                  <div style="position: absolute; top: 0; right: 0; width: 60px; height: 60px; background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); border-radius: 0 0 0 60px; opacity: 0.1;"></div>
+                  <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 12px;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                      <span style="color: white; font-weight: 700; font-size: 18px;">WG</span>
+                    </div>
+                    <div>
+                      <h3 style="margin: 0; font-size: 1.1em; color: var(--text);">Wondem Goshu</h3>
+                      <p style="margin: 2px 0 0 0; font-size: 12px; color: #7c3aed; font-weight: 600;">Developer</p>
+                    </div>
+                  </div>
+                  <p style="margin: 0; font-size: 13px; line-height: 1.6; color: var(--text-light);">MC-MPA, Mason Fellow. Interested in African development and leveraging technology for social impact.</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="card" style="margin-bottom: 24px;">
-          <h2 style="color: var(--text); font-size: 1.5em; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">Future Development</h2>
-          <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 16px;">We are committed to continually improving this educational resource. Planned enhancements include:</p>
-          <ul style="margin: 0; padding-left: 20px; color: var(--text-light); line-height: 1.7;">
-            <li style="margin-bottom: 10px;"><strong>Enhanced Visualizations:</strong> Additional interactive charts exploring different aspects of zero-sum thinking across demographics</li>
-            <li style="margin-bottom: 10px;"><strong>Multilingual Support:</strong> Translations to make research accessible to non-English speaking audiences</li>
-            <li style="margin-bottom: 10px;"><strong>Educational Resources:</strong> Classroom materials and discussion guides for educators</li>
-            <li><strong>Regular Updates:</strong> Integration of new research findings as they become available</li>
-          </ul>
+        <!-- Citation & Data Info - Combined -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 24px;">
+          <!-- Citation -->
+          <div class="card" style="border-left: 4px solid #f59e0b; background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%); margin: 0;">
+            <div style="display: flex; align-items: flex-start; gap: 16px;">
+              <div style="font-size: 32px; flex-shrink: 0;">📚</div>
+              <div>
+                <h2 style="margin: 0 0 12px 0; color: var(--text); font-size: 1.2em;">How to Cite</h2>
+                <div style="background: white; border: 1px solid #fcd34d; border-radius: 8px; padding: 14px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.6; color: var(--text);">
+                  Chinoy, S., Nunn, N., Sequeira, S., & Stantcheva, S. (2024). <em>Zero-Sum Thinking and the Roots of U.S. Political Divides</em>. American Economic Review (forthcoming).
+                </div>
+                <a href="https://socialeconomicslab.org/wp-content/uploads/2025/11/zero_sum_political_divides.pdf" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 13px; color: #d97706; font-weight: 500; text-decoration: none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
+                  📄 Read Full Paper →
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Disclaimer -->
+          <div class="card" style="border-left: 4px solid #64748b; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); margin: 0;">
+            <div style="display: flex; align-items: flex-start; gap: 16px;">
+              <div style="font-size: 32px; flex-shrink: 0;">⚖️</div>
+              <div>
+                <h2 style="margin: 0 0 12px 0; color: var(--text); font-size: 1.2em;">Disclaimer</h2>
+                <p style="margin: 0; line-height: 1.7; color: var(--text-light); font-size: 14px;">
+                  This is an independent educational presentation. It does not represent the views of the original authors, their institutions, Harvard Kennedy School, or any funding bodies.
+                </p>
+                <div style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px;">
+                  <span style="padding: 4px 10px; background: #f1f5f9; border-radius: 4px; font-size: 11px; color: #64748b;">Non-partisan</span>
+                  <span style="padding: 4px 10px; background: #f1f5f9; border-radius: 4px; font-size: 11px; color: #64748b;">Educational only</span>
+                  <span style="padding: 4px 10px; background: #f1f5f9; border-radius: 4px; font-size: 11px; color: #64748b;">Open access</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="card" style="margin-bottom: 24px; background: linear-gradient(to bottom, #ffffff 0%, #f9fafb 100%); border: 2px solid #e5e7eb;" id="about-contact">
-          <h2 style="color: var(--text); font-size: 1.8em; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 3px solid #a51c30; display: inline-block;">Contact & Feedback</h2>
-          <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 32px; font-size: 1.05em;">We welcome feedback, suggestions, and questions from researchers, educators, policymakers, and the general public.</p>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
-            <div style="background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 24px; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 6px 16px rgba(165,28,48,0.15)'; this.style.borderColor='#a51c30';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.05)'; this.style.borderColor='#e5e7eb';">
-              <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; box-shadow: 0 4px 8px rgba(107,114,128,0.2);">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Contact Section -->
+        <div class="card" style="margin-bottom: 24px; background: linear-gradient(135deg, #a51c30 0%, #7e1424 100%); border: none; color: white;" id="about-contact">
+          <h2 style="color: white; font-size: 1.6em; margin-bottom: 8px; text-align: center;">Contact & Feedback</h2>
+          <p style="text-align: center; color: rgba(255,255,255,0.85); margin-bottom: 28px; font-size: 15px;">We welcome feedback from researchers, educators, policymakers, and the public.</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            <a href="mailto:jwang@hks.harvard.edu" style="display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 24px 16px; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'; this.style.transform='translateY(0)'">
+              <div style="width: 52px; height: 52px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#a51c30" stroke-width="2">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                   <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
               </div>
-              <h4 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1em; font-weight: 600;">Email</h4>
-              <p style="margin: 0; font-size: 0.95em; line-height: 1.6;">
-                <a href="mailto:jwang@hks.harvard.edu" style="color: #a51c30; text-decoration: none; font-weight: 500; border-bottom: 1px solid transparent; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#a51c30'" onmouseout="this.style.borderColor='transparent'">jwang@hks.harvard.edu</a>
-              </p>
-            </div>
-            <div style="background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 24px; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 6px 16px rgba(165,28,48,0.15)'; this.style.borderColor='#a51c30';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.05)'; this.style.borderColor='#e5e7eb';">
-              <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; box-shadow: 0 4px 8px rgba(107,114,128,0.2);">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <span style="color: white; font-weight: 600; font-size: 15px;">Email Us</span>
+              <span style="color: rgba(255,255,255,0.75); font-size: 12px; margin-top: 4px;">jwang@hks.harvard.edu</span>
+            </a>
+            <a href="survey.html" target="_blank" style="display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 24px 16px; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'; this.style.transform='translateY(0)'">
+              <div style="width: 52px; height: 52px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#a51c30" stroke-width="2">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                 </svg>
               </div>
-              <h4 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1em; font-weight: 600;">Feedback Form</h4>
-              <p style="margin: 0; font-size: 0.95em; line-height: 1.6;">
-                <a href="survey.html" target="_blank" style="color: #a51c30; text-decoration: none; font-weight: 500; border-bottom: 1px solid transparent; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#a51c30'" onmouseout="this.style.borderColor='transparent'">Share your thoughts</a>
-              </p>
-            </div>
-            <div style="background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 24px; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 6px 16px rgba(165,28,48,0.15)'; this.style.borderColor='#a51c30';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.05)'; this.style.borderColor='#e5e7eb';">
-              <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; box-shadow: 0 4px 8px rgba(107,114,128,0.2);">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <span style="color: white; font-weight: 600; font-size: 15px;">Feedback Form</span>
+              <span style="color: rgba(255,255,255,0.75); font-size: 12px; margin-top: 4px;">Share your thoughts</span>
+            </a>
+            <a href="report-issue.html" target="_blank" style="display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 24px 16px; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'; this.style.transform='translateY(0)'">
+              <div style="width: 52px; height: 52px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#a51c30" stroke-width="2">
                   <circle cx="12" cy="12" r="10"></circle>
                   <line x1="12" y1="8" x2="12" y2="12"></line>
                   <line x1="12" y1="16" x2="12.01" y2="16"></line>
                 </svg>
               </div>
-              <h4 style="margin: 0 0 10px 0; color: var(--text); font-size: 1.1em; font-weight: 600;">Report Issues</h4>
-              <p style="margin: 0; font-size: 0.95em; line-height: 1.6;">
-                <a href="report-issue.html" target="_blank" style="color: #a51c30; text-decoration: none; font-weight: 500; border-bottom: 1px solid transparent; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#a51c30'" onmouseout="this.style.borderColor='transparent'">Report technical issues</a>
-              </p>
-            </div>
+              <span style="color: white; font-weight: 600; font-size: 15px;">Report Issues</span>
+              <span style="color: rgba(255,255,255,0.75); font-size: 12px; margin-top: 4px;">Technical problems</span>
+            </a>
           </div>
         </div>
 
+        <!-- Back to Home -->
         <div style="text-align: center; margin-top: 40px; padding-top: 32px; border-top: 1px solid #e5e7eb;">
-          <a href="#" onclick="setRoute('learn'); return false;" style="display: inline-block; padding: 12px 32px; background: var(--text); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: opacity 0.2s; cursor: pointer;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">← Back to Home</a>
+          <a href="#" onclick="setRoute('learn'); return false;" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 36px; background: var(--text); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; transition: all 0.2s; cursor: pointer;" onmouseover="this.style.background='#a51c30'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--text)'; this.style.transform='translateY(0)'">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Back to Home
+          </a>
         </div>
       </section>
     </main>
