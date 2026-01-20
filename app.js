@@ -2011,6 +2011,7 @@ let currentMapGroup = "all";   // Currently selected filter group
 let d3MapSvg = null;           // D3 SVG element
 let d3MapPath = null;          // D3 geo path generator
 let stateDataLookup = {};      // Quick lookup: state_fips -> data for current group
+let renderableFipsSet = new Set(); // Set of FIPS codes that can be rendered on map
 let currentColorScaleMin = 0;  // Current color scale min (dynamic per group)
 let currentColorScaleMax = 1;  // Current color scale max (dynamic per group)
 
@@ -2144,10 +2145,6 @@ function buildStateDataLookup(group) {
         hasRecord: true           // Flag to indicate record exists in data
       };
     });
-  
-  // Debug: Log Nevada (state_fips="32") data for verification
-  const nevadaData = stateDataLookup["32"];
-  console.log(`[Map Debug] Nevada (32) for group "${group}":`, nevadaData);
     
   console.log(`[Map] Built lookup for group "${group}": ${Object.keys(stateDataLookup).length} states`);
   
@@ -2225,6 +2222,9 @@ function initializeD3Map() {
   // Add a group for states
   d3MapSvg.append("g").attr("class", "states");
   
+  // Add a group for Puerto Rico inset
+  d3MapSvg.append("g").attr("class", "puerto-rico-inset");
+  
   console.log(`[Map] D3 SVG initialized: ${width}x${height}`);
 }
 
@@ -2245,9 +2245,19 @@ function renderStateMap() {
   // Build lookup for current group (just indexing, no computation)
   buildStateDataLookup(currentMapGroup);
   
-  // Helper function to get fill color for a state
+  // Filter out features that can't be rendered by geoAlbersUsa projection
+  // This includes Puerto Rico (72) and other non-continental territories
+  const renderableFeatures = stateGeoData.features.filter(f => {
+    const path = d3MapPath(f);
+    return path && path.length > 0;
+  });
+  
+  // Update global set of renderable FIPS codes for statistics
+  renderableFipsSet = new Set(renderableFeatures.map(f => String(f.id).padStart(2, '0')));
+  
+  // Helper function to get fill color for a state (works for both main map and inset)
   const getFillColor = (d) => {
-    const fips = String(d.id).padStart(2, '0');
+    const fips = typeof d === 'object' ? String(d.id).padStart(2, '0') : d;
     const data = stateDataLookup[fips];
     
     if (!data) return "#dfe6e9";
@@ -2257,16 +2267,23 @@ function renderStateMap() {
     return "#dfe6e9";
   };
   
-  // Helper to check low reliability
+  // Helper to check low reliability (n < 50) - works for both feature objects and FIPS strings
   const isLowReliability = (d) => {
-    const fips = String(d.id).padStart(2, '0');
+    const fips = typeof d === 'object' ? String(d.id).padStart(2, '0') : d;
     const data = stateDataLookup[fips];
     return data && typeof data.n === 'number' && data.n > 0 && data.n < 50;
   };
   
-  // Bind data and render states
+  // Helper to check if a state is small (DC, Rhode Island, etc.) - needs larger stroke
+  const isSmallState = (d) => {
+    const fips = typeof d === 'object' ? String(d.id).padStart(2, '0') : d;
+    // DC (11), Rhode Island (44), Delaware (10) are very small on the map
+    return ['11', '44', '10'].includes(fips);
+  };
+  
+  // Bind data and render states (only renderable features)
   const states = statesGroup.selectAll("path")
-    .data(stateGeoData.features, d => d.id);
+    .data(renderableFeatures, d => d.id);
   
   // Enter: New states (first render)
   const statesEnter = states.enter()
@@ -2279,14 +2296,20 @@ function renderStateMap() {
     .style("cursor", "pointer");
   
   // Merge enter + update and apply transitions
+  // For small states like DC, use thicker stroke to make dashed border visible
   statesEnter.merge(states)
     .transition()
     .duration(MAP_TRANSITION_DURATION)
     .ease(d3.easeCubicInOut)
     .attr("fill", getFillColor)
     .attr("stroke", d => isLowReliability(d) ? "#e67e22" : "#fff")
-    .attr("stroke-width", d => isLowReliability(d) ? 1.5 : 1)
-    .attr("stroke-dasharray", d => isLowReliability(d) ? "4,2" : "none");
+    .attr("stroke-width", d => {
+      if (isLowReliability(d)) {
+        return isSmallState(d) ? 3.5 : 2.5;  // Thicker for small states
+      }
+      return 1;
+    })
+    .attr("stroke-dasharray", d => isLowReliability(d) ? "8,4" : "none");
   
   // Add event handlers (only need to set once on enter, but merge ensures all have them)
   statesEnter.merge(states)
@@ -2295,19 +2318,15 @@ function renderStateMap() {
       const data = stateDataLookup[fips];
       const stateName = stateFipsToName[fips] || d.properties?.name || "Unknown State";
       
-      // Debug: Log Nevada data when hovering
-      if (fips === "32") {
-        console.log(`[Map Debug] Tooltip for Nevada (32), group="${currentMapGroup}":`, JSON.stringify(data));
-      }
-      
       // Highlight state (preserve dash for low reliability: n < 50)
       const lowReliability = isLowReliability(d);
+      const smallState = isSmallState(d);
       d3.select(this)
         .transition()
         .duration(150)
         .attr("stroke", "#2c3e50")
-        .attr("stroke-width", 2)
-        .attr("stroke-dasharray", lowReliability ? "4,2" : "none");
+        .attr("stroke-width", smallState ? 4 : 3)
+        .attr("stroke-dasharray", lowReliability ? "8,4" : "none");
       
       // Build tooltip content
       let tooltipHtml = `<strong>${stateName}</strong>`;
@@ -2365,34 +2384,165 @@ function renderStateMap() {
     })
     .on("mouseleave", function(event, d) {
       const lowReliability = isLowReliability(d);
+      const smallState = isSmallState(d);
       d3.select(this)
         .transition()
         .duration(150)
         .attr("stroke", lowReliability ? "#e67e22" : "#fff")
-        .attr("stroke-width", lowReliability ? 1.5 : 1)
-        .attr("stroke-dasharray", lowReliability ? "4,2" : "none");
+        .attr("stroke-width", lowReliability ? (smallState ? 3.5 : 2.5) : 1)
+        .attr("stroke-dasharray", lowReliability ? "8,4" : "none");
       tooltip.style.display = "none";
     });
   
   // Remove old states
   states.exit().remove();
   
+  // Render Puerto Rico inset (not supported by geoAlbersUsa projection)
+  renderPuertoRicoInset(tooltip, getFillColor, isLowReliability);
+  
   // Update statistics display
   updateMapStatistics();
 }
 
 /**
+ * Render Puerto Rico as an inset in the bottom right corner
+ * Since geoAlbersUsa doesn't include PR, we render it separately
+ */
+function renderPuertoRicoInset(tooltip, getFillColor, isLowReliability) {
+  const prFips = "72";
+  const prData = stateDataLookup[prFips];
+  
+  // Only render if we have data for PR
+  if (!prData) {
+    console.log("[Map] No data for Puerto Rico, skipping inset");
+    return;
+  }
+  
+  const insetGroup = d3MapSvg.select("g.puerto-rico-inset");
+  
+  // Get SVG dimensions
+  const svgWidth = +d3MapSvg.attr("width");
+  const svgHeight = +d3MapSvg.attr("height");
+  
+  // Inset position and size (bottom left, to avoid legend overlay)
+  const insetWidth = 60;
+  const insetHeight = 30;
+  const insetX = 20;  // Position at bottom left
+  const insetY = svgHeight - 60;
+  
+  // Clear previous content
+  insetGroup.selectAll("*").remove();
+  
+  // Add background/border for the inset box
+  insetGroup.append("rect")
+    .attr("x", insetX - 5)
+    .attr("y", insetY - 5)
+    .attr("width", insetWidth + 10)
+    .attr("height", insetHeight + 20)
+    .attr("fill", "#f8fafc")
+    .attr("stroke", "#e2e8f0")
+    .attr("stroke-width", 1)
+    .attr("rx", 3);
+  
+  // Add label
+  insetGroup.append("text")
+    .attr("x", insetX + insetWidth / 2)
+    .attr("y", insetY + insetHeight + 12)
+    .attr("text-anchor", "middle")
+    .attr("font-size", "8px")
+    .attr("fill", "#64748b")
+    .text("Puerto Rico");
+  
+  // Determine fill color and stroke style
+  const fillColor = getFillColor(prFips);
+  const lowReliability = isLowReliability(prFips);
+  
+  // Draw PR as a simple rectangle (stylized representation)
+  const prRect = insetGroup.append("rect")
+    .attr("class", "puerto-rico")
+    .attr("x", insetX)
+    .attr("y", insetY)
+    .attr("width", insetWidth)
+    .attr("height", insetHeight)
+    .attr("rx", 2)
+    .attr("fill", fillColor)
+    .attr("stroke", lowReliability ? "#e67e22" : "#fff")
+    .attr("stroke-width", lowReliability ? 2.5 : 1)
+    .attr("stroke-dasharray", lowReliability ? "6,3" : "none")
+    .style("cursor", "pointer");
+  
+  // Add hover interactions
+  prRect.on("mouseenter", function(event) {
+    d3.select(this)
+      .transition()
+      .duration(150)
+      .attr("stroke", "#2c3e50")
+      .attr("stroke-width", 3);
+    
+    // Show tooltip
+    let tooltipHtml = `<strong>Puerto Rico</strong>`;
+    tooltipHtml += `<br/><span style="color: #7f8c8d; font-size: 11px;">FIPS: ${prFips}</span>`;
+    tooltipHtml += `<hr style="margin: 8px 0; border: none; border-top: 1px solid #ecf0f1;">`;
+    
+    if (typeof prData.avg_zs === 'number' && !isNaN(prData.avg_zs)) {
+      tooltipHtml += `<span style="font-size: 18px; font-weight: 600; color: #2c3e50;">${prData.avg_zs.toFixed(2)}</span>`;
+      tooltipHtml += `<br/><span style="color: #7f8c8d; font-size: 10px;">Zero-Sum Index</span>`;
+    }
+    
+    tooltipHtml += `<hr style="margin: 8px 0; border: none; border-top: 1px solid #ecf0f1;">`;
+    tooltipHtml += `<span>Sample Size (n):</span>`;
+    tooltipHtml += ` <strong>${prData.n}</strong>`;
+    if (lowReliability) {
+      tooltipHtml += ` <span style="color: #e67e22;">⚠️ Low reliability</span>`;
+    }
+    
+    tooltip.innerHTML = tooltipHtml;
+    tooltip.style.display = "block";
+  })
+  .on("mousemove", function(event) {
+    const container = document.getElementById("d3-map-container");
+    const rect = container.getBoundingClientRect();
+    const x = event.clientX - rect.left + 15;
+    const y = event.clientY - rect.top + 15;
+    
+    const tooltipRect = tooltip.getBoundingClientRect();
+    const maxX = rect.width - tooltipRect.width - 10;
+    const maxY = rect.height - tooltipRect.height - 10;
+    
+    tooltip.style.left = Math.min(x, maxX) + "px";
+    tooltip.style.top = Math.min(y, maxY) + "px";
+  })
+  .on("mouseleave", function() {
+    d3.select(this)
+      .transition()
+      .duration(150)
+      .attr("stroke", lowReliability ? "#e67e22" : "#fff")
+      .attr("stroke-width", lowReliability ? 2.5 : 1);
+    tooltip.style.display = "none";
+  });
+  
+  console.log(`[Map] Puerto Rico inset rendered: avg_zs=${prData.avg_zs}, n=${prData.n}, lowReliability=${lowReliability}`);
+}
+
+/**
  * Update the statistics panel with current data
- * Just displays the preprocessed values, no computation
+ * Now includes Puerto Rico in the count since we render it as an inset
  */
 function updateMapStatistics() {
-  const dataPoints = Object.values(stateDataLookup);
+  // Include Puerto Rico (72) in statistics since we now render it as an inset
+  const allDataFips = new Set([...renderableFipsSet, "72"]);
+  const renderableDataPoints = Object.entries(stateDataLookup)
+    .filter(([fips, _]) => allDataFips.has(fips))
+    .map(([fips, data]) => ({ fips, ...data }));
+  
   // Valid data = avg_zs is a number (record exists and has value)
-  const validData = dataPoints.filter(d => typeof d.avg_zs === 'number' && !isNaN(d.avg_zs));
+  const validData = renderableDataPoints.filter(d => typeof d.avg_zs === 'number' && !isNaN(d.avg_zs));
   // Low reliability = record exists AND 0 < n < 50
-  const lowReliabilityCount = dataPoints.filter(d => typeof d.n === 'number' && d.n > 0 && d.n < 50).length;
+  const lowReliabilityData = renderableDataPoints.filter(d => typeof d.n === 'number' && d.n > 0 && d.n < 50);
+  const lowReliabilityCount = lowReliabilityData.length;
+  
   // No data count for states in lookup but missing avg_zs
-  const noDataCount = dataPoints.length - validData.length;
+  const noDataCount = renderableDataPoints.length - validData.length;
   
   const countEl = document.getElementById("map-state-count");
   const meanEl = document.getElementById("map-mean");
